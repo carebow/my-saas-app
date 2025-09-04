@@ -1,0 +1,163 @@
+
+@layer base {
+  /* Mobile-first typography */
+  @media (max-width: 640px) {
+    body {
+      font-size: 14px;
+    }
+    
+    h1 {
+      line-height: 1.1;
+    }
+    
+    h2, h3 {
+      line-height: 1.3;
+    }
+    
+    p {
+      line-height: 1.6;
+      margin-bottom: 1rem;
+    }
+  }
+}
+
+@layer components {
+  /* Mobile-specific improvements */
+  @media (max-width: 768px) {
+    .section-container {
+      @apply px-4 py-8;
+    }
+    
+    /* Better mobile spacing */
+    .space-y-8 > * + * {
+      margin-top: 1.5rem;
+    }
+    
+    .space-y-6 > * + * {
+      margin-top: 1rem;
+    }
+    
+    /* Mobile-friendly buttons */
+    .btn-primary,
+    .btn-secondary {
+      @apply w-full justify-center py-3 text-base;
+    }
+    
+    /* Better mobile cards */
+    .blog-card,
+    .clean-card {
+      @apply mx-2;
+    }
+    
+    /* Mobile form improvements */
+    .form-field,
+    input,
+    textarea,
+    select {
+      @apply text-base; /* Prevent zoom on iOS */
+    }
+    
+    /* Mobile navigation improvements */
+    .nav-link {
+      @apply block py-3 px-4 text-base;
+    }
+    
+    /* Better mobile readability */
+    p, li {
+      @apply text-base leading-relaxed;
+    }
+    
+    /* Mobile grid improvements */
+    .grid-cols-2 {
+      @apply grid-cols-1;
+    }
+    
+    .md\:grid-cols-2 {
+      @apply grid-cols-1;
+    }
+    
+    .lg\:grid-cols-3 {
+      @apply grid-cols-1;
+    }
+    
+    /* Better mobile text sizes */
+    .text-xs {
+      @apply text-sm;
+    }
+    
+    /* Mobile-specific spacing */
+    .px-2 {
+      @apply px-4;
+    }
+    
+    .py-1 {
+      @apply py-2;
+    }
+    
+    /* Blog and content page mobile optimization */
+    .prose {
+      @apply text-base leading-relaxed;
+    }
+    
+    .prose h1 {
+      @apply text-xl mb-4;
+    }
+    
+    .prose h2 {
+      @apply text-lg mb-3;
+    }
+    
+    .prose h3 {
+      @apply text-base mb-2;
+    }
+    
+    .prose p {
+      @apply mb-4;
+    }
+    
+    .prose ul, .prose ol {
+      @apply mb-4 pl-6;
+    }
+    
+    .prose li {
+      @apply mb-2;
+    }
+    
+    /* Mobile table improvements */
+    table {
+      @apply text-sm;
+    }
+    
+    th, td {
+      @apply px-2 py-1;
+    }
+  }
+
+  /* Tablet improvements */
+  @media (min-width: 769px) and (max-width: 1024px) {
+    .lg\:grid-cols-3 {
+      @apply grid-cols-2;
+    }
+    
+    .lg\:grid-cols-4 {
+      @apply grid-cols-2;
+    }
+  }
+
+  /* Mobile touch improvements */
+  @media (max-width: 768px) {
+    button,
+    .btn-primary,
+    .btn-secondary,
+    input,
+    textarea,
+    select {
+      @apply min-h-[44px]; /* Apple's recommended minimum touch target */
+    }
+    
+    /* Improve spacing for mobile */
+    .space-y-4 > * + * {
+      margin-top: 1.25rem;
+    }
+  }
+}

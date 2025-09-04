@@ -1,0 +1,135 @@
+
+@layer components {
+  .section-container {
+    @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 md:py-24 bg-background;
+  }
+  
+  .section-title {
+    @apply text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mb-4 sm:mb-6 md:mb-8 text-center;
+  }
+  
+  .section-subtitle {
+    @apply text-base sm:text-lg md:text-xl text-muted-foreground max-w-4xl mx-auto mb-8 sm:mb-12 md:mb-16 text-center leading-relaxed px-4;
+  }
+  
+  .gradient-text {
+    @apply bg-gradient-primary bg-clip-text text-transparent;
+  }
+  
+  .card-shadow {
+    @apply shadow-sm;
+    box-shadow: 0 4px 6px -1px hsl(var(--foreground) / 0.1), 0 2px 4px -1px hsl(var(--foreground) / 0.06);
+  }
+  
+  .card-shadow-lg {
+    @apply shadow-lg;
+    box-shadow: 0 20px 25px -5px hsl(var(--foreground) / 0.1), 0 10px 10px -5px hsl(var(--foreground) / 0.04);
+  }
+  
+  .card-shadow-xl {
+    @apply shadow-xl;
+    box-shadow: 0 25px 50px -12px hsl(var(--foreground) / 0.15);
+  }
+
+  /* Form field styling */
+  .form-field,
+  input,
+  textarea,
+  select {
+    @apply bg-background border border-input rounded-lg px-3 sm:px-4 py-2 sm:py-3 text-foreground placeholder:text-muted-foreground focus:border-primary focus:ring-2 focus:ring-primary/20 focus:outline-none text-sm sm:text-base;
+  }
+
+  input::placeholder,
+  textarea::placeholder {
+    @apply text-muted-foreground opacity-100;
+  }
+
+  /* Clean card styling */
+  .clean-card {
+    @apply bg-card border border-border rounded-xl shadow-sm hover:shadow-md transition-shadow duration-300;
+  }
+
+  /* Blog card styling */
+  .blog-card {
+    @apply bg-card border border-border rounded-xl shadow-sm hover:shadow-lg transition-all duration-300;
+  }
+
+  /* Button styling with gradient */
+  .btn-primary {
+    @apply bg-gradient-primary hover:opacity-90 text-primary-foreground font-medium px-4 sm:px-6 py-2 sm:py-3 rounded-lg transition-all duration-300 text-sm sm:text-base;
+  }
+
+  .btn-secondary {
+    @apply bg-background border border-primary text-primary hover:bg-muted font-medium px-4 sm:px-6 py-2 sm:py-3 rounded-lg transition-all duration-300 text-sm sm:text-base;
+  }
+
+  /* CTA buttons */
+  .watch-demo-btn,
+  .demo-button,
+  .cta-button {
+    @apply bg-gradient-primary text-primary-foreground border-none;
+  }
+
+  .watch-demo-btn:hover,
+  .demo-button:hover,
+  .cta-button:hover {
+    @apply opacity-90;
+  }
+
+  /* Section backgrounds */
+  .section-white {
+    @apply bg-background;
+  }
+
+  .section-gray {
+    @apply bg-muted;
+  }
+
+  /* Radio button enhancements */
+  .radio-option-selected {
+    @apply border-primary bg-primary/10 shadow-sm;
+  }
+
+  .radio-option-unselected {
+    @apply border-border bg-background hover:border-primary/30 hover:bg-primary/5;
+  }
+
+  /* Premium button styles */
+  .btn-premium {
+    @apply relative overflow-hidden bg-gradient-primary shadow-md;
+  }
+
+  .btn-premium:hover {
+    @apply shadow-lg -translate-y-0.5;
+  }
+
+  .btn-premium::before {
+    content: '';
+    @apply absolute inset-0 bg-background opacity-0 transition-opacity duration-300;
+  }
+
+  .btn-premium:hover::before {
+    @apply opacity-10;
+  }
+
+  /* Glass morphism effect */
+  .glass {
+    @apply bg-background/80 backdrop-blur-lg border border-white/20;
+  }
+
+  /* Form input styling */
+  input[type="text"],
+  input[type="email"],
+  input[type="tel"],
+  textarea,
+  select {
+    @apply text-foreground bg-background;
+  }
+
+  input[type="text"]::placeholder,
+  input[type="email"]::placeholder,
+  input[type="tel"]::placeholder,
+  textarea::placeholder {
+    @apply text-muted-foreground;
+  }
+}

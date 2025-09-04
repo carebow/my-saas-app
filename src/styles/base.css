@@ -1,0 +1,193 @@
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 222 84% 11%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 222 84% 11%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 222 84% 11%;
+
+    --primary: 254 77% 69%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 262 100% 76%;
+    --secondary-foreground: 0 0% 100%;
+
+    --muted: 210 40% 98%;
+    --muted-foreground: 215 16% 47%;
+
+    --accent: 240 95% 67%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 214 32% 91%;
+    --input: 214 32% 91%;
+    --ring: 254 77% 69%;
+
+    --radius: 1rem;
+  }
+
+  .dark {
+    --background: 222 84% 11%;
+    --foreground: 210 40% 98%;
+    --card: 222 47% 17%;
+    --card-foreground: 210 40% 98%;
+    --popover: 222 47% 17%;
+    --popover-foreground: 210 40% 98%;
+    --primary: 254 77% 69%;
+    --primary-foreground: 222 84% 11%;
+    --secondary: 262 100% 76%;
+    --secondary-foreground: 210 40% 98%;
+    --muted: 222 47% 17%;
+    --muted-foreground: 215 25% 65%;
+    --accent: 240 95% 67%;
+    --accent-foreground: 210 40% 98%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 222 47% 27%;
+    --input: 222 47% 27%;
+    --ring: 254 77% 69%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  html {
+    background-color: hsl(0, 0%, 100%);
+    /* Prevent unwanted scrolling during animations */
+    overflow-x: hidden;
+  }
+
+  body {
+    @apply bg-background text-foreground font-inter antialiased;
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+    font-size: 16px;
+    line-height: 1.6;
+    /* Stable layout foundation */
+    min-height: 100vh;
+    position: relative;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-poppins font-bold;
+    letter-spacing: -0.025em;
+    line-height: 1.2;
+  }
+
+  h1 {
+    @apply text-2xl sm:text-3xl md:text-4xl lg:text-6xl;
+  }
+
+  h2 {
+    @apply text-xl sm:text-2xl md:text-3xl lg:text-5xl;
+  }
+
+  h3 {
+    @apply text-lg sm:text-xl md:text-2xl lg:text-3xl;
+  }
+}
+
+/* Prevent layout shift and flashing - Enhanced */
+html, body, #root {
+  min-height: 100vh;
+  background-color: hsl(0, 0%, 100%);
+  /* Prevent flash of unstyled content */
+  visibility: visible;
+}
+
+/* Optimized transitions - Only for essential interactive elements */
+button:not([data-motion]), 
+a:not([data-motion]), 
+input:not([data-motion]), 
+textarea:not([data-motion]), 
+select:not([data-motion]), 
+[role="button"]:not([data-motion]) {
+  transition-property: color, background-color, border-color, opacity, box-shadow;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+}
+
+/* Framer Motion optimization - Critical fixes */
+[data-framer-motion-id] {
+  will-change: auto !important;
+  /* Prevent subpixel rendering issues */
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
+/* Reduce motion for accessibility and performance */
+@media (prefers-reduced-motion: reduce) {
+  [data-framer-motion-id] {
+    animation: none !important;
+    transition: none !important;
+  }
+  
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Focus styles - purple theme */
+*:focus-visible {
+  @apply outline-none ring-2 ring-purple-500 ring-offset-2;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-slate-100;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-slate-300 rounded-full;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-slate-400;
+}
+
+/* Text selection */
+::selection {
+  @apply bg-purple-200 text-purple-900;
+}
+
+/* Remove default focus styles and add custom ones */
+button:focus,
+a:focus {
+  outline: none;
+}
+
+/* Ensure proper backgrounds - Stable foundation */
+.min-h-screen,
+.section,
+body,
+html,
+#root {
+  @apply bg-background;
+}
+
+/* Performance optimization for animations */
+.animate-float,
+.animate-pulse-soft,
+.animate-gradient,
+.animate-shimmer {
+  /* Only apply will-change when actually animating */
+  animation-fill-mode: both;
+}

@@ -1,0 +1,25 @@
+# macOS
+.DS_Store
+
+# Editors
+.vscode/
+
+# Python
+venv/
+.venv/
+__pycache__/
+*.pyc
+
+# Node
+node_modules/
+dist/
+build/
+
+# Env/Secrets
+.env
+.env.*
+
+# Project-specific (your paths)
+backend/venv/
+backend/venv/**
+backend/venv/lib/python*/site-packages/botocore/data/logs/

@@ -1,0 +1,75 @@
+{
+    "family": "carebow-app",
+    "networkMode": "awsvpc",
+    "requiresCompatibilities": [
+        "FARGATE"
+    ],
+    "cpu": "512",
+    "memory": "1024",
+    "executionRoleArn": "arn:aws:iam::665168932487:role/carebow-ecs-task-execution-role",
+    "taskRoleArn": "arn:aws:iam::665168932487:role/carebow-ecs-task-role",
+    "containerDefinitions": [
+        {
+            "name": "carebow-backend",
+            "image": "665168932487.dkr.ecr.us-east-1.amazonaws.com/carebow-backend:latest",
+            "cpu": 0,
+            "portMappings": [
+                {
+                    "containerPort": 8000,
+                    "hostPort": 8000,
+                    "protocol": "tcp"
+                }
+            ],
+            "essential": true,
+            "environment": [
+                {
+                    "name": "ENVIRONMENT",
+                    "value": "staging"
+                }
+            ],
+            "mountPoints": [],
+            "volumesFrom": [],
+            "secrets": [
+                {
+                    "name": "DATABASE_URL",
+                    "valueFrom": "arn:aws:secretsmanager:us-east-1:665168932487:secret:carebow-db-password-QZ4DbQ:database_url::"
+                },
+                {
+                    "name": "REDIS_URL",
+                    "valueFrom": "arn:aws:secretsmanager:us-east-1:665168932487:secret:carebow-app-secrets-jKD6kK:redis_url::"
+                },
+                {
+                    "name": "SECRET_KEY",
+                    "valueFrom": "arn:aws:secretsmanager:us-east-1:665168932487:secret:carebow-app-secrets-jKD6kK:secret_key::"
+                },
+                {
+                    "name": "OPENAI_API_KEY",
+                    "valueFrom": "arn:aws:secretsmanager:us-east-1:665168932487:secret:carebow-app-secrets-jKD6kK:openai_api_key::"
+                },
+                {
+                    "name": "STRIPE_SECRET_KEY",
+                    "valueFrom": "arn:aws:secretsmanager:us-east-1:665168932487:secret:carebow-app-secrets-jKD6kK:stripe_secret_key::"
+                }
+            ],
+            "logConfiguration": {
+                "logDriver": "awslogs",
+                "options": {
+                    "awslogs-group": "/ecs/carebow",
+                    "awslogs-region": "us-east-1",
+                    "awslogs-stream-prefix": "ecs"
+                }
+            },
+            "healthCheck": {
+                "command": [
+                    "CMD-SHELL",
+                    "curl -f http://localhost:8000/health || exit 1"
+                ],
+                "interval": 30,
+                "timeout": 5,
+                "retries": 3,
+                "startPeriod": 60
+            },
+            "systemControls": []
+        }
+    ]
+}
