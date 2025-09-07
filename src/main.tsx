@@ -2,6 +2,7 @@ import React from 'react'
 import { createRoot } from 'react-dom/client'
 import App from './App.tsx'
 import { initSentry } from './lib/sentry'
+import './index.css'
 
 console.log('Starting React app...');
 
