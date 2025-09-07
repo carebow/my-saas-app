@@ -8,6 +8,7 @@
     "build": "node scripts/validate-env.js && node scripts/generate-sitemap.js && vite build && node scripts/inline-critical-css.js && node scripts/test-spa-routing.js",
     "build:dev": "node scripts/validate-env.js && vite build --mode development && node scripts/test-spa-routing.js",
     "build:prod": "node scripts/validate-env.js && vite build --mode production && node scripts/test-spa-routing.js",
+    "build:vercel": "node scripts/build-vercel.js",
     "build:analyze": "node scripts/validate-env.js && vite build && npx vite-bundle-analyzer dist/assets/*.js",
     "lint": "eslint .",
     "test": "vitest",
