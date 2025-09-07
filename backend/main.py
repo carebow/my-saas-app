@@ -16,6 +16,12 @@ from app.core.config import settings
 from app.core.sentry import init_sentry, capture_exception_with_context, set_user_context
 from app.api.api_v1.api import api_router
 from app.db.init_db import init_db
+from app.middleware.security import (
+    SecurityHeadersMiddleware,
+    RateLimitMiddleware,
+    AuditLogMiddleware,
+    InputValidationMiddleware
+)
 
 # Initialize Sentry before creating the FastAPI app
 init_sentry()
@@ -99,32 +105,33 @@ async def global_exception_handler(request: Request, exc: Exception):
             content={"detail": str(exc)}
         )
 
-# Sentry request tracking middleware
-@app.middleware("http")
-async def sentry_middleware(request: Request, call_next):
-    """Middleware to add request context to Sentry."""
-    import sentry_sdk
-    
-    with sentry_sdk.start_transaction(
-        op="http.server",
-        name=f"{request.method} {request.url.path}"
-    ):
-        # Add request context
-        sentry_sdk.set_context("request", {
-            "url": str(request.url),
-            "method": request.method,
-            "headers": dict(request.headers),
-            "query_params": dict(request.query_params),
-        })
+# Sentry request tracking middleware (only if Sentry is configured)
+if settings.SENTRY_DSN:
+    @app.middleware("http")
+    async def sentry_middleware(request: Request, call_next):
+        """Middleware to add request context to Sentry."""
+        import sentry_sdk
         
-        response = await call_next(request)
-        
-        # Add response context
-        sentry_sdk.set_context("response", {
-            "status_code": response.status_code,
-        })
-        
-        return response
+        with sentry_sdk.start_transaction(
+            op="http.server",
+            name=f"{request.method} {request.url.path}"
+        ):
+            # Add request context
+            sentry_sdk.set_context("request", {
+                "url": str(request.url),
+                "method": request.method,
+                "headers": dict(request.headers),
+                "query_params": dict(request.query_params),
+            })
+            
+            response = await call_next(request)
+            
+            # Add response context
+            sentry_sdk.set_context("response", {
+                "status_code": response.status_code,
+            })
+            
+            return response
 
 
 # Set all CORS enabled origins
@@ -136,6 +143,16 @@ ALLOWED_ORIGINS = [
     "https://dcqajf07bdpek.cloudfront.net"    # Staging CloudFront
 ]
 
+# Add security middleware
+app.add_middleware(SecurityHeadersMiddleware)
+app.add_middleware(AuditLogMiddleware)
+app.add_middleware(InputValidationMiddleware)
+app.add_middleware(
+    RateLimitMiddleware,
+    requests_per_minute=settings.RATE_LIMIT_PER_MINUTE,
+    requests_per_hour=settings.RATE_LIMIT_PER_HOUR
+)
+
 app.add_middleware(
     CORSMiddleware,
     allow_origins=ALLOWED_ORIGINS,
@@ -144,7 +161,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-app.add_middleware(TrustedHostMiddleware, allowed_hosts=settings.ALLOWED_HOSTS)
+app.add_middleware(TrustedHostMiddleware, allowed_hosts=settings.allowed_hosts_list)
 
 app.include_router(api_router, prefix=settings.API_V1_STR)
 
@@ -162,67 +179,7 @@ async def health_check():
 @app.get("/healthz")
 async def detailed_health_check():
     """
-    Comprehensive health check including database and Redis connectivity.
+    Comprehensive health check including all system components and HIPAA compliance.
     """
-    from app.db.session import SessionLocal
-    import redis
-    import os
-    
-    health_status = {
-        "status": "healthy",
-        "timestamp": "2025-09-03T17:00:00Z",
-        "services": {}
-    }
-    
-    # Check database connectivity
-    try:
-        db = SessionLocal()
-        db.execute("SELECT 1")
-        db.close()
-        health_status["services"]["database"] = {
-            "status": "healthy",
-            "message": "Database connection successful"
-        }
-    except Exception as e:
-        health_status["services"]["database"] = {
-            "status": "unhealthy",
-            "message": f"Database connection failed: {str(e)}"
-        }
-        health_status["status"] = "unhealthy"
-    
-    # Check Redis connectivity
-    try:
-        redis_url = os.getenv("REDIS_URL", "redis://localhost:6379")
-        r = redis.from_url(redis_url)
-        r.ping()
-        health_status["services"]["redis"] = {
-            "status": "healthy",
-            "message": "Redis connection successful"
-        }
-    except Exception as e:
-        health_status["services"]["redis"] = {
-            "status": "unhealthy", 
-            "message": f"Redis connection failed: {str(e)}"
-        }
-        health_status["status"] = "unhealthy"
-    
-    # Check environment variables
-    required_env_vars = ["DATABASE_URL", "REDIS_URL", "SECRET_KEY", "OPENAI_API_KEY", "STRIPE_SECRET_KEY"]
-    missing_vars = []
-    for var in required_env_vars:
-        if not os.getenv(var):
-            missing_vars.append(var)
-    
-    if missing_vars:
-        health_status["services"]["environment"] = {
-            "status": "unhealthy",
-            "message": f"Missing environment variables: {', '.join(missing_vars)}"
-        }
-        health_status["status"] = "unhealthy"
-    else:
-        health_status["services"]["environment"] = {
-            "status": "healthy",
-            "message": "All required environment variables present"
-        }
-    
-    return health_status
+    from app.core.monitoring import get_health_status
+    return await get_health_status()

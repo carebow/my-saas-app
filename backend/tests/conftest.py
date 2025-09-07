@@ -123,18 +123,15 @@ def premium_user(client, db_session):
     return user
 
 @pytest.fixture
-def mock_stripe(mocker):
-    """Mock Stripe API calls."""
-    from types import SimpleNamespace
+def mock_stripe():
+    """Mock Stripe API calls using unittest.mock."""
+    import stripe
+    from unittest.mock import patch, Mock
     
-    # Create mock objects with attributes instead of dictionaries
+    # Create mock objects with attributes
     mock_customer = Mock()
     mock_customer.id = "cus_test123"
     mock_customer.email = "test@example.com"
-    
-    mock_stripe_customer = mocker.patch("stripe.Customer")
-    mock_stripe_customer.create.return_value = mock_customer
-    mock_stripe_customer.retrieve.return_value = mock_customer
     
     # Create mock subscription with nested payment intent
     mock_payment_intent = Mock()
@@ -149,19 +146,23 @@ def mock_stripe(mocker):
     mock_subscription.current_period_end = 1234567890
     mock_subscription.latest_invoice = mock_invoice
     
-    mock_stripe_subscription = mocker.patch("stripe.Subscription")
-    mock_stripe_subscription.create.return_value = mock_subscription
-    
-    # Mock webhook construct_event
-    mock_webhook = mocker.patch("stripe.Webhook")
-    mock_webhook.construct_event = Mock()
-    
-    return {
-        "customer": mock_stripe_customer,
-        "subscription": mock_stripe_subscription,
-        "webhook": mock_webhook,
-        "Webhook": mock_webhook  # Support both casings
-    }
+    # Patch Stripe modules
+    with patch("stripe.Customer") as mock_stripe_customer, \
+         patch("stripe.Subscription") as mock_stripe_subscription, \
+         patch("stripe.Webhook") as mock_webhook:
+        
+        # Configure mocks
+        mock_stripe_customer.create.return_value = mock_customer
+        mock_stripe_customer.retrieve.return_value = mock_customer
+        mock_stripe_subscription.create.return_value = mock_subscription
+        mock_webhook.construct_event = Mock()
+        
+        yield {
+            "customer": mock_stripe_customer,
+            "subscription": mock_stripe_subscription,
+            "webhook": mock_webhook,
+            "Webhook": mock_webhook  # Support both casings
+        }
 
 # Debug hook to log response bodies when tests fail
 @pytest.hookimpl(hookwrapper=True)
