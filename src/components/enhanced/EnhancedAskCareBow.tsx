@@ -20,7 +20,8 @@ import {
   Download,
   Trash2,
   Plus,
-  MoreVertical
+  MoreVertical,
+  Brain
 } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -35,6 +36,8 @@ import { PersonalizedRemedyCard } from './PersonalizedRemedyCard';
 import { VoiceRecorder } from './VoiceRecorder';
 import { ChatHistory } from './ChatHistory';
 import { UserPreferences } from './UserPreferences';
+import { ChatGPTMemory } from './ChatGPTMemory';
+import { PrivacyControls } from './PrivacyControls';
 
 interface Message {
   id: string;
@@ -94,7 +97,10 @@ const EnhancedAskCareBow: React.FC = () => {
   const [isRecording, setIsRecording] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
   const [showHistory, setShowHistory] = useState(false);
+  const [showMemory, setShowMemory] = useState(false);
+  const [showPrivacy, setShowPrivacy] = useState(false);
   const [userPreferences, setUserPreferences] = useState<UserPreferences | null>(null);
+  const [selectedMemory, setSelectedMemory] = useState<any>(null);
   
   // Refs
   const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -172,12 +178,12 @@ const EnhancedAskCareBow: React.FC = () => {
       const welcomeMessage: Message = {
         id: 'welcome',
         role: 'assistant',
-        content: `Hello ${user?.full_name || 'there'}! I'm Ask CareBow, your AI health companion. I'm here to listen, understand, and provide personalized guidance for your health concerns.\n\nI remember our past conversations and will tailor my advice specifically to you. How are you feeling today?`,
+        content: `Hello ${user?.full_name || 'there'}! I'm Ask CareBow, your AI health companion. 🤗\n\nI'm here to listen, understand, and provide personalized guidance for your health concerns. I remember our past conversations and will tailor my advice specifically to you - just like ChatGPT, but focused on your health and wellbeing.\n\nI care about you and want to make sure you feel heard, supported, and comforted throughout our conversations. How are you feeling today? What's on your mind?`,
         timestamp: new Date().toISOString(),
         analysis: {
           sentiment: 'positive',
           urgency: 'low',
-          topics: ['greeting'],
+          topics: ['greeting', 'support'],
           needs_comfort: false
         }
       };
@@ -356,6 +362,24 @@ const EnhancedAskCareBow: React.FC = () => {
             </div>
             
             <div className="flex items-center gap-2">
+              <Dialog open={showMemory} onOpenChange={setShowMemory}>
+                <DialogTrigger asChild>
+                  <Button variant="outline" size="sm">
+                    <Brain className="w-4 h-4 mr-2" />
+                    Memory
+                  </Button>
+                </DialogTrigger>
+                <DialogContent className="max-w-2xl">
+                  <DialogHeader>
+                    <DialogTitle>ChatGPT Memory</DialogTitle>
+                  </DialogHeader>
+                  <ChatGPTMemory 
+                    userId={user?.id?.toString() || ''}
+                    onMemorySelect={setSelectedMemory}
+                  />
+                </DialogContent>
+              </Dialog>
+
               <Dialog open={showHistory} onOpenChange={setShowHistory}>
                 <DialogTrigger asChild>
                   <Button variant="outline" size="sm">
@@ -390,6 +414,21 @@ const EnhancedAskCareBow: React.FC = () => {
                     preferences={userPreferences}
                     onUpdate={setUserPreferences}
                   />
+                </DialogContent>
+              </Dialog>
+
+              <Dialog open={showPrivacy} onOpenChange={setShowPrivacy}>
+                <DialogTrigger asChild>
+                  <Button variant="outline" size="sm">
+                    <Shield className="w-4 h-4 mr-2" />
+                    Privacy
+                  </Button>
+                </DialogTrigger>
+                <DialogContent className="max-w-3xl max-h-[80vh] overflow-y-auto">
+                  <DialogHeader>
+                    <DialogTitle>Privacy & Data Controls</DialogTitle>
+                  </DialogHeader>
+                  <PrivacyControls userId={user?.id?.toString() || ''} />
                 </DialogContent>
               </Dialog>
               
@@ -428,10 +467,10 @@ const EnhancedAskCareBow: React.FC = () => {
                           <Heart className="w-8 h-8 text-carebow-primary" />
                         </div>
                         <h3 className="text-lg font-semibold text-carebow-text-dark mb-2">
-                          Welcome to Ask CareBow
+                          Welcome to Ask CareBow 🤗
                         </h3>
                         <p className="text-carebow-text-medium mb-6 max-w-md">
-                          I'm your AI health companion. I remember our past conversations and provide personalized guidance based on your health profile.
+                          I'm your AI health companion with ChatGPT-like memory and empathy. I remember our past conversations, understand your health journey, and provide personalized guidance that makes you feel heard and supported.
                         </p>
                         <Button onClick={createNewSession} className="bg-gradient-to-r from-carebow-primary to-carebow-secondary">
                           Start New Conversation
@@ -579,9 +618,18 @@ const EnhancedAskCareBow: React.FC = () => {
               </Card>
             </div>
             
-            {/* Sidebar - Remedies and Insights */}
+            {/* Sidebar - Remedies, Memory, and Insights */}
             <div className="lg:col-span-1">
               <div className="space-y-4">
+                {/* ChatGPT Memory */}
+                <ChatGPTMemory 
+                  userId={user?.id?.toString() || ''}
+                  onMemorySelect={(memory) => {
+                    // Use selected memory in conversation
+                    setCurrentMessage(`I remember you mentioned: ${memory.title} - ${memory.content}`);
+                  }}
+                />
+
                 {/* Personalized Remedies */}
                 {messages.some(m => m.remedies && m.remedies.length > 0) && (
                   <Card>
@@ -609,16 +657,44 @@ const EnhancedAskCareBow: React.FC = () => {
                     <CardTitle className="text-sm">Quick Actions</CardTitle>
                   </CardHeader>
                   <CardContent className="space-y-2">
-                    <Button variant="outline" size="sm" className="w-full justify-start">
+                    <Button 
+                      variant="outline" 
+                      size="sm" 
+                      className="w-full justify-start"
+                      onClick={() => setShowPrivacy(true)}
+                    >
                       <Download className="w-4 h-4 mr-2" />
                       Export Data
                     </Button>
-                    <Button variant="outline" size="sm" className="w-full justify-start">
+                    <Button 
+                      variant="outline" 
+                      size="sm" 
+                      className="w-full justify-start"
+                      onClick={() => setShowSettings(true)}
+                    >
                       <Settings className="w-4 h-4 mr-2" />
                       Preferences
                     </Button>
+                    <Button 
+                      variant="outline" 
+                      size="sm" 
+                      className="w-full justify-start"
+                      onClick={() => setShowMemory(true)}
+                    >
+                      <Brain className="w-4 h-4 mr-2" />
+                      View Memory
+                    </Button>
                     {currentSession && (
-                      <Button variant="outline" size="sm" className="w-full justify-start text-red-600">
+                      <Button 
+                        variant="outline" 
+                        size="sm" 
+                        className="w-full justify-start text-red-600"
+                        onClick={() => {
+                          if (confirm('Are you sure you want to delete this session?')) {
+                            // Delete session logic
+                          }
+                        }}
+                      >
                         <Trash2 className="w-4 h-4 mr-2" />
                         Delete Session
                       </Button>
@@ -635,3 +711,4 @@ const EnhancedAskCareBow: React.FC = () => {
 };
 
 export default EnhancedAskCareBow;
+

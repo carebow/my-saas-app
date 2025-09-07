@@ -24,9 +24,20 @@ class ChatSession(Base):
     conversation_summary = Column(Text)  # AI-generated summary of the conversation
     key_insights = Column(JSON)  # Important health insights extracted from conversation
     
+    # ChatGPT-like features
+    is_continuous = Column(Boolean, default=True)  # Continuous conversation mode
+    memory_enabled = Column(Boolean, default=True)  # Memory across sessions
+    empathy_level = Column(String(20), default="high")  # high, medium, low
+    comfort_mode = Column(Boolean, default=True)  # Comfort and reassurance mode
+    
     # Voice settings
     voice_enabled = Column(Boolean, default=False)
     voice_settings = Column(JSON)  # Voice preferences, speed, etc.
+    
+    # Privacy and data retention
+    data_retention_policy = Column(String(20), default="lifetime")  # lifetime, 1year, 6months, custom
+    export_requested = Column(Boolean, default=False)
+    deletion_requested = Column(Boolean, default=False)
     
     # Timestamps
     created_at = Column(DateTime(timezone=True), server_default=func.now())
@@ -62,12 +73,26 @@ class ChatMessage(Base):
     urgency_detected = Column(String(20))  # low, medium, high, emergency
     health_topics = Column(JSON)  # Extracted health topics from the message
     
+    # ChatGPT-like features
+    message_sequence = Column(Integer)  # Order within conversation
+    parent_message_id = Column(String)  # For threaded conversations
+    is_edited = Column(Boolean, default=False)  # Whether message was edited
+    edit_history = Column(JSON)  # Track edits
+    user_feedback = Column(JSON)  # Thumbs up/down, helpful rating
+    
     # Personalization data
     personalized_for = Column(JSON)  # User-specific context used for this response
     remedy_suggestions = Column(JSON)  # Personalized remedy suggestions
+    empathy_indicators = Column(JSON)  # Comfort phrases, reassurance level
+    
+    # Memory and context
+    context_used = Column(JSON)  # What memories/context were used
+    follow_up_required = Column(Boolean, default=False)  # Needs follow-up
+    follow_up_scheduled = Column(DateTime(timezone=True))  # When to follow up
     
     # Timestamps
     created_at = Column(DateTime(timezone=True), server_default=func.now())
+    updated_at = Column(DateTime(timezone=True), onupdate=func.now())
     
     # Relationships
     session = relationship("ChatSession", back_populates="messages")
@@ -190,9 +215,109 @@ class UserPreferences(Base):
     response_length = Column(String(20), default="detailed")  # brief, detailed, comprehensive
     follow_up_frequency = Column(String(20), default="moderate")  # low, moderate, high
     
+    # ChatGPT-like preferences
+    memory_enabled = Column(Boolean, default=True)  # Enable memory across sessions
+    continuous_mode = Column(Boolean, default=True)  # Continuous conversation mode
+    comfort_mode = Column(Boolean, default=True)  # Comfort and reassurance mode
+    empathy_level = Column(String(20), default="high")  # high, medium, low
+    
+    # Data and privacy preferences
+    data_retention = Column(String(20), default="lifetime")  # lifetime, 1year, 6months, custom
+    export_frequency = Column(String(20), default="on_demand")  # on_demand, monthly, quarterly
+    auto_follow_up = Column(Boolean, default=True)  # Automatic follow-up reminders
+    
     # Timestamps
     created_at = Column(DateTime(timezone=True), server_default=func.now())
     updated_at = Column(DateTime(timezone=True), onupdate=func.now())
     
     # Relationships
     user = relationship("User")
+
+
+class DataExport(Base):
+    """Track data export requests for GDPR compliance."""
+    __tablename__ = "data_exports"
+
+    id = Column(String, primary_key=True, index=True)
+    user_id = Column(Integer, ForeignKey("users.id"), nullable=False)
+    
+    # Export details
+    export_type = Column(String(50), default="full")  # full, conversations_only, health_data_only
+    status = Column(String(20), default="pending")  # pending, processing, completed, failed
+    file_path = Column(String(500))  # S3 path to export file
+    file_size = Column(Integer)  # Size in bytes
+    
+    # Request details
+    requested_at = Column(DateTime(timezone=True), server_default=func.now())
+    completed_at = Column(DateTime(timezone=True))
+    expires_at = Column(DateTime(timezone=True))  # When download link expires
+    
+    # Security
+    download_token = Column(String(255))  # Secure token for download
+    download_count = Column(Integer, default=0)  # How many times downloaded
+    max_downloads = Column(Integer, default=3)  # Max download attempts
+    
+    # Relationships
+    user = relationship("User")
+
+
+class DataDeletion(Base):
+    """Track data deletion requests for GDPR compliance."""
+    __tablename__ = "data_deletions"
+
+    id = Column(String, primary_key=True, index=True)
+    user_id = Column(Integer, ForeignKey("users.id"), nullable=False)
+    
+    # Deletion details
+    deletion_type = Column(String(50), default="full_account")  # full_account, conversations_only, specific_data
+    status = Column(String(20), default="pending")  # pending, processing, completed, failed
+    reason = Column(Text)  # Why user requested deletion
+    
+    # Request details
+    requested_at = Column(DateTime(timezone=True), server_default=func.now())
+    scheduled_at = Column(DateTime(timezone=True))  # When deletion will occur
+    completed_at = Column(DateTime(timezone=True))
+    
+    # Grace period
+    grace_period_days = Column(Integer, default=7)  # Days before actual deletion
+    grace_period_ends = Column(DateTime(timezone=True))
+    can_cancel = Column(Boolean, default=True)  # Can user cancel before grace period ends
+    
+    # Relationships
+    user = relationship("User")
+
+
+class ConversationMemory(Base):
+    """Enhanced memory system for ChatGPT-like conversations."""
+    __tablename__ = "conversation_memory"
+
+    id = Column(String, primary_key=True, index=True)
+    user_id = Column(Integer, ForeignKey("users.id"), nullable=False)
+    
+    # Memory content (encrypted for HIPAA compliance)
+    memory_type = Column(String(50))  # user_preference, health_pattern, remedy_effectiveness, concern, comfort_phrase
+    title = Column(EncryptedString(255))
+    content = Column(EncryptedString(2000))
+    
+    # Context and importance
+    importance_score = Column(Float)  # 0-1, how important this memory is
+    confidence_score = Column(Float)  # 0-1, AI confidence in this memory
+    context = Column(JSON)  # When/why this memory was created
+    tags = Column(JSON)  # Categorized tags for retrieval
+    
+    # Usage tracking
+    last_accessed = Column(DateTime(timezone=True))
+    access_count = Column(Integer, default=0)
+    effectiveness_score = Column(Float)  # How effective this memory has been
+    
+    # AI processing
+    embedding_vector = Column(JSON)  # Vector embedding for semantic search
+    related_memories = Column(JSON)  # IDs of related memories
+    
+    # Timestamps
+    created_at = Column(DateTime(timezone=True), server_default=func.now())
+    updated_at = Column(DateTime(timezone=True), onupdate=func.now())
+    
+    # Relationships
+    user = relationship("User")
+

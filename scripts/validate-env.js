@@ -32,6 +32,9 @@ const requiredEnvVars = [
   'VITE_SUPABASE_PUBLISHABLE_KEY'
 ];
 
+// Check if we're running on Vercel
+const isVercel = process.env.VERCEL === '1';
+
 const optionalEnvVars = [
   'VITE_SENTRY_DSN',
   'VITE_ENVIRONMENT',
@@ -43,6 +46,23 @@ const optionalEnvVars = [
 console.log('🔍 Validating environment variables...');
 
 let hasErrors = false;
+
+// Set default values for Vercel if not provided
+if (isVercel) {
+  console.log('🚀 Running on Vercel - setting default values...');
+  if (!process.env.VITE_API_BASE) {
+    process.env.VITE_API_BASE = 'https://api.carebow.com';
+    console.log('✅ Set VITE_API_BASE: https://api.carebow.com');
+  }
+  if (!process.env.VITE_SUPABASE_URL) {
+    process.env.VITE_SUPABASE_URL = 'https://your-project.supabase.co';
+    console.log('✅ Set VITE_SUPABASE_URL: https://your-project.supabase.co');
+  }
+  if (!process.env.VITE_SUPABASE_PUBLISHABLE_KEY) {
+    process.env.VITE_SUPABASE_PUBLISHABLE_KEY = 'your-publishable-key';
+    console.log('✅ Set VITE_SUPABASE_PUBLISHABLE_KEY: your-publishable-key');
+  }
+}
 
 // Check required variables
 requiredEnvVars.forEach(varName => {

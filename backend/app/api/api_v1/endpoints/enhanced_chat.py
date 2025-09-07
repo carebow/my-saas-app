@@ -476,19 +476,237 @@ def export_user_data(
     *,
     db: Session = Depends(deps.get_db),
     current_user: User = Depends(deps.get_current_user),
-    background_tasks: BackgroundTasks
+    background_tasks: BackgroundTasks,
+    export_type: str = "full"
 ) -> Any:
     """Export all user data (GDPR compliance)."""
+    from app.models.enhanced_chat import DataExport
+    import uuid
+    from datetime import datetime, timedelta
     
-    # This would typically be handled by a background task
-    # For now, return a placeholder response
-    background_tasks.add_task(export_user_data_task, current_user.id)
+    # Create export request record
+    export_id = str(uuid.uuid4())
+    export_request = DataExport(
+        id=export_id,
+        user_id=current_user.id,
+        export_type=export_type,
+        status="pending",
+        expires_at=datetime.utcnow() + timedelta(days=7)
+    )
     
-    return {"message": "Data export initiated. You will receive an email when ready."}
+    db.add(export_request)
+    db.commit()
+    
+    # Start background task
+    background_tasks.add_task(export_user_data_task, current_user.id, export_id, export_type)
+    
+    return {
+        "message": "Data export initiated. You will receive an email when ready.",
+        "export_id": export_id,
+        "estimated_completion": "24-48 hours"
+    }
 
 
-def export_user_data_task(user_id: int):
+@router.get("/export-data/{export_id}/status")
+def get_export_status(
+    *,
+    db: Session = Depends(deps.get_db),
+    current_user: User = Depends(deps.get_current_user),
+    export_id: str
+) -> Any:
+    """Get export status and download link."""
+    from app.models.enhanced_chat import DataExport
+    
+    export = db.query(DataExport).filter(
+        DataExport.id == export_id,
+        DataExport.user_id == current_user.id
+    ).first()
+    
+    if not export:
+        raise HTTPException(status_code=404, detail="Export not found")
+    
+    return {
+        "export_id": export.id,
+        "status": export.status,
+        "export_type": export.export_type,
+        "requested_at": export.requested_at.isoformat(),
+        "completed_at": export.completed_at.isoformat() if export.completed_at else None,
+        "expires_at": export.expires_at.isoformat() if export.expires_at else None,
+        "download_count": export.download_count,
+        "max_downloads": export.max_downloads,
+        "file_size": export.file_size,
+        "download_available": export.status == "completed" and export.download_count < export.max_downloads
+    }
+
+
+@router.get("/export-data/{export_id}/download")
+def download_export(
+    *,
+    db: Session = Depends(deps.get_db),
+    current_user: User = Depends(deps.get_current_user),
+    export_id: str,
+    token: str
+) -> Any:
+    """Download exported data."""
+    from app.models.enhanced_chat import DataExport
+    
+    export = db.query(DataExport).filter(
+        DataExport.id == export_id,
+        DataExport.user_id == current_user.id,
+        DataExport.download_token == token
+    ).first()
+    
+    if not export:
+        raise HTTPException(status_code=404, detail="Export not found or invalid token")
+    
+    if export.status != "completed":
+        raise HTTPException(status_code=400, detail="Export not ready yet")
+    
+    if export.download_count >= export.max_downloads:
+        raise HTTPException(status_code=400, detail="Download limit exceeded")
+    
+    if export.expires_at and datetime.utcnow() > export.expires_at:
+        raise HTTPException(status_code=400, detail="Download link expired")
+    
+    # Update download count
+    export.download_count += 1
+    db.commit()
+    
+    # In production, return presigned S3 URL
+    return {
+        "download_url": f"/api/v1/enhanced-chat/export-data/{export_id}/file",
+        "expires_in": "1 hour",
+        "downloads_remaining": export.max_downloads - export.download_count
+    }
+
+
+@router.post("/delete-account")
+def request_account_deletion(
+    *,
+    db: Session = Depends(deps.get_db),
+    current_user: User = Depends(deps.get_current_user),
+    reason: Optional[str] = None,
+    deletion_type: str = "full_account"
+) -> Any:
+    """Request account deletion (GDPR compliance)."""
+    from app.models.enhanced_chat import DataDeletion
+    import uuid
+    from datetime import datetime, timedelta
+    
+    # Check if deletion already requested
+    existing = db.query(DataDeletion).filter(
+        DataDeletion.user_id == current_user.id,
+        DataDeletion.status.in_(["pending", "processing"])
+    ).first()
+    
+    if existing:
+        raise HTTPException(status_code=400, detail="Deletion already requested")
+    
+    # Create deletion request
+    deletion_id = str(uuid.uuid4())
+    grace_period_days = 7
+    grace_period_ends = datetime.utcnow() + timedelta(days=grace_period_days)
+    
+    deletion_request = DataDeletion(
+        id=deletion_id,
+        user_id=current_user.id,
+        deletion_type=deletion_type,
+        reason=reason,
+        status="pending",
+        scheduled_at=grace_period_ends,
+        grace_period_days=grace_period_days,
+        grace_period_ends=grace_period_ends,
+        can_cancel=True
+    )
+    
+    db.add(deletion_request)
+    db.commit()
+    
+    return {
+        "message": "Account deletion requested. You have 7 days to cancel.",
+        "deletion_id": deletion_id,
+        "scheduled_at": grace_period_ends.isoformat(),
+        "can_cancel": True,
+        "grace_period_ends": grace_period_ends.isoformat()
+    }
+
+
+@router.post("/delete-account/{deletion_id}/cancel")
+def cancel_account_deletion(
+    *,
+    db: Session = Depends(deps.get_db),
+    current_user: User = Depends(deps.get_current_user),
+    deletion_id: str
+) -> Any:
+    """Cancel account deletion request."""
+    from app.models.enhanced_chat import DataDeletion
+    
+    deletion = db.query(DataDeletion).filter(
+        DataDeletion.id == deletion_id,
+        DataDeletion.user_id == current_user.id,
+        DataDeletion.status == "pending"
+    ).first()
+    
+    if not deletion:
+        raise HTTPException(status_code=404, detail="Deletion request not found or cannot be cancelled")
+    
+    if not deletion.can_cancel:
+        raise HTTPException(status_code=400, detail="Deletion cannot be cancelled")
+    
+    deletion.status = "cancelled"
+    db.commit()
+    
+    return {"message": "Account deletion cancelled successfully"}
+
+
+@router.get("/memories/search")
+def search_memories(
+    *,
+    db: Session = Depends(deps.get_db),
+    current_user: User = Depends(deps.get_current_user),
+    query: str,
+    limit: int = 10
+) -> Any:
+    """Search conversation memories."""
+    memories = ai_service.search_memories(db, current_user.id, query, limit)
+    
+    return {
+        "query": query,
+        "memories": memories,
+        "total_found": len(memories)
+    }
+
+
+@router.get("/memories")
+def get_all_memories(
+    *,
+    db: Session = Depends(deps.get_db),
+    current_user: User = Depends(deps.get_current_user),
+    memory_type: Optional[str] = None,
+    limit: int = 20
+) -> Any:
+    """Get all conversation memories."""
+    memories = ai_service.get_conversation_memory(db, current_user.id)
+    
+    if memory_type:
+        memories = [m for m in memories if m["type"] == memory_type]
+    
+    return {
+        "memories": memories[:limit],
+        "total": len(memories)
+    }
+
+
+def export_user_data_task(user_id: int, export_id: str, export_type: str):
     """Background task to export user data."""
     # Implementation would create a comprehensive data export
     # including all conversations, memories, preferences, etc.
+    # This would typically:
+    # 1. Query all user data from database
+    # 2. Encrypt sensitive data
+    # 3. Create JSON/CSV/PDF files
+    # 4. Upload to S3
+    # 5. Generate presigned download URL
+    # 6. Send email notification
     pass
+

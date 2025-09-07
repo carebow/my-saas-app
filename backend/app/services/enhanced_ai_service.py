@@ -44,6 +44,9 @@ class EnhancedAIService:
         # Get relevant health memories
         health_memories = await self._get_relevant_memories(db, user.id, message_content)
         
+        # Get conversation memories for ChatGPT-like continuity
+        conversation_memories = await self.get_conversation_memory(db, user.id, message_content)
+        
         # Analyze the message
         message_analysis = await self._analyze_message(message_content, user_context, health_memories)
         
@@ -53,10 +56,10 @@ class EnhancedAIService:
             audio_uri, image_uris, message_analysis
         )
         
-        # Generate AI response with personalization
+        # Generate AI response with personalization and memory
         ai_response = await self._generate_personalized_response(
             message_content, user_context, user_preferences, 
-            conversation_history, health_memories, message_analysis
+            conversation_history, health_memories, conversation_memories, message_analysis
         )
         
         # Create AI message record
@@ -75,6 +78,9 @@ class EnhancedAIService:
         
         # Update health memories
         await self._update_health_memories(db, user.id, message_content, ai_response, user_context)
+        
+        # Create conversation memories for ChatGPT-like continuity
+        await self._create_conversation_memories(db, user.id, message_content, ai_response, user_context)
         
         # Update session
         await self._update_session(db, session_id, ai_response)
@@ -229,6 +235,7 @@ class EnhancedAIService:
         preferences: Dict, 
         history: List[Dict],
         memories: List[Dict],
+        conversation_memories: List[Dict],
         analysis: Dict
     ) -> Dict[str, Any]:
         """Generate a personalized, empathetic AI response."""
@@ -239,8 +246,13 @@ class EnhancedAIService:
                 "analysis": analysis
             }
         
-        # Build comprehensive system prompt
+        # Build comprehensive system prompt with conversation memories
         system_prompt = self._build_system_prompt(user_context, preferences, memories)
+        
+        # Add conversation memory context for ChatGPT-like continuity
+        memory_context = await self.generate_continuation_prompt(user_context, conversation_memories)
+        if memory_context:
+            system_prompt += f"\n\n{memory_context}"
         
         # Build conversation context
         conversation_messages = [{"role": "system", "content": system_prompt}]
@@ -290,12 +302,14 @@ class EnhancedAIService:
         
         personality = preferences.get("ai_personality", "caring_nurse")
         communication_style = preferences.get("communication_style", "empathetic")
+        empathy_level = preferences.get("empathy_level", "high")
+        comfort_mode = preferences.get("comfort_mode", True)
         
         personality_prompts = {
-            "caring_nurse": "You are a warm, nurturing AI health companion who speaks like a caring nurse. You're empathetic, patient, and always prioritize the user's comfort and wellbeing.",
-            "wise_healer": "You are a wise, experienced healer who combines ancient wisdom with modern knowledge. You speak with gentle authority and focus on holistic healing.",
-            "professional_doctor": "You are a professional, knowledgeable medical AI assistant. You provide clear, evidence-based information while maintaining a caring, professional demeanor.",
-            "ayurvedic_practitioner": "You are an Ayurvedic practitioner with deep knowledge of traditional Indian medicine. You focus on holistic healing, natural remedies, and balancing the body's energies."
+            "caring_nurse": "You are a warm, nurturing AI health companion who speaks like a caring nurse. You're empathetic, patient, and always prioritize the user's comfort and wellbeing. You remember past conversations and build a trusting relationship over time.",
+            "wise_healer": "You are a wise, experienced healer who combines ancient wisdom with modern knowledge. You speak with gentle authority and focus on holistic healing. You have deep understanding of the user's health journey and provide guidance that grows with them.",
+            "professional_doctor": "You are a professional, knowledgeable medical AI assistant. You provide clear, evidence-based information while maintaining a caring, professional demeanor. You build rapport through consistent, reliable guidance and remember the user's health patterns.",
+            "ayurvedic_practitioner": "You are an Ayurvedic practitioner with deep knowledge of traditional Indian medicine. You focus on holistic healing, natural remedies, and balancing the body's energies. You understand the user's dosha and provide personalized guidance that evolves with their health journey."
         }
         
         base_personality = personality_prompts.get(personality, personality_prompts["caring_nurse"])
@@ -310,26 +324,49 @@ class EnhancedAIService:
             context_parts.append(f"Medical conditions: {', '.join(user_context['health_profile']['medical_conditions'])}")
         if user_context.get("health_profile", {}).get("allergies"):
             context_parts.append(f"Allergies: {', '.join(user_context['health_profile']['allergies'])}")
+        if user_context.get("health_profile", {}).get("medications"):
+            context_parts.append(f"Current medications: {', '.join(user_context['health_profile']['medications'])}")
         
         context_string = "\n".join(context_parts) if context_parts else "No specific health information available"
         
         # Build memory context
         memory_context = ""
         if memories:
-            memory_strings = [f"- {mem['title']}: {mem['content']}" for mem in memories[:3]]
-            memory_context = f"\nRelevant health history:\n" + "\n".join(memory_strings)
+            memory_strings = [f"- {mem['title']}: {mem['content']}" for mem in memories[:5]]
+            memory_context = f"\nRelevant health history and patterns:\n" + "\n".join(memory_strings)
+        
+        # Empathy level instructions
+        empathy_instructions = {
+            "high": "Use warm, comforting language. Acknowledge emotions first. Use phrases like 'I understand how you feel' and 'You're not alone in this'. Be very supportive and reassuring.",
+            "medium": "Be caring but balanced. Acknowledge their concerns while providing practical guidance. Use phrases like 'I can see this is concerning' and 'Let's work through this together'.",
+            "low": "Be professional and supportive. Focus on clear guidance while maintaining a caring tone. Use phrases like 'I understand your concern' and 'Here's what we can do'."
+        }
+        
+        empathy_guidance = empathy_instructions.get(empathy_level, empathy_instructions["high"])
+        
+        # Comfort mode instructions
+        comfort_guidance = ""
+        if comfort_mode:
+            comfort_guidance = """
+Comfort Mode Guidelines:
+- Always start with emotional acknowledgment: "I can hear the concern in your voice" or "I understand this must be worrying"
+- Use reassuring phrases: "You're doing the right thing by reaching out", "I'm here to help you through this"
+- End with encouragement: "You're taking great care of yourself", "I believe in your ability to heal"
+- If they seem anxious, add extra reassurance: "It's completely normal to feel this way", "You're not overreacting"
+"""
         
         system_prompt = f"""{base_personality}
 
-Your mission is to provide compassionate, personalized health guidance that makes users feel heard, understood, and comforted.
+Your mission is to provide compassionate, personalized health guidance that makes users feel heard, understood, and comforted. You are like ChatGPT but specialized for health - you remember everything, build relationships, and provide continuous support.
 
 Key Guidelines:
 1. **Always lead with empathy** - Acknowledge their feelings before providing information
-2. **Be personalized** - Use their health context to tailor your advice
-3. **Provide comfort** - Make them feel safe and supported
-4. **Be conversational** - Like ChatGPT, maintain natural flow and memory
+2. **Be personalized** - Use their health context to tailor your advice specifically to them
+3. **Provide comfort** - Make them feel safe, supported, and understood
+4. **Be conversational** - Like ChatGPT, maintain natural flow and remember past conversations
 5. **Offer hope** - Always include encouraging, supportive language
 6. **Safety first** - Escalate urgent concerns appropriately
+7. **Build relationship** - Reference past conversations, remember their preferences, show you care about them as a person
 
 User Context:
 {context_string}
@@ -337,16 +374,34 @@ User Context:
 
 Communication Style: {communication_style}
 Response Length: {preferences.get('response_length', 'detailed')}
+Empathy Level: {empathy_level}
+{empathy_guidance}
+{comfort_guidance}
+
+ChatGPT-like Features:
+- Remember past conversations and reference them naturally
+- Build on previous discussions: "I remember you mentioned..." or "Building on what we discussed last time..."
+- Show continuity: "How has that been working for you?" or "I've been thinking about your situation"
+- Be conversational and natural, not robotic
+- Ask follow-up questions that show you're listening
+- Adapt your responses based on what works for them
+
+Personalization Rules:
+- Always consider their age, gender, medical history, and allergies
+- Reference their cultural preferences and remedy preferences
+- Use their name when appropriate (from context)
+- Tailor language complexity to their communication style
+- Suggest remedies that fit their lifestyle and preferences
 
 Remember:
 - You're not just analyzing symptoms - you're providing comfort to someone who may be scared about their health
-- Use their name when appropriate (from context)
-- Reference past conversations when relevant
-- Always balance medical accuracy with emotional support
+- You're building a long-term relationship, not just answering questions
+- Every interaction should feel like talking to someone who knows and cares about them
+- Balance medical accuracy with emotional support
 - Suggest personalized remedies based on their profile and preferences
-- End responses with warmth and encouragement
+- Always end responses with warmth and encouragement
 
-Respond naturally, as if you're a caring health companion who knows them well."""
+Respond naturally, as if you're a caring health companion who knows them well and has been supporting them for a long time."""
 
         return system_prompt
     
@@ -357,41 +412,79 @@ Respond naturally, as if you're a caring health companion who knows them well.""
         preferences: Dict,
         analysis: Dict
     ) -> List[Dict[str, Any]]:
-        """Generate personalized remedy suggestions."""
+        """Generate personalized remedy suggestions with empathy and comfort."""
         
         if not self.client:
             return []
         
         remedy_preferences = preferences.get("remedy_preferences", {})
         cultural_considerations = preferences.get("cultural_considerations", {})
+        empathy_level = preferences.get("empathy_level", "high")
+        
+        # Build personalized context for remedies
+        personalization_context = []
+        if user_context.get("age"):
+            personalization_context.append(f"Age: {user_context['age']} years old")
+        if user_context.get("gender"):
+            personalization_context.append(f"Gender: {user_context['gender']}")
+        if user_context.get("health_profile", {}).get("medical_conditions"):
+            personalization_context.append(f"Medical conditions: {', '.join(user_context['health_profile']['medical_conditions'])}")
+        if user_context.get("health_profile", {}).get("allergies"):
+            personalization_context.append(f"Allergies: {', '.join(user_context['health_profile']['allergies'])}")
+        if user_context.get("health_profile", {}).get("medications"):
+            personalization_context.append(f"Current medications: {', '.join(user_context['health_profile']['medications'])}")
+        
+        context_string = "; ".join(personalization_context) if personalization_context else "No specific health information"
+        
+        # Empathy-based remedy presentation
+        empathy_style = {
+            "high": "Present remedies with warmth and reassurance. Use comforting language and emphasize safety and support.",
+            "medium": "Present remedies in a caring but practical way. Balance comfort with clear instructions.",
+            "low": "Present remedies professionally with clear, supportive guidance."
+        }
         
         remedy_prompt = f"""
-        Based on this health concern, suggest 2-3 personalized remedies:
+        Based on this health concern, suggest 2-3 personalized remedies that are tailored specifically to this person and presented with empathy and comfort.
         
-        Message: "{message}"
-        User context: {json.dumps(user_context, default=str)}
-        Preferences: {json.dumps(preferences, default=str)}
-        Analysis: {json.dumps(analysis, default=str)}
+        Health Concern: "{message}"
+        User Context: {context_string}
+        Cultural Preferences: {json.dumps(cultural_considerations, default=str)}
+        Remedy Preferences: {json.dumps(remedy_preferences, default=str)}
+        Emotional State: {analysis.get('sentiment', 'neutral')}
+        Urgency Level: {analysis.get('urgency', 'low')}
+        Empathy Style: {empathy_style.get(empathy_level, empathy_style['high'])}
         
-        Consider:
-        - User's age, gender, medical history, allergies
-        - Cultural preferences and beliefs
-        - Remedy preferences (modern vs traditional)
-        - Safety and contraindications
+        Requirements:
+        1. **Personalize everything** - Consider their age, gender, medical history, allergies, and current medications
+        2. **Safety first** - Check for contraindications with their medical conditions and medications
+        3. **Cultural sensitivity** - Respect their cultural preferences and beliefs
+        4. **Comfort and empathy** - Present remedies in a way that makes them feel supported and cared for
+        5. **Practical and achievable** - Make sure remedies fit their lifestyle and capabilities
+        
+        For each remedy, consider:
+        - Is it safe for their age and medical conditions?
+        - Does it conflict with their current medications?
+        - Does it respect their cultural preferences?
+        - Is it something they can realistically do?
+        - Will it make them feel better emotionally as well as physically?
         
         Respond in JSON format:
         {{
             "remedies": [
                 {{
-                    "type": "modern_medicine|ayurvedic|home_remedy|lifestyle",
-                    "title": "Remedy title",
-                    "description": "What this remedy does",
-                    "instructions": "Step-by-step instructions",
+                    "type": "modern_medicine|ayurvedic|home_remedy|lifestyle|comfort_measure",
+                    "title": "Warm, reassuring remedy title",
+                    "description": "Comforting description of what this remedy does and why it's good for them specifically",
+                    "instructions": "Step-by-step instructions with encouraging language",
                     "safety_level": "safe|caution|requires_consultation",
-                    "personalization_factors": ["age", "allergies", "medical_history"],
-                    "confidence_score": 0.85
+                    "personalization_factors": ["age", "allergies", "medical_history", "cultural_preferences"],
+                    "confidence_score": 0.85,
+                    "comfort_level": "high|medium|low",
+                    "empathy_phrases": ["I understand this is concerning", "You're doing great by taking care of yourself"],
+                    "safety_notes": "Any specific safety considerations for this person"
                 }}
-            ]
+            ],
+            "comfort_message": "A warm, reassuring message to accompany the remedies"
         }}
         """
         
@@ -399,12 +492,19 @@ Respond naturally, as if you're a caring health companion who knows them well.""
             response = self.client.chat.completions.create(
                 model="gpt-4o",
                 messages=[{"role": "user", "content": remedy_prompt}],
-                temperature=0.5,
-                max_tokens=1000
+                temperature=0.6,
+                max_tokens=1200
             )
             
             result = json.loads(response.choices[0].message.content)
-            return result.get("remedies", [])
+            remedies = result.get("remedies", [])
+            
+            # Add comfort message to each remedy
+            comfort_message = result.get("comfort_message", "")
+            for remedy in remedies:
+                remedy["comfort_message"] = comfort_message
+            
+            return remedies
             
         except Exception as e:
             print(f"Error generating remedies: {e}")
@@ -562,3 +662,217 @@ Respond naturally, as if you're a caring health companion who knows them well.""
             "importance": memory.importance_score,
             "tags": memory.tags or []
         }
+    
+    async def get_conversation_memory(self, db: Session, user_id: int, query: str = None) -> List[Dict]:
+        """Get relevant conversation memories for ChatGPT-like continuity."""
+        from app.models.enhanced_chat import ConversationMemory
+        
+        # Get recent memories
+        memories = db.query(ConversationMemory).filter(
+            ConversationMemory.user_id == user_id
+        ).order_by(ConversationMemory.importance_score.desc()).limit(10).all()
+        
+        result = []
+        for memory in memories:
+            result.append({
+                "id": memory.id,
+                "type": memory.memory_type,
+                "title": self.encryption.decrypt(memory.title) if memory.title else "",
+                "content": self.encryption.decrypt(memory.content) if memory.content else "",
+                "importance": memory.importance_score,
+                "confidence": memory.confidence_score,
+                "tags": memory.tags or [],
+                "last_accessed": memory.last_accessed.isoformat() if memory.last_accessed else None,
+                "access_count": memory.access_count,
+                "effectiveness": memory.effectiveness_score
+            })
+        
+        return result
+    
+    async def create_conversation_memory(
+        self, 
+        db: Session, 
+        user_id: int, 
+        memory_type: str, 
+        title: str, 
+        content: str,
+        importance_score: float = 0.5,
+        tags: List[str] = None,
+        context: Dict = None
+    ) -> str:
+        """Create a new conversation memory."""
+        from app.models.enhanced_chat import ConversationMemory
+        
+        memory = ConversationMemory(
+            id=str(uuid.uuid4()),
+            user_id=user_id,
+            memory_type=memory_type,
+            title=self.encryption.encrypt(title),
+            content=self.encryption.encrypt(content),
+            importance_score=importance_score,
+            confidence_score=0.8,  # Default confidence
+            context=context or {},
+            tags=tags or [],
+            effectiveness_score=0.5  # Will be updated based on usage
+        )
+        
+        db.add(memory)
+        db.commit()
+        db.refresh(memory)
+        
+        return memory.id
+    
+    async def update_memory_usage(self, db: Session, memory_id: str):
+        """Update memory usage statistics."""
+        from app.models.enhanced_chat import ConversationMemory
+        
+        memory = db.query(ConversationMemory).filter(
+            ConversationMemory.id == memory_id
+        ).first()
+        
+        if memory:
+            memory.access_count += 1
+            memory.last_accessed = datetime.utcnow()
+            db.commit()
+    
+    async def search_memories(self, db: Session, user_id: int, query: str, limit: int = 5) -> List[Dict]:
+        """Search memories by content (simplified version - in production use vector search)."""
+        from app.models.enhanced_chat import ConversationMemory
+        
+        # Simple text search - in production, use vector similarity
+        memories = db.query(ConversationMemory).filter(
+            ConversationMemory.user_id == user_id
+        ).all()
+        
+        # Filter by query (simplified)
+        relevant_memories = []
+        query_lower = query.lower()
+        
+        for memory in memories:
+            title = self.encryption.decrypt(memory.title) if memory.title else ""
+            content = self.encryption.decrypt(memory.content) if memory.content else ""
+            
+            if query_lower in title.lower() or query_lower in content.lower():
+                relevant_memories.append({
+                    "id": memory.id,
+                    "type": memory.memory_type,
+                    "title": title,
+                    "content": content,
+                    "importance": memory.importance_score,
+                    "confidence": memory.confidence_score,
+                    "tags": memory.tags or []
+                })
+        
+        # Sort by importance and return top results
+        relevant_memories.sort(key=lambda x: x["importance"], reverse=True)
+        return relevant_memories[:limit]
+    
+    async def generate_continuation_prompt(self, user_context: Dict, recent_memories: List[Dict]) -> str:
+        """Generate a prompt that helps continue conversations naturally like ChatGPT."""
+        
+        if not recent_memories:
+            return ""
+        
+        # Build memory context for continuation
+        memory_contexts = []
+        for memory in recent_memories[:3]:  # Top 3 most relevant memories
+            memory_contexts.append(f"- {memory['title']}: {memory['content']}")
+        
+        if memory_contexts:
+            return f"""
+Recent conversation context and memories:
+{chr(10).join(memory_contexts)}
+
+Use this context to:
+1. Reference past conversations naturally: "I remember you mentioned..." or "Building on our last discussion..."
+2. Show continuity: "How has that been working for you?" or "I've been thinking about your situation"
+3. Ask follow-up questions that show you're listening and care
+4. Adapt your responses based on what has worked for them before
+5. Make them feel like you remember and care about their ongoing health journey
+
+Be conversational and natural, not robotic. Show that you're building a relationship with them over time.
+"""
+        
+        return ""
+    
+    async def _create_conversation_memories(
+        self,
+        db: Session,
+        user_id: int,
+        message_content: str,
+        ai_response: Dict,
+        user_context: Dict
+    ):
+        """Create conversation memories for ChatGPT-like continuity."""
+        
+        # Extract key information from the conversation
+        topics = ai_response.get("analysis", {}).get("topics", [])
+        sentiment = ai_response.get("analysis", {}).get("sentiment", "neutral")
+        urgency = ai_response.get("analysis", {}).get("urgency", "low")
+        
+        # Create memory for health concerns mentioned
+        if topics:
+            for topic in topics[:2]:  # Limit to top 2 topics
+                await self.create_conversation_memory(
+                    db=db,
+                    user_id=user_id,
+                    memory_type="health_concern",
+                    title=f"Health concern: {topic}",
+                    content=f"User mentioned {topic} in conversation. Context: {message_content[:100]}...",
+                    importance_score=0.7 if urgency in ["high", "emergency"] else 0.5,
+                    tags=[topic, sentiment, urgency],
+                    context={
+                        "original_message": message_content[:200],
+                        "ai_response": ai_response["content"][:200],
+                        "sentiment": sentiment,
+                        "urgency": urgency
+                    }
+                )
+        
+        # Create memory for remedy preferences if remedies were suggested
+        if ai_response.get("remedies"):
+            remedy_types = [r.get("type", "unknown") for r in ai_response["remedies"]]
+            await self.create_conversation_memory(
+                db=db,
+                user_id=user_id,
+                memory_type="remedy_preference",
+                title=f"Remedy preferences: {', '.join(set(remedy_types))}",
+                content=f"User responded well to remedies of types: {', '.join(set(remedy_types))}. Context: {message_content[:100]}...",
+                importance_score=0.6,
+                tags=remedy_types + ["preference"],
+                context={
+                    "remedy_types": remedy_types,
+                    "original_concern": message_content[:200]
+                }
+            )
+        
+        # Create memory for emotional patterns
+        if sentiment in ["concerned", "anxious", "worried"]:
+            await self.create_conversation_memory(
+                db=db,
+                user_id=user_id,
+                memory_type="emotional_pattern",
+                title=f"Emotional state: {sentiment}",
+                content=f"User expressed {sentiment} feelings. May need extra comfort and reassurance in future conversations.",
+                importance_score=0.8,
+                tags=[sentiment, "emotional_support"],
+                context={
+                    "emotional_state": sentiment,
+                    "comfort_needed": True,
+                    "original_message": message_content[:200]
+                }
+            )
+        
+        # Create memory for user preferences and communication style
+        if user_context.get("age") or user_context.get("gender"):
+            await self.create_conversation_memory(
+                db=db,
+                user_id=user_id,
+                memory_type="user_profile",
+                title="User profile information",
+                content=f"User profile: {user_context.get('age', 'unknown')} years old, {user_context.get('gender', 'not specified')}. Medical conditions: {', '.join(user_context.get('health_profile', {}).get('medical_conditions', []))}",
+                importance_score=0.9,
+                tags=["profile", "demographics"],
+                context=user_context
+            )
+

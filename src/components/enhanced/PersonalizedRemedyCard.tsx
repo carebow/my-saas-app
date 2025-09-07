@@ -25,6 +25,10 @@ interface Remedy {
   safety_level: string;
   confidence_score: number;
   personalization_factors: string[];
+  comfort_level?: string;
+  empathy_phrases?: string[];
+  safety_notes?: string;
+  comfort_message?: string;
 }
 
 interface PersonalizedRemedyCardProps {
@@ -46,6 +50,7 @@ const PersonalizedRemedyCard: React.FC<PersonalizedRemedyCardProps> = ({
       case 'ayurvedic': return '🌿';
       case 'home_remedy': return '🏠';
       case 'lifestyle': return '🏃‍♀️';
+      case 'comfort_measure': return '🤗';
       default: return '💡';
     }
   };
@@ -56,6 +61,7 @@ const PersonalizedRemedyCard: React.FC<PersonalizedRemedyCardProps> = ({
       case 'ayurvedic': return 'bg-green-100 text-green-800';
       case 'home_remedy': return 'bg-orange-100 text-orange-800';
       case 'lifestyle': return 'bg-purple-100 text-purple-800';
+      case 'comfort_measure': return 'bg-pink-100 text-pink-800';
       default: return 'bg-gray-100 text-gray-800';
     }
   };
@@ -126,6 +132,36 @@ const PersonalizedRemedyCard: React.FC<PersonalizedRemedyCardProps> = ({
             {remedy.description}
           </p>
 
+          {/* Comfort Message */}
+          {remedy.comfort_message && (
+            <div className="bg-pink-50 border border-pink-200 rounded-lg p-3 mb-3">
+              <div className="flex items-center gap-2 mb-1">
+                <Heart className="w-3 h-3 text-pink-500" />
+                <span className="text-xs font-medium text-pink-800">Comforting Message</span>
+              </div>
+              <p className="text-xs text-pink-700 italic">
+                "{remedy.comfort_message}"
+              </p>
+            </div>
+          )}
+
+          {/* Empathy Phrases */}
+          {remedy.empathy_phrases && remedy.empathy_phrases.length > 0 && (
+            <div className="mb-3">
+              <div className="flex items-center gap-2 mb-2">
+                <Sparkles className="w-3 h-3 text-pink-500" />
+                <span className="text-xs font-medium text-carebow-text-dark">Supportive phrases</span>
+              </div>
+              <div className="space-y-1">
+                {remedy.empathy_phrases.map((phrase, index) => (
+                  <div key={index} className="text-xs text-pink-700 italic">
+                    • {phrase}
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
           {/* Instructions Preview */}
           <div className="bg-gray-50 rounded-lg p-3 mb-3">
             <div className="flex items-center gap-2 mb-2">
@@ -136,6 +172,19 @@ const PersonalizedRemedyCard: React.FC<PersonalizedRemedyCardProps> = ({
               {remedy.instructions}
             </p>
           </div>
+
+          {/* Safety Notes */}
+          {remedy.safety_notes && (
+            <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-3 mb-3">
+              <div className="flex items-center gap-2 mb-1">
+                <AlertTriangle className="w-3 h-3 text-yellow-600" />
+                <span className="text-xs font-medium text-yellow-800">Important Safety Note</span>
+              </div>
+              <p className="text-xs text-yellow-700">
+                {remedy.safety_notes}
+              </p>
+            </div>
+          )}
 
           {/* Personalization Factors */}
           {remedy.personalization_factors.length > 0 && (
@@ -155,6 +204,23 @@ const PersonalizedRemedyCard: React.FC<PersonalizedRemedyCardProps> = ({
                     +{remedy.personalization_factors.length - 3} more
                   </Badge>
                 )}
+              </div>
+            </div>
+          )}
+
+          {/* Comfort Level Indicator */}
+          {remedy.comfort_level && (
+            <div className="mb-3">
+              <div className="flex items-center gap-2 mb-1">
+                <Heart className="w-3 h-3 text-pink-500" />
+                <span className="text-xs font-medium text-carebow-text-dark">Comfort Level</span>
+                <Badge className={`text-xs ${
+                  remedy.comfort_level === 'high' ? 'bg-pink-100 text-pink-800' :
+                  remedy.comfort_level === 'medium' ? 'bg-yellow-100 text-yellow-800' :
+                  'bg-gray-100 text-gray-800'
+                }`}>
+                  {remedy.comfort_level}
+                </Badge>
               </div>
             </div>
           )}
@@ -236,3 +302,4 @@ const PersonalizedRemedyCard: React.FC<PersonalizedRemedyCardProps> = ({
 };
 
 export default PersonalizedRemedyCard;
+
