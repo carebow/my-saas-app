@@ -1,8 +1,15 @@
 
 import React from "react";
+import { motion } from "framer-motion";
+import { Phone, Mail, MapPin, Clock, MessageCircle, Send } from "lucide-react";
 import SEO from "../components/SEO";
 import Navbar from "../components/UnifiedNavigation";
 import Footer from "../components/UnifiedFooter";
+import { Card, CardContent, CardHeader } from "../components/ui/card";
+import { Button } from "../components/ui/button";
+import { Input } from "../components/ui/input";
+import { Label } from "../components/ui/label";
+import { Textarea } from "../components/ui/textarea";
 
 const Contact = () => {
   const contactInfo = [
@@ -43,6 +50,52 @@ const Contact = () => {
 
   return (
     <div className="min-h-screen bg-white">
+      <SEO 
+        title="Contact CareBow | Get In-Home Healthcare Services | Pittsburgh PA"
+        description="Contact CareBow for AI-powered in-home healthcare services in Pittsburgh, PA and nationwide. Call (412) 735-1957 for personalized medical care at home."
+        keywords="contact CareBow, Pittsburgh healthcare, in-home care contact, healthcare services Pittsburgh, medical care contact, healthcare consultation, join waitlist, healthcare inquiry"
+        url="https://www.carebow.com/contact"
+        structuredData={{
+          "@context": "https://schema.org",
+          "@type": "LocalBusiness",
+          "name": "CareBow",
+          "description": "AI-powered in-home healthcare services providing personalized medical care, elder care, pediatric care, and 24/7 health monitoring",
+          "url": "https://www.carebow.com",
+          "telephone": "+14127351957",
+          "email": "info@carebow.com",
+          "address": {
+            "@type": "PostalAddress",
+            "addressLocality": "Pittsburgh",
+            "addressRegion": "PA",
+            "addressCountry": "US"
+          },
+          "geo": {
+            "@type": "GeoCoordinates",
+            "latitude": "40.4406",
+            "longitude": "-79.9959"
+          },
+          "openingHours": "Mo-Su 00:00-23:59",
+          "areaServed": [
+            {
+              "@type": "City",
+              "name": "Pittsburgh",
+              "addressRegion": "PA"
+            },
+            {
+              "@type": "Country",
+              "name": "United States"
+            }
+          ],
+          "serviceType": "Healthcare Services",
+          "medicalSpecialty": ["Home Healthcare", "Elder Care", "Pediatric Care", "Telemedicine"],
+          "priceRange": "$$",
+          "sameAs": [
+            "https://twitter.com/carebow",
+            "https://linkedin.com/company/carebow",
+            "https://instagram.com/care.bow"
+          ]
+        }}
+      />
       <Navbar />
       
       <main className="pt-20">
@@ -63,8 +116,32 @@ const Contact = () => {
               </h1>
               <p className="text-xl text-gray-600 max-w-3xl mx-auto">
                 We're here to help 24/7. Reach out to us for healthcare support, 
-                questions about our services, or emergency assistance across the USA.
+                questions about our services, or emergency assistance across the USA. 
+                Our AI-powered in-home healthcare network provides personalized medical care, 
+                elder care, pediatric services, and comprehensive health monitoring delivered 
+                directly to your home in Pittsburgh, PA and nationwide.
               </p>
+              <div className="mt-8 bg-white rounded-2xl p-8 shadow-lg max-w-4xl mx-auto">
+                <h2 className="text-2xl font-bold text-gray-900 mb-4">Why Choose CareBow for Your Healthcare Needs?</h2>
+                <div className="grid md:grid-cols-2 gap-6 text-left">
+                  <div>
+                    <h3 className="font-semibold text-purple-600 mb-2">🏥 Comprehensive Healthcare Services</h3>
+                    <p className="text-gray-600">Our in-home healthcare services include elder care, pediatric care, post-surgery recovery, chronic disease management, medication management, and 24/7 health monitoring.</p>
+                  </div>
+                  <div>
+                    <h3 className="font-semibold text-purple-600 mb-2">🤖 AI-Powered Technology</h3>
+                    <p className="text-gray-600">Advanced AI healthcare technology provides instant health assessments, medication reminders, symptom analysis, and connects you with certified medical professionals when needed.</p>
+                  </div>
+                  <div>
+                    <h3 className="font-semibold text-purple-600 mb-2">👩‍⚕️ Licensed Healthcare Professionals</h3>
+                    <p className="text-gray-600">Our team includes registered nurses, certified nursing assistants, physical therapists, occupational therapists, and board-certified physicians - all thoroughly vetted and licensed.</p>
+                  </div>
+                  <div>
+                    <h3 className="font-semibold text-purple-600 mb-2">🔒 HIPAA Compliant & Secure</h3>
+                    <p className="text-gray-600">Full HIPAA compliance with enterprise-grade security measures, industry-standard encryption, secure data transmission, and strict access controls protect your health information.</p>
+                  </div>
+                </div>
+              </div>
             </motion.div>
           </div>
         </section>
@@ -267,6 +344,75 @@ const Contact = () => {
                   </Card>
                 </motion.div>
               ))}
+            </div>
+          </div>
+        </section>
+
+        {/* FAQ Section */}
+        <section className="py-20 bg-white">
+          <div className="max-w-7xl mx-auto px-6 lg:px-8">
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8 }}
+              className="text-center mb-16"
+            >
+              <h2 className="text-4xl lg:text-5xl font-bold text-gray-900 mb-6">
+                Frequently Asked Questions
+              </h2>
+              <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+                Get answers to common questions about CareBow's in-home healthcare services, 
+                AI technology, and how we can help with your family's medical care needs.
+              </p>
+            </motion.div>
+
+            <div className="grid lg:grid-cols-2 gap-8 max-w-6xl mx-auto">
+              <motion.div
+                initial={{ opacity: 0, x: -30 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.8 }}
+                className="space-y-6"
+              >
+                <div className="bg-gray-50 rounded-2xl p-6">
+                  <h3 className="text-xl font-bold text-gray-900 mb-3">How quickly can I get CareBow healthcare services?</h3>
+                  <p className="text-gray-600">AI consultations are available instantly 24/7. For in-home visits, we typically schedule within 24-48 hours for routine care and provide same-day service for urgent healthcare needs in Pittsburgh, PA and other major cities.</p>
+                </div>
+                
+                <div className="bg-gray-50 rounded-2xl p-6">
+                  <h3 className="text-xl font-bold text-gray-900 mb-3">What types of in-home healthcare services does CareBow provide?</h3>
+                  <p className="text-gray-600">CareBow offers comprehensive in-home healthcare including elder care, pediatric care, post-surgery recovery, chronic disease management, medication management, urgent care, wellness services, and 24/7 health monitoring with family updates.</p>
+                </div>
+
+                <div className="bg-gray-50 rounded-2xl p-6">
+                  <h3 className="text-xl font-bold text-gray-900 mb-3">Is CareBow available in my area?</h3>
+                  <p className="text-gray-600">CareBow currently serves Pittsburgh, PA and is rapidly expanding nationwide across the United States including Philadelphia, New York, Boston, Washington DC, and Chicago. Join our waitlist to be notified when we launch in your area.</p>
+                </div>
+              </motion.div>
+
+              <motion.div
+                initial={{ opacity: 0, x: 30 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.8 }}
+                className="space-y-6"
+              >
+                <div className="bg-gray-50 rounded-2xl p-6">
+                  <h3 className="text-xl font-bold text-gray-900 mb-3">How does CareBow's AI-powered healthcare technology work?</h3>
+                  <p className="text-gray-600">Our AI healthcare technology provides instant health assessments, medication reminders, symptom analysis, and health monitoring. It connects you with certified medical professionals when needed while maintaining continuous health tracking and the human touch in healthcare delivery.</p>
+                </div>
+
+                <div className="bg-gray-50 rounded-2xl p-6">
+                  <h3 className="text-xl font-bold text-gray-900 mb-3">What healthcare professionals work with CareBow?</h3>
+                  <p className="text-gray-600">CareBow works with licensed registered nurses, certified nursing assistants, physical therapists, occupational therapists, speech therapists, and board-certified physicians. All our healthcare professionals are thoroughly vetted, licensed, and experienced in home healthcare delivery.</p>
+                </div>
+
+                <div className="bg-gray-50 rounded-2xl p-6">
+                  <h3 className="text-xl font-bold text-gray-900 mb-3">Is CareBow HIPAA compliant and secure?</h3>
+                  <p className="text-gray-600">Yes, CareBow is fully HIPAA compliant with enterprise-grade security measures. We prioritize your privacy and ensure all health information is protected with industry-standard encryption, secure data transmission, and strict access controls for your medical data.</p>
+                </div>
+              </motion.div>
             </div>
           </div>
         </section>

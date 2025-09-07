@@ -50,7 +50,7 @@ export const seoData: Record<string, SEOPageData> = {
 
   contact: {
     title: "Contact CareBow | Get In-Home Healthcare Services | Pittsburgh PA",
-    description: "Contact CareBow for AI-powered in-home healthcare services in Pittsburgh, PA and nationwide. Call (412) 735-1957 or join our waitlist for personalized medical care at home.",
+    description: "Contact CareBow for AI-powered in-home healthcare services in Pittsburgh, PA and nationwide. Call (412) 735-1957 for personalized medical care at home.",
     keywords: "contact CareBow, Pittsburgh healthcare, in-home care contact, healthcare services Pittsburgh, medical care contact, healthcare consultation, join waitlist, healthcare inquiry",
     url: "https://www.carebow.com/contact"
   },
