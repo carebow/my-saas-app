@@ -65,10 +65,14 @@ optionalEnvVars.forEach(varName => {
   }
 });
 
-// Validate API_BASE format
+// Validate API_BASE format (only require HTTPS in production)
 const apiBase = process.env.VITE_API_BASE;
-if (apiBase && !apiBase.startsWith('https://')) {
+const environment = process.env.VITE_ENVIRONMENT || 'development';
+if (apiBase && environment === 'production' && !apiBase.startsWith('https://')) {
   console.error(`❌ VITE_API_BASE must start with https:// for production builds`);
+  hasErrors = true;
+} else if (apiBase && environment === 'development' && !apiBase.startsWith('http')) {
+  console.error(`❌ VITE_API_BASE must be a valid URL`);
   hasErrors = true;
 }
 

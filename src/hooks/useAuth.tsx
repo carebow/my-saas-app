@@ -14,6 +14,7 @@ interface User {
 interface AuthContextType {
   user: User | null;
   loading: boolean;
+  isOffline: boolean;
   login: (email: string, password: string) => Promise<void>;
   register: (userData: { email: string; password: string; full_name?: string }) => Promise<void>;
   logout: () => void;
@@ -33,6 +34,7 @@ export const useAuth = () => {
 export const useAuthState = () => {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
+  const [isOffline, setIsOffline] = useState(false);
 
   useEffect(() => {
     const initAuth = async () => {
@@ -40,15 +42,34 @@ export const useAuthState = () => {
         try {
           const userData = await apiService.getCurrentUser();
           setUser(userData);
+          setIsOffline(false);
         } catch (error) {
           console.error('Failed to get user data:', error);
-          apiService.logout();
+          
+          // Check if it's a network error
+          if (error instanceof Error && error.message.includes('Unable to connect to server')) {
+            setIsOffline(true);
+            // Keep user logged in during network issues
+          } else if (error instanceof Error && error.message.includes('401')) {
+            // Only logout on authentication errors
+            apiService.logout();
+            setIsOffline(false);
+          } else {
+            // Other errors - assume offline
+            setIsOffline(true);
+          }
         }
+      } else {
+        setIsOffline(false);
       }
       setLoading(false);
     };
 
-    initAuth();
+    initAuth().catch(error => {
+      console.error('Auth initialization failed:', error);
+      setIsOffline(true);
+      setLoading(false);
+    });
   }, []);
 
   const login = async (email: string, password: string) => {
@@ -87,6 +108,7 @@ export const useAuthState = () => {
   return {
     user,
     loading,
+    isOffline,
     login,
     register,
     logout,

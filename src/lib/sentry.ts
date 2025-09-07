@@ -26,14 +26,8 @@ export function initSentry(): void {
     // Integrations
     integrations: [
       new BrowserTracing({
-        // Set up automatic route change tracking for React Router
-        routingInstrumentation: Sentry.reactRouterV6Instrumentation(
-          React.useEffect,
-          useLocation,
-          useNavigationType,
-          createRoutesFromChildren,
-          matchRoutes
-        ),
+        // Simplified browser tracing without React Router instrumentation
+        // to avoid import issues during initialization
       }),
     ],
     
@@ -237,7 +231,3 @@ export function addBreadcrumb(
 export function clearUserContext(): void {
   Sentry.setUser(null);
 }
-
-// Import React Router dependencies for routing instrumentation
-import React, { useEffect } from 'react';
-import { useLocation, useNavigationType, createRoutesFromChildren, matchRoutes } from 'react-router-dom';

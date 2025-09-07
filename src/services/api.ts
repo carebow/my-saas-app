@@ -1,4 +1,4 @@
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000/api/v1';
+const API_BASE_URL = import.meta.env.VITE_API_BASE || 'http://localhost:8000';
 
 class ApiService {
   private baseURL: string;
@@ -13,7 +13,7 @@ class ApiService {
     endpoint: string,
     options: RequestInit = {}
   ): Promise<T> {
-    const url = `${this.baseURL}${endpoint}`;
+    const url = `${this.baseURL}/api/v1${endpoint}`;
     
     const config: RequestInit = {
       headers: {
@@ -24,14 +24,22 @@ class ApiService {
       ...options,
     };
 
-    const response = await fetch(url, config);
-    
-    if (!response.ok) {
-      const error = await response.json().catch(() => ({ detail: 'Network error' }));
-      throw new Error(error.detail || `HTTP error! status: ${response.status}`);
-    }
+    try {
+      const response = await fetch(url, config);
+      
+      if (!response.ok) {
+        const error = await response.json().catch(() => ({ detail: 'Network error' }));
+        throw new Error(error.detail || `HTTP error! status: ${response.status}`);
+      }
 
-    return response.json();
+      return response.json();
+    } catch (error) {
+      // Handle network errors gracefully
+      if (error instanceof TypeError && error.message.includes('fetch')) {
+        throw new Error('Unable to connect to server. Please check your internet connection.');
+      }
+      throw error;
+    }
   }
 
   // Auth methods
