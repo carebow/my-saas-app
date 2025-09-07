@@ -12,6 +12,18 @@ export default defineConfig(({ mode }) => ({
         target: 'http://localhost:8000', 
         changeOrigin: true 
       },
+      '/health': { 
+        target: 'http://localhost:8000', 
+        changeOrigin: true 
+      },
+      '/healthz': { 
+        target: 'http://localhost:8000', 
+        changeOrigin: true 
+      },
+      '/docs': { 
+        target: 'http://localhost:8000', 
+        changeOrigin: true 
+      },
       '/ws': { 
         target: 'ws://localhost:8000', 
         ws: true 

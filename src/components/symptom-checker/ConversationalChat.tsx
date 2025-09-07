@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { useAuth } from '@/contexts/AuthContext';
+import { useAuth } from '@/hooks/useAuth';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Send, Bot, User, AlertTriangle, Clock, Stethoscope, MessageCircle } from 'lucide-react';
 import { FeedbackWidget } from '@/components/ui/feedback-widget';

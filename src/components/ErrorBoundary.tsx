@@ -41,17 +41,8 @@ class ErrorBoundary extends Component<Props, State> {
   componentDidCatch(error: Error, errorInfo: ErrorInfo) {
     console.error('Error caught by boundary:', error, errorInfo);
     
-    // Capture error with Sentry
-    const eventId = Sentry.captureException(error, {
-      contexts: {
-        react: {
-          componentStack: errorInfo.componentStack,
-        },
-      },
-      extra: {
-        errorInfo,
-      },
-    });
+    // Sentry disabled for debugging
+    const eventId = null;
 
     this.setState({
       error,
@@ -117,15 +108,18 @@ class ErrorBoundary extends Component<Props, State> {
                 )}
               </div>
               
-              {this.props.showDetails && this.state.error && (
+              {(this.props.showDetails || import.meta.env.DEV) && this.state.error && (
                 <details className="mt-4">
                   <summary className="cursor-pointer text-sm font-medium text-gray-700 hover:text-gray-900">
                     Technical Details
                   </summary>
                   <div className="mt-2 rounded-md bg-gray-100 p-3">
                     <pre className="text-xs text-gray-800 overflow-auto">
-                      {this.state.error.toString()}
-                      {this.state.errorInfo?.componentStack}
+                      <strong>Error:</strong> {this.state.error.toString()}
+                      {'\n\n'}
+                      <strong>Stack:</strong> {this.state.error.stack}
+                      {'\n\n'}
+                      <strong>Component Stack:</strong> {this.state.errorInfo?.componentStack}
                     </pre>
                   </div>
                 </details>

@@ -5,7 +5,7 @@ import { CustomTooltipProvider } from "@/components/ui/custom-tooltip-provider";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { HelmetProvider } from "react-helmet-async";
-import { AuthProvider } from "./hooks/useAuth";
+import { AuthProvider } from "./hooks/useAuth.tsx";
 import { AnalyticsProvider } from "./components/AnalyticsProvider";
 import Index from "./pages/Index";
 import ScrollToTop from "./components/ScrollToTop";
@@ -69,83 +69,127 @@ const queryClient = new QueryClient({
   },
 });
 
-const App = () => {
-  // Optimized error handling
-  const handleUnhandledRejection = useCallback((event: PromiseRejectionEvent) => {
-    console.error('Unhandled promise rejection:', event.reason);
-    event.preventDefault();
-  }, []);
-
-  const handleError = useCallback((event: ErrorEvent) => {
-    console.error('Global error:', event.error);
-  }, []);
-
-  // Set up global error handlers
-  React.useEffect(() => {
-    window.addEventListener('unhandledrejection', handleUnhandledRejection);
-    window.addEventListener('error', handleError);
-
-    return () => {
-      window.removeEventListener('unhandledrejection', handleUnhandledRejection);
-      window.removeEventListener('error', handleError);
-    };
-  }, [handleUnhandledRejection, handleError]);
-
-  // Memoize routes to prevent unnecessary re-renders
-  const routes = useMemo(() => [
-    { path: "/", element: <Index /> },
-    { path: "/services", element: <Services /> },
-    { path: "/technology", element: <Technology /> },
-    { path: "/about", element: <About /> },
-    { path: "/contact", element: <Contact /> },
-    { path: "/careers", element: <Careers /> },
-    { path: "/blog", element: <Blog /> },
-    { path: "/blog/:slug", element: <BlogPost /> },
-    { path: "/diabetes-home-care", element: <DiabetesHomeCare /> },
-    { path: "/post-stroke-recovery", element: <PostStrokeRecovery /> },
-    { path: "/alzheimers-care", element: <AlzheimersCare /> },
-    { path: "/ask-carebow", element: <AskCareBow /> },
-    { path: "/ask-carebow/app", element: <AskCareBowApp /> },
-    { path: "/admin", element: <AdminDashboard /> },
-    { path: "/dashboard", element: <Dashboard /> },
-    { path: "/privacy-policy", element: <PrivacyPolicy /> },
-    { path: "/terms-of-service", element: <TermsOfService /> },
-    { path: "/hipaa-compliance", element: <HipaaCompliance /> },
-    { path: "*", element: <NotFound /> },
-  ], []);
-
+function App() {
+  console.log('App component rendering...');
+  
   return (
     <ErrorBoundary>
-      <HelmetProvider>
-        <QueryClientProvider client={queryClient}>
-          <AuthProvider>
-            <AnalyticsProvider>
-              <BrowserRouter>
+      <QueryClientProvider client={queryClient}>
+        <HelmetProvider>
+          <BrowserRouter>
+            <AuthProvider>
+              <AnalyticsProvider>
                 <CustomTooltipProvider>
-                  <Toaster />
-                  <ScrollToTop />
-                  <FloatingAskCareBow />
-                  <PerformanceMonitor />
-                  <UserEngagementTracker />
-                  <Suspense fallback={<RouteLoader />}>
+                  <div className="min-h-screen bg-background">
+                    <ScrollToTop />
+                    <PerformanceMonitor />
+                    <UserEngagementTracker />
+                    
                     <Routes>
-                      {routes.map(({ path, element }) => (
-                        <Route
-                          key={path}
-                          path={path}
-                          element={element}
-                        />
-                      ))}
+                      <Route path="/" element={<Index />} />
+                      <Route path="/services" element={
+                        <Suspense fallback={<RouteLoader />}>
+                          <Services />
+                        </Suspense>
+                      } />
+                      <Route path="/technology" element={
+                        <Suspense fallback={<RouteLoader />}>
+                          <Technology />
+                        </Suspense>
+                      } />
+                      <Route path="/about" element={
+                        <Suspense fallback={<RouteLoader />}>
+                          <About />
+                        </Suspense>
+                      } />
+                      <Route path="/contact" element={
+                        <Suspense fallback={<RouteLoader />}>
+                          <Contact />
+                        </Suspense>
+                      } />
+                      <Route path="/careers" element={
+                        <Suspense fallback={<RouteLoader />}>
+                          <Careers />
+                        </Suspense>
+                      } />
+                      <Route path="/blog" element={
+                        <Suspense fallback={<RouteLoader />}>
+                          <Blog />
+                        </Suspense>
+                      } />
+                      <Route path="/blog/:slug" element={
+                        <Suspense fallback={<RouteLoader />}>
+                          <BlogPost />
+                        </Suspense>
+                      } />
+                      <Route path="/diabetes-home-care" element={
+                        <Suspense fallback={<RouteLoader />}>
+                          <DiabetesHomeCare />
+                        </Suspense>
+                      } />
+                      <Route path="/post-stroke-recovery" element={
+                        <Suspense fallback={<RouteLoader />}>
+                          <PostStrokeRecovery />
+                        </Suspense>
+                      } />
+                      <Route path="/alzheimers-care" element={
+                        <Suspense fallback={<RouteLoader />}>
+                          <AlzheimersCare />
+                        </Suspense>
+                      } />
+                      <Route path="/ask-carebow" element={
+                        <Suspense fallback={<RouteLoader />}>
+                          <AskCareBow />
+                        </Suspense>
+                      } />
+                      <Route path="/ask-carebow-app" element={
+                        <Suspense fallback={<RouteLoader />}>
+                          <AskCareBowApp />
+                        </Suspense>
+                      } />
+                      <Route path="/admin" element={
+                        <Suspense fallback={<RouteLoader />}>
+                          <AdminDashboard />
+                        </Suspense>
+                      } />
+                      <Route path="/dashboard" element={
+                        <Suspense fallback={<RouteLoader />}>
+                          <Dashboard />
+                        </Suspense>
+                      } />
+                      <Route path="/privacy-policy" element={
+                        <Suspense fallback={<RouteLoader />}>
+                          <PrivacyPolicy />
+                        </Suspense>
+                      } />
+                      <Route path="/terms-of-service" element={
+                        <Suspense fallback={<RouteLoader />}>
+                          <TermsOfService />
+                        </Suspense>
+                      } />
+                      <Route path="/hipaa-compliance" element={
+                        <Suspense fallback={<RouteLoader />}>
+                          <HipaaCompliance />
+                        </Suspense>
+                      } />
+                      <Route path="*" element={
+                        <Suspense fallback={<RouteLoader />}>
+                          <NotFound />
+                        </Suspense>
+                      } />
                     </Routes>
-                  </Suspense>
+                    
+                    <FloatingAskCareBow />
+                    <Toaster />
+                  </div>
                 </CustomTooltipProvider>
-              </BrowserRouter>
-            </AnalyticsProvider>
-          </AuthProvider>
-        </QueryClientProvider>
-      </HelmetProvider>
+              </AnalyticsProvider>
+            </AuthProvider>
+          </BrowserRouter>
+        </HelmetProvider>
+      </QueryClientProvider>
     </ErrorBoundary>
   );
-};
+}
 
 export default App;

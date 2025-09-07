@@ -65,16 +65,39 @@ export default {
 					ring: 'hsl(var(--sidebar-ring))'
 				},
 				carebow: {
-					blue: 'hsl(214, 92%, 91%)',
-					mint: 'hsl(90, 67%, 94%)',
-					peach: 'hsl(24, 92%, 91%)',
-					neutral: 'hsl(0, 0%, 96%)',
+					// Primary purple theme
+					'primary': 'hsl(265, 89%, 66%)',
+					'primary-dark': 'hsl(265, 89%, 50%)',
+					'primary-light': 'hsl(265, 89%, 80%)',
+					'primary-50': 'hsl(265, 89%, 95%)',
+					'primary-100': 'hsl(265, 89%, 90%)',
+					'primary-200': 'hsl(265, 89%, 85%)',
+					'primary-300': 'hsl(265, 89%, 80%)',
+					'primary-400': 'hsl(265, 89%, 70%)',
+					'primary-500': 'hsl(265, 89%, 66%)',
+					'primary-600': 'hsl(265, 89%, 60%)',
+					'primary-700': 'hsl(265, 89%, 50%)',
+					'primary-800': 'hsl(265, 89%, 40%)',
+					'primary-900': 'hsl(265, 89%, 30%)',
+					
+					// Secondary colors for variety
+					'blue': 'hsl(214, 92%, 91%)',
+					'mint': 'hsl(90, 67%, 94%)',
+					'peach': 'hsl(24, 92%, 91%)',
+					'red': 'hsl(0, 84%, 60%)',
+					'green': 'hsl(142, 76%, 60%)',
+					'orange': 'hsl(25, 95%, 60%)',
+					
+					// Text colors
 					'text-dark': 'hsl(0, 0%, 20%)',
 					'text-medium': 'hsl(0, 0%, 33%)',
 					'text-light': 'hsl(0, 0%, 47%)',
-					'primary': 'hsl(213, 100%, 65%)',
-					'secondary': 'hsl(265, 89%, 66%)',
-					'accent': 'hsl(239, 84%, 67%)'
+					'text-muted': 'hsl(0, 0%, 60%)',
+					
+					// Background colors
+					'bg-light': 'hsl(0, 0%, 98%)',
+					'bg-neutral': 'hsl(0, 0%, 96%)',
+					'bg-card': 'hsl(0, 0%, 100%)'
 				}
 			},
 			borderRadius: {

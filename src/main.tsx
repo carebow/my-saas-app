@@ -1,91 +1,31 @@
 import React from 'react'
-import ReactDOM from 'react-dom/client'
-import * as Sentry from '@sentry/react'
+import { createRoot } from 'react-dom/client'
 import App from './App.tsx'
-import './index.css'
-import { initSentry, captureException, captureMessage } from './lib/sentry'
-import ErrorBoundary from './components/ErrorBoundary'
+import { initSentry } from './lib/sentry'
 
-// Initialize Sentry before anything else
+console.log('Starting React app...');
+
+// Initialize Sentry early
 initSentry();
-
-// Enhanced error handling with Sentry integration
-const handleGlobalError = (error: ErrorEvent) => {
-  console.error('Global error:', error.error);
-  captureException(error.error || new Error(error.message), {
-    extra: {
-      filename: error.filename,
-      lineno: error.lineno,
-      colno: error.colno,
-    },
-    tags: {
-      errorType: 'global',
-    },
-  });
-};
-
-const handleUnhandledRejection = (event: PromiseRejectionEvent) => {
-  console.error('Unhandled promise rejection:', event.reason);
-  
-  const error = event.reason instanceof Error 
-    ? event.reason 
-    : new Error(String(event.reason));
-    
-  captureException(error, {
-    extra: {
-      rejectionReason: event.reason,
-    },
-    tags: {
-      errorType: 'unhandledRejection',
-    },
-  });
-  
-  event.preventDefault();
-};
-
-window.addEventListener('error', handleGlobalError);
-window.addEventListener('unhandledrejection', handleUnhandledRejection);
 
 const container = document.getElementById("root");
 if (!container) {
   throw new Error("Root element not found");
 }
 
-const root = ReactDOM.createRoot(container);
+console.log('Container found:', container);
 
-// Register service worker for caching and offline support
-if ('serviceWorker' in navigator && import.meta.env.PROD) {
-  window.addEventListener('load', () => {
-    navigator.serviceWorker.register('/sw.js')
-      .then((registration) => {
-        console.log('SW registered: ', registration);
-      })
-      .catch((registrationError) => {
-        console.log('SW registration failed: ', registrationError);
-      });
-  });
-}
-
-// Wrap the entire app with Sentry profiler and error boundary
 try {
+  console.log('Rendering React app...');
+  const root = createRoot(container);
   root.render(
     <React.StrictMode>
-      <Sentry.Profiler name="App">
-        <ErrorBoundary showDetails={import.meta.env.DEV}>
-          <App />
-        </ErrorBoundary>
-      </Sentry.Profiler>
+      <App />
     </React.StrictMode>
   );
+  console.log('React app rendered successfully!');
 } catch (error) {
   console.error('Failed to render app:', error);
-  
-  // Capture initialization error
-  captureException(error instanceof Error ? error : new Error(String(error)), {
-    tags: {
-      errorType: 'initialization',
-    },
-  });
   
   // Fallback rendering
   container.innerHTML = `

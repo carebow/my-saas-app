@@ -135,24 +135,24 @@ const UnifiedFooter = () => {
   }, [pageContext]);
 
   return (
-    <footer className="bg-slate-900 text-white py-12">
+    <footer className="bg-carebow-text-dark text-white py-16">
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
-        <div className="flex flex-col md:flex-row justify-between items-start mb-10">
+        <div className="flex flex-col md:flex-row justify-between items-start mb-12">
           <div className="mb-8 md:mb-0 md:max-w-md">
-            <Link to="/" className="flex items-center space-x-3 mb-4">
+            <Link to="/" className="flex items-center space-x-3 mb-6">
               <img 
                 src="/images/carebow-logo.png" 
                 alt="CareBow Logo" 
-                className="w-10 h-10 object-contain"
+                className="w-12 h-12 object-contain"
               />
-              <span className="font-bold text-2xl">
-                Care<span className="text-purple-400">Bow</span>
+              <span className="font-bold text-2xl text-white">
+                CareBow
               </span>
             </Link>
-            <p className="text-gray-300 leading-relaxed mb-4">
+            <p className="text-carebow-primary-200 leading-relaxed mb-6">
               {footerContent.description}
             </p>
-            <div className="text-sm text-gray-400">
+            <div className="text-sm text-carebow-primary-300">
               <p>📧 {footerContent.contact.email}</p>
               {footerContent.contact.phone && <p>📞 {footerContent.contact.phone}</p>}
               <p>{footerContent.contact.location}</p>
@@ -162,21 +162,21 @@ const UnifiedFooter = () => {
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-x-12 gap-y-8">
             {footerContent.sections.map((section) => (
               <div key={section.title}>
-                <h3 className="font-semibold text-lg mb-3">{section.title}</h3>
-                <ul className="space-y-2">
+                <h3 className="font-semibold text-lg mb-4 text-white">{section.title}</h3>
+                <ul className="space-y-3">
                   {section.items.map((item) => (
                     <li key={item.name}>
                       {item.href ? (
                         <Link 
                           to={item.href} 
-                          className="text-gray-300 hover:text-white transition"
+                          className="text-carebow-primary-200 hover:text-white transition-colors duration-200"
                         >
                           {item.name}
                         </Link>
                       ) : (
                         <button 
                           onClick={item.action}
-                          className="text-gray-300 hover:text-white transition text-left"
+                          className="text-carebow-primary-200 hover:text-white transition-colors duration-200 text-left"
                         >
                           {item.name}
                         </button>
@@ -189,16 +189,16 @@ const UnifiedFooter = () => {
           </div>
         </div>
         
-        <div className="border-t border-gray-700 pt-8 flex flex-col sm:flex-row justify-between items-center">
-          <p className="text-gray-400">© {new Date().getFullYear()} CareBow. All rights reserved.</p>
-          <div className="mt-4 sm:mt-0 flex items-center space-x-4">
-            <span className="text-gray-400">{footerContent.bottomText}</span>
+        <div className="border-t border-carebow-primary-800 pt-8 flex flex-col sm:flex-row justify-between items-center">
+          <p className="text-carebow-primary-300">© {new Date().getFullYear()} CareBow. All rights reserved.</p>
+          <div className="mt-4 sm:mt-0 flex items-center space-x-6">
+            <span className="text-carebow-primary-300">{footerContent.bottomText}</span>
             <div className="flex space-x-4">
               <a 
                 href="https://x.com/carebowx" 
                 target="_blank" 
                 rel="noopener noreferrer" 
-                className="text-gray-400 hover:text-white transition"
+                className="text-carebow-primary-300 hover:text-white transition-colors duration-200"
               >
                 <span className="sr-only">Twitter</span>
                 <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
@@ -209,7 +209,7 @@ const UnifiedFooter = () => {
                 href="https://linkedin.com/company/carebow" 
                 target="_blank" 
                 rel="noopener noreferrer" 
-                className="text-gray-400 hover:text-white transition"
+                className="text-carebow-primary-300 hover:text-white transition-colors duration-200"
               >
                 <span className="sr-only">LinkedIn</span>
                 <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">

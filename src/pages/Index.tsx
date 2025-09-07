@@ -1,7 +1,6 @@
 
 import Navbar from "../components/UnifiedNavigation";
 import HeroSection from "../components/HeroSection";
-import EnhancedWaitlistSection from "../components/EnhancedWaitlistSection";
 import Footer from "../components/UnifiedFooter";
 import SEO from "../components/SEO";
 import LazyVisible from "../components/LazyVisible";
@@ -10,12 +9,13 @@ import { lazy } from "react";
 // Lazy load below-the-fold sections
 const HowItWorksSection = lazy(() => import("../components/HowItWorksSection"));
 const TrustSignalsSection = lazy(() => import("../components/TrustSignalsSection"));
-const ServicesSection = lazy(() => import("../components/ServicesSection"));
-const BenefitsSection = lazy(() => import("../components/BenefitsSection"));
-const CompetitiveDifferentiation = lazy(() => import("../components/CompetitiveDifferentiation"));
-const StaticStats = lazy(() => import("../components/enhanced/StaticStats"));
+const MedicalAdvisoryBoard = lazy(() => import("../components/MedicalAdvisoryBoard"));
+const ComprehensiveHealthcareServices = lazy(() => import("../components/ComprehensiveHealthcareServices"));
+const DailyLifeTransformation = lazy(() => import("../components/DailyLifeTransformation"));
+const ComparisonTable = lazy(() => import("../components/ComparisonTable"));
+const TrustedByThousands = lazy(() => import("../components/TrustedByThousands"));
 const FAQSection = lazy(() => import("../components/FAQSection"));
-const ComingSoonSection = lazy(() => import("../components/ComingSoonSection"));
+const EarlyAccessForm = lazy(() => import("../components/EarlyAccessForm"));
 
 const Index = () => {
   const structuredData = {
@@ -50,24 +50,24 @@ const Index = () => {
           <TrustSignalsSection />
         </LazyVisible>
         <LazyVisible>
-          <ServicesSection />
+          <MedicalAdvisoryBoard />
         </LazyVisible>
         <LazyVisible>
-          <BenefitsSection />
+          <ComprehensiveHealthcareServices />
         </LazyVisible>
         <LazyVisible>
-          <CompetitiveDifferentiation />
+          <DailyLifeTransformation />
         </LazyVisible>
         <LazyVisible>
-          <StaticStats />
+          <ComparisonTable />
+        </LazyVisible>
+        <LazyVisible>
+          <TrustedByThousands />
         </LazyVisible>
         <LazyVisible>
           <FAQSection />
         </LazyVisible>
-        <EnhancedWaitlistSection />
-        <LazyVisible>
-          <ComingSoonSection />
-        </LazyVisible>
+        <EarlyAccessForm />
       </main>
       <Footer />
     </div>

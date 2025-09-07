@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useAuth } from '@/contexts/AuthContext';
+import { useAuth } from '@/hooks/useAuth';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Brain, MessageCircle, Shield, Clock, Users, Stethoscope } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';

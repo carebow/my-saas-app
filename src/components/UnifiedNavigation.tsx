@@ -41,12 +41,11 @@ const UnifiedNavigation = () => {
       ];
     } else {
       return [
-        { name: "Home", href: "/" },
+        { name: "About Us", href: "/about" },
         { name: "Services", href: "/services" },
-        { name: "Ask CareBow", href: "/ask-carebow", icon: <Stethoscope className="h-4 w-4" />, highlight: true },
-        { name: "Technology", href: "/technology" },
-        { name: "About", href: "/about" },
-        { name: "Blog", href: "/blog" },
+        { name: "How It Works", href: "#how-it-works", scroll: true },
+        { name: "Pricing", href: "/pricing" },
+        { name: "Contact Us", href: "/contact" },
       ];
     }
   }, [pageContext]);
@@ -179,28 +178,19 @@ const UnifiedNavigation = () => {
       return (
         <div className="flex items-center space-x-3">
           <Button
-            size="sm"
-            className="bg-gradient-primary text-primary-foreground shadow-lg hover:shadow-xl transition-all duration-300 h-9 px-4 text-sm"
-            onClick={handleAppAccess}
-          >
-            <Stethoscope className="w-4 h-4 mr-2" />
-            Try CareBow
-          </Button>
-          <Button
             variant="outline"
             size="sm"
-            className="border-blue-200 text-blue-600 hover:bg-blue-50 h-9 px-3 text-sm"
+            className="border-carebow-primary text-carebow-primary hover:bg-carebow-primary-50 h-9 px-4 text-sm"
             onClick={() => handleAuthAction('login')}
           >
-            Sign In
+            Login
           </Button>
           <Button
-            variant="outline"
             size="sm"
-            className="border-green-200 text-green-600 hover:bg-green-50 h-9 px-3 text-sm"
-            onClick={handleBookDemo}
+            className="bg-carebow-primary hover:bg-carebow-primary-700 text-white shadow-lg hover:shadow-xl transition-all duration-300 h-9 px-4 text-sm"
+            onClick={() => handleAuthAction('register')}
           >
-            Book Demo
+            Sign Up
           </Button>
         </div>
       );
@@ -254,25 +244,17 @@ const UnifiedNavigation = () => {
       return (
         <>
           <Button
-            className="bg-gradient-primary text-primary-foreground h-12 text-base"
-            onClick={handleAppAccess}
-          >
-            <Stethoscope className="w-4 h-4 mr-2" />
-            Try CareBow
-          </Button>
-          <Button
             variant="outline"
-            className="border-blue-200 text-blue-600 hover:bg-blue-50 h-12 text-base"
+            className="border-carebow-primary text-carebow-primary hover:bg-carebow-primary-50 h-12 text-base"
             onClick={() => handleAuthAction('login')}
           >
-            Sign In
+            Login
           </Button>
           <Button
-            variant="outline"
-            className="border-green-200 text-green-600 hover:bg-green-50 h-12 text-base"
-            onClick={handleBookDemo}
+            className="bg-carebow-primary hover:bg-carebow-primary-700 text-white h-12 text-base"
+            onClick={() => handleAuthAction('register')}
           >
-            Book Demo
+            Sign Up
           </Button>
         </>
       );
@@ -297,7 +279,7 @@ const UnifiedNavigation = () => {
             <span className={`text-xl md:text-2xl font-bold ${
               pageContext === 'askcarebow' 
                 ? 'gradient-text' 
-                : 'bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent'
+                : 'text-carebow-text-dark'
             }`}>
               CareBow
             </span>

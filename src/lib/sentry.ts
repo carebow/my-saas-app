@@ -13,6 +13,10 @@ const VERSION = import.meta.env.VITE_APP_VERSION || '1.0.0';
  * Initialize Sentry for error monitoring and performance tracking
  */
 export function initSentry(): void {
+  // Temporarily disable Sentry to debug the error
+  console.info('Sentry initialization disabled for debugging');
+  return;
+  
   if (!SENTRY_DSN) {
     console.info('Sentry DSN not configured, skipping Sentry initialization');
     return;
