@@ -8,6 +8,7 @@ import { HelmetProvider } from "react-helmet-async";
 import { AuthProvider } from "./hooks/useAuth.tsx";
 import { AnalyticsProvider } from "./components/AnalyticsProvider";
 import Index from "./pages/Index";
+import CareBowLanding from "./CareBowLanding";
 import ScrollToTop from "./components/ScrollToTop";
 import ErrorBoundary from "./components/ErrorBoundary";
 import FloatingAskCareBow from "./components/FloatingAskCareBow";
@@ -86,7 +87,8 @@ function App() {
                     <UserEngagementTracker />
                     
                     <Routes>
-                      <Route path="/" element={<Index />} />
+                      <Route path="/" element={<CareBowLanding />} />
+                      <Route path="/old" element={<Index />} />
                       <Route path="/services" element={
                         <Suspense fallback={<RouteLoader />}>
                           <Services />
