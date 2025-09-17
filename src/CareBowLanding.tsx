@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Footer } from './components/Footer';
+import { Analytics } from '@vercel/analytics/react';
 import { 
   CheckCircle, 
   Star, 
@@ -658,6 +659,9 @@ const CareBowLanding = () => {
           <ChevronUp size={20} />
         </button>
       )}
+
+      {/* Vercel Analytics */}
+      <Analytics />
     </div>
   );
 };

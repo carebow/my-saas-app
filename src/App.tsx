@@ -7,6 +7,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { HelmetProvider } from "react-helmet-async";
 import { AuthProvider } from "./hooks/useAuth.tsx";
 import { AnalyticsProvider } from "./components/AnalyticsProvider";
+import { Analytics } from "@vercel/analytics/react";
 import Index from "./pages/Index";
 import CareBowLanding from "./CareBowLanding";
 import ScrollToTop from "./components/ScrollToTop";
@@ -236,6 +237,7 @@ function App() {
                     
                     <FloatingAskCareBow />
                     <Toaster />
+                    <Analytics />
                   </div>
                 </CustomTooltipProvider>
               </AnalyticsProvider>
