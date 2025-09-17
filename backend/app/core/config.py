@@ -16,6 +16,15 @@ class Settings(BaseSettings):
     # Database
     DATABASE_URL: str = "sqlite:///./carebow.db"
     
+    # AWS Infrastructure (for production deployment)
+    DB_HOST: str = ""
+    DB_PORT: int = 5432
+    DB_NAME: str = ""
+    DB_USER: str = ""
+    DB_PASSWORD: str = ""
+    KMS_KEY_ID: str = ""
+    REPORTS_BUCKET: str = ""
+    
     # Redis
     REDIS_URL: str = "redis://localhost:6379/0"
     
@@ -121,6 +130,13 @@ class Settings(BaseSettings):
             from app.core.encryption import generate_encryption_key
             self.HIPAA_ENCRYPTION_KEY = generate_encryption_key()
         return self
+    
+    @property
+    def database_url(self) -> str:
+        """Build database URL from AWS infrastructure or use DATABASE_URL."""
+        if self.DB_HOST and self.DB_NAME and self.DB_USER and self.DB_PASSWORD:
+            return f"postgresql://{self.DB_USER}:{self.DB_PASSWORD}@{self.DB_HOST}:{self.DB_PORT}/{self.DB_NAME}"
+        return self.DATABASE_URL
 
 
 settings = Settings()

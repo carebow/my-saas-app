@@ -1,0 +1,455 @@
+openapi: 3.1.0
+info:
+  title: CareBow API
+  version: 0.1.0
+  description: |
+    Backend API for CareBow. HIPAA-aware. PHI minimized. All timestamps are ISO-8601 (UTC).
+    Authentication uses OAuth2 Authorization Code with PKCE (recommended) or JWT bearer for service-to-service.
+servers:
+  - url: https://api.carebow.com
+    description: Production
+  - url: https://staging.api.carebow.com
+    description: Staging
+security:
+  - bearerAuth: []
+
+paths:
+  /healthz:
+    get:
+      summary: Liveness check
+      responses:
+        '200':
+          description: OK
+
+  /auth/register:
+    post:
+      summary: Register a new user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [email, password]
+              properties:
+                email:
+                  type: string
+                  format: email
+                password:
+                  type: string
+                  format: password
+                phone:
+                  type: string
+                consent_version:
+                  type: string
+      responses:
+        '201':
+          description: User created (verification email sent)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserPublic'
+        '409': { description: Email already registered }
+
+  /auth/login:
+    post:
+      summary: Login and obtain tokens
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [email, password]
+              properties:
+                email: { type: string, format: email }
+                password: { type: string, format: password }
+      responses:
+        '200':
+          description: Tokens issued
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  access_token: { type: string }
+                  refresh_token: { type: string }
+                  token_type: { type: string, example: Bearer }
+                  expires_in: { type: integer }
+        '401': { description: Invalid credentials }
+
+  /auth/refresh:
+    post:
+      summary: Refresh access token
+      responses:
+        '200':
+          description: New access token
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  access_token: { type: string }
+                  token_type: { type: string, example: Bearer }
+                  expires_in: { type: integer }
+        '401': { description: Invalid refresh }
+
+  /me:
+    get:
+      summary: Get current user profile (non-PHI)
+      security: [{ bearerAuth: [] }]
+      responses:
+        '200':
+          description: Current user
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserPublic'
+
+    patch:
+      summary: Update current user profile (non-PHI)
+      security: [{ bearerAuth: [] }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserUpdate'
+      responses:
+        '200':
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserPublic'
+
+  /consents:
+    get:
+      summary: List accepted consents
+      security: [{ bearerAuth: [] }]
+      responses:
+        '200':
+          description: Consent records
+          content:
+            application/json:
+              schema:
+                type: array
+                items: { $ref: '#/components/schemas/Consent' }
+
+    post:
+      summary: Accept a consent document
+      security: [{ bearerAuth: [] }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ConsentAccept'
+      responses:
+        '201':
+          description: Consent recorded
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Consent'
+
+  /symptom-sessions:
+    post:
+      summary: Create a new symptom session
+      security: [{ bearerAuth: [] }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [primary_complaint]
+              properties:
+                primary_complaint: { type: string }
+                channel: { type: string, enum: [web, voice], default: web }
+      responses:
+        '201':
+          description: Session created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SymptomSession'
+
+  /symptom-sessions/{session_id}/next-question:
+    get:
+      summary: Retrieve next dynamic follow-up question
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - in: path
+          name: session_id
+          required: true
+          schema: { type: string }
+      responses:
+        '200':
+          description: Next question
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Question'
+        '204': { description: No more questions }
+
+  /symptom-sessions/{session_id}/answers:
+    post:
+      summary: Submit an answer
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - in: path
+          name: session_id
+          required: true
+          schema: { type: string }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Answer'
+      responses:
+        '202': { description: Accepted }
+
+  /symptom-sessions/{session_id}/triage:
+    post:
+      summary: Trigger triage (async)
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - in: path
+          name: session_id
+          required: true
+          schema: { type: string }
+      responses:
+        '202':
+          description: Job accepted
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  job_id: { type: string }
+
+  /symptom-sessions/{session_id}/triage-result:
+    get:
+      summary: Get triage result
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - in: path
+          name: session_id
+          required: true
+          schema: { type: string }
+      responses:
+        '200':
+          description: Triage result
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TriageResult'
+        '202': { description: Still processing }
+
+  /symptom-sessions/{session_id}/report:
+    post:
+      summary: Generate a PDF summary (presigned URL)
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - in: path
+          name: session_id
+          required: true
+          schema: { type: string }
+      responses:
+        '201':
+          description: Report generated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  url: { type: string, format: uri }
+                  expires_at: { type: string, format: date-time }
+
+  /providers:
+    get:
+      summary: Search providers
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - in: query
+          name: specialty
+          schema: { type: string }
+        - in: query
+          name: near
+          description: ZIP or lat,lng
+          schema: { type: string }
+      responses:
+        '200':
+          description: Providers
+          content:
+            application/json:
+              schema:
+                type: array
+                items: { $ref: '#/components/schemas/Provider' }
+
+  /appointments:
+    post:
+      summary: Create appointment
+      security: [{ bearerAuth: [] }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AppointmentCreate'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Appointment'
+
+  /appointments/{appointment_id}:
+    get:
+      summary: Get appointment
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - in: path
+          name: appointment_id
+          required: true
+          schema: { type: string }
+      responses:
+        '200':
+          description: Appointment
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Appointment'
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  schemas:
+    UserPublic:
+      type: object
+      properties:
+        id: { type: string }
+        email: { type: string, format: email }
+        phone: { type: string, nullable: true }
+        role: { type: string, enum: [patient, provider, admin] }
+        created_at: { type: string, format: date-time }
+
+    UserUpdate:
+      type: object
+      properties:
+        phone: { type: string }
+        timezone: { type: string }
+
+    Consent:
+      type: object
+      properties:
+        id: { type: string }
+        type: { type: string, enum: [privacy, telehealth, marketing] }
+        version: { type: string }
+        accepted_at: { type: string, format: date-time }
+        ip: { type: string }
+
+    ConsentAccept:
+      type: object
+      required: [type, version]
+      properties:
+        type: { type: string, enum: [privacy, telehealth, marketing] }
+        version: { type: string }
+
+    SymptomSession:
+      type: object
+      properties:
+        id: { type: string }
+        user_id: { type: string }
+        primary_complaint: { type: string }
+        channel: { type: string, enum: [web, voice] }
+        status: { type: string, enum: [open, closed] }
+        started_at: { type: string, format: date-time }
+        closed_at: { type: string, format: date-time, nullable: true }
+
+    Question:
+      type: object
+      properties:
+        question_id: { type: string }
+        question_text: { type: string }
+        type: { type: string, enum: [single_select, multi_select, free_text, scale] }
+        options:
+          type: array
+          items: { type: string }
+
+    Answer:
+      type: object
+      required: [question_id]
+      properties:
+        question_id: { type: string }
+        answer_text: { type: string }
+        structured_payload:
+          type: object
+          additionalProperties: true
+
+    TriageResult:
+      type: object
+      properties:
+        risk_level: { type: string, enum: [green, yellow, red] }
+        possible_conditions:
+          type: array
+          items:
+            type: object
+            properties:
+              name: { type: string }
+              confidence: { type: number, minimum: 0, maximum: 1 }
+        recommendations:
+          type: object
+          properties:
+            modern:
+              type: array
+              items: { type: string }
+            ayurveda:
+              type: array
+              items: { type: string }
+        next_steps:
+          type: array
+          items: { type: string }
+        created_at: { type: string, format: date-time }
+
+    Provider:
+      type: object
+      properties:
+        id: { type: string }
+        name: { type: string }
+        specialty: { type: string }
+        location:
+          type: object
+          properties:
+            city: { type: string }
+            state: { type: string }
+            zip: { type: string }
+            lat: { type: number }
+            lng: { type: number }
+        rating: { type: number, minimum: 0, maximum: 5 }
+        active: { type: boolean }
+
+    AppointmentCreate:
+      type: object
+      required: [provider_id, start_at, end_at]
+      properties:
+        provider_id: { type: string }
+        start_at: { type: string, format: date-time }
+        end_at: { type: string, format: date-time }
+        type: { type: string, enum: [telehealth, caregiver], default: telehealth }
+
+    Appointment:
+      allOf:
+        - $ref: '#/components/schemas/AppointmentCreate'
+        - type: object
+          properties:
+            id: { type: string }
+            status: { type: string, enum: [scheduled, canceled, completed] }
+            video_room_id: { type: string, nullable: true }

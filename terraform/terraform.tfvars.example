@@ -1,0 +1,17 @@
+# CareBow Terraform Variables Example
+# Copy this file to terraform.tfvars and fill in your values
+
+# AWS Configuration
+aws_region = "us-east-1"
+env        = "staging"
+
+# Database Configuration
+db_password = "your-secure-database-password-here"
+
+# ECS Configuration (IAM roles are created automatically)
+
+# API Configuration
+api_image = "YOUR_ACCOUNT_ID.dkr.ecr.us-east-1.amazonaws.com/carebow-api:latest"
+
+# S3 Configuration
+reports_bucket = "carebow-reports-YOUR_UNIQUE_SUFFIX"
