@@ -37,7 +37,7 @@ Object.entries(defaultEnvVars).forEach(([key, value]) => {
 try {
   // Run the build
   console.log('📦 Running Vite build...');
-  execSync('vite build --mode production', { 
+  execSync('npx vite build --mode production', { 
     stdio: 'inherit',
     cwd: process.cwd()
   });
