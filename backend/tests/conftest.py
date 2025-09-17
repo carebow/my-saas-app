@@ -9,6 +9,11 @@ from unittest.mock import Mock
 # Load test environment
 load_dotenv(".env.test")
 
+# Force test environment variables
+os.environ["DATABASE_URL"] = "sqlite:///./test_carebow.db"
+os.environ["ENVIRONMENT"] = "test"
+os.environ["HIPAA_ENCRYPTION_KEY"] = "TEST_HIPAA_KEY_32_CHARS_FOR_TESTING_ONLY_123456789"
+
 from main import app
 from app.db.base import Base
 from app.db.session import get_db
@@ -67,7 +72,8 @@ def test_user_data():
     """Test user data for authentication tests."""
     import uuid
     import time
-    unique_id = f"{int(time.time())}{uuid.uuid4().hex[:6]}"
+    import random
+    unique_id = f"{int(time.time())}{random.randint(1000, 9999)}{uuid.uuid4().hex[:4]}"
     return {
         "email": f"testuser+{unique_id}@carebow.com",
         "password": "testpassword123",
@@ -121,6 +127,29 @@ def premium_user(client, db_session):
     db_session.commit()
     db_session.refresh(user)
     return user
+
+@pytest.fixture
+def sample_chat_data():
+    """Sample chat data for testing."""
+    return {
+        "message": "I have a headache and feel tired",
+        "personality": "caring_nurse"
+    }
+
+@pytest.fixture
+def mock_openai():
+    """Mock OpenAI API calls."""
+    from unittest.mock import patch, Mock
+    
+    mock_response = Mock()
+    mock_response.choices = [Mock()]
+    mock_response.choices[0].message.content = "This is a test AI response for your health concern."
+    
+    mock_client = Mock()
+    mock_client.chat.completions.create.return_value = mock_response
+    
+    with patch('app.api.api_v1.endpoints.ai.client', mock_client):
+        yield mock_client
 
 @pytest.fixture
 def mock_stripe():

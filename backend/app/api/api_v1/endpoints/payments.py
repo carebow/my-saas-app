@@ -18,7 +18,11 @@ router = APIRouter()
 logger = logging.getLogger(__name__)
 
 # Initialize Stripe
-stripe.api_key = settings.STRIPE_SECRET_KEY
+if settings.STRIPE_SECRET_KEY and not settings.STRIPE_SECRET_KEY.startswith("sk_test_your"):
+    stripe.api_key = settings.STRIPE_SECRET_KEY
+else:
+    logger.warning("Stripe API key not configured - payment features will be disabled")
+    stripe.api_key = None
 
 
 def _get_attr(obj, name, default=None):
@@ -36,6 +40,12 @@ def create_subscription(
     """
     Create a new subscription.
     """
+    if not stripe.api_key:
+        raise HTTPException(
+            status_code=503,
+            detail="Payment processing is not available. Please contact support."
+        )
+    
     try:
         # Create or get Stripe customer
         if not current_user.stripe_customer_id:
@@ -106,7 +116,12 @@ async def stripe_webhook(request: Request, db: Session = Depends(deps.get_db)):
     if event["type"] == "invoice.payment_succeeded":
         invoice = event["data"]["object"]
         customer_id = invoice["customer"]
-        subscription_id = invoice["subscription"]
+        
+        # Check if this invoice has a subscription (some invoices are one-time payments)
+        subscription_id = invoice.get("subscription")
+        if not subscription_id:
+            logger.info(f"Invoice {invoice.get('id')} has no subscription, skipping subscription update")
+            return {"status": "success", "message": "Invoice processed but no subscription to update"}
         
         # Get subscription details to extract price_id
         try:
