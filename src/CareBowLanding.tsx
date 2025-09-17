@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Footer } from './components/Footer';
 import { Analytics } from '@vercel/analytics/react';
+import { SpeedInsights } from '@vercel/speed-insights/react';
 import { 
   CheckCircle, 
   Star, 
@@ -662,6 +663,9 @@ const CareBowLanding = () => {
 
       {/* Vercel Analytics */}
       <Analytics />
+      
+      {/* Vercel Speed Insights */}
+      <SpeedInsights />
     </div>
   );
 };
