@@ -81,3 +81,4 @@ class User(Base):
     health_profiles = relationship("HealthProfile", back_populates="user")
     consultations = relationship("Consultation", back_populates="user")
     conversations = relationship("Conversation", back_populates="user")
+    blog_posts = relationship("BlogPost", back_populates="author")

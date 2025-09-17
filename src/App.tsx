@@ -30,6 +30,10 @@ const AskCareBow = lazy(() => import("./pages/AskCareBow"));
 const AskCareBowApp = lazy(() => import("./pages/AskCareBowApp"));
 const AdminDashboard = lazy(() => import("./pages/AdminDashboard"));
 const Dashboard = lazy(() => import("./pages/Dashboard"));
+const EnhancedSymptomChecker = lazy(() => import("./components/enhanced/EnhancedSymptomChecker"));
+const HealthDashboard = lazy(() => import("./components/enhanced/HealthDashboard"));
+const WriterDashboard = lazy(() => import("./components/writer/WriterDashboard"));
+const BlogEditor = lazy(() => import("./components/writer/BlogEditor"));
 const PrivacyPolicy = lazy(() => import("./pages/PrivacyPolicy"));
 const TermsOfService = lazy(() => import("./pages/TermsOfService"));
 const HipaaCompliance = lazy(() => import("./pages/HipaaCompliance"));
@@ -157,6 +161,26 @@ function App() {
                       <Route path="/dashboard" element={
                         <Suspense fallback={<RouteLoader />}>
                           <Dashboard />
+                        </Suspense>
+                      } />
+                      <Route path="/enhanced-symptom-checker" element={
+                        <Suspense fallback={<RouteLoader />}>
+                          <EnhancedSymptomChecker />
+                        </Suspense>
+                      } />
+                      <Route path="/health-dashboard" element={
+                        <Suspense fallback={<RouteLoader />}>
+                          <HealthDashboard />
+                        </Suspense>
+                      } />
+                      <Route path="/writer-dashboard" element={
+                        <Suspense fallback={<RouteLoader />}>
+                          <WriterDashboard />
+                        </Suspense>
+                      } />
+                      <Route path="/blog-editor" element={
+                        <Suspense fallback={<RouteLoader />}>
+                          <BlogEditor />
                         </Suspense>
                       } />
                       <Route path="/privacy-policy" element={

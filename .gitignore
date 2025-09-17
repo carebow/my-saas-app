@@ -23,3 +23,4 @@ build/
 backend/venv/
 backend/venv/**
 backend/venv/lib/python*/site-packages/botocore/data/logs/
+.vercel
