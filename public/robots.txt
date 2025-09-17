@@ -1,29 +1,25 @@
 User-agent: *
 Allow: /
 
-# Important pages
-Allow: /services
-Allow: /technology
-Allow: /about
-Allow: /contact
-Allow: /blog
-Allow: /ask-carebow
+# Sitemaps
+Sitemap: https://carebow.com/sitemap.xml
 
 # Disallow admin and private areas
 Disallow: /admin/
 Disallow: /api/
 Disallow: /_next/
 Disallow: /private/
-Disallow: /*.json$
-Disallow: /*?*utm_*
-Disallow: /*?*fbclid*
-Disallow: /*?*gclid*
 
-# Sitemap location
-Sitemap: https://www.carebow.com/sitemap.xml
+# Allow important pages
+Allow: /symptom-checker/
+Allow: /health-dashboard/
+Allow: /writer-dashboard/
+Allow: /blog/
+Allow: /about/
+Allow: /faq/
+Allow: /privacy-policy/
+Allow: /terms-of-service/
+Allow: /disclaimer/
 
-# Crawl-delay for respectful crawling
+# Crawl delay for respectful crawling
 Crawl-delay: 1
-
-# Cache directive
-Cache-Control: public, max-age=86400

@@ -34,6 +34,10 @@ const EnhancedSymptomChecker = lazy(() => import("./components/enhanced/Enhanced
 const HealthDashboard = lazy(() => import("./components/enhanced/HealthDashboard"));
 const WriterDashboard = lazy(() => import("./components/writer/WriterDashboard"));
 const BlogEditor = lazy(() => import("./components/writer/BlogEditor"));
+const AboutUs = lazy(() => import("./pages/AboutUs"));
+const FAQ = lazy(() => import("./pages/FAQ"));
+const Disclaimer = lazy(() => import("./pages/Disclaimer"));
+const SymptomPage = lazy(() => import("./pages/SymptomPage"));
 const PrivacyPolicy = lazy(() => import("./pages/PrivacyPolicy"));
 const TermsOfService = lazy(() => import("./pages/TermsOfService"));
 const HipaaCompliance = lazy(() => import("./pages/HipaaCompliance"));
@@ -181,6 +185,31 @@ function App() {
                       <Route path="/blog-editor" element={
                         <Suspense fallback={<RouteLoader />}>
                           <BlogEditor />
+                        </Suspense>
+                      } />
+                      <Route path="/about" element={
+                        <Suspense fallback={<RouteLoader />}>
+                          <AboutUs />
+                        </Suspense>
+                      } />
+                      <Route path="/faq" element={
+                        <Suspense fallback={<RouteLoader />}>
+                          <FAQ />
+                        </Suspense>
+                      } />
+                      <Route path="/disclaimer" element={
+                        <Suspense fallback={<RouteLoader />}>
+                          <Disclaimer />
+                        </Suspense>
+                      } />
+                      <Route path="/blog" element={
+                        <Suspense fallback={<RouteLoader />}>
+                          <Blog />
+                        </Suspense>
+                      } />
+                      <Route path="/symptoms/:symptom" element={
+                        <Suspense fallback={<RouteLoader />}>
+                          <SymptomPage />
                         </Suspense>
                       } />
                       <Route path="/privacy-policy" element={

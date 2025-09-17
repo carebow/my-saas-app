@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Footer } from './components/Footer';
 import { 
   CheckCircle, 
   Star, 
@@ -645,68 +646,7 @@ const CareBowLanding = () => {
       </section>
 
       {/* Footer */}
-      <footer className="bg-gray-900 text-white py-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid md:grid-cols-4 gap-8">
-            <div className="md:col-span-2">
-              <div className="flex items-center space-x-2 mb-6">
-                <div className="w-8 h-8 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg flex items-center justify-center">
-                  <Heart className="text-white" size={20} />
-                </div>
-                <h3 className="text-2xl font-bold">CareBow</h3>
-              </div>
-              <p className="text-gray-400 mb-6 max-w-md">
-                Transforming family healthcare with AI-powered technology, 
-                compassionate care, and 24/7 support. Your family's health is our priority.
-              </p>
-              <div className="flex space-x-4">
-                <div className="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center hover:bg-gray-700 transition-colors cursor-pointer">
-                  <span className="text-sm font-semibold">f</span>
-                </div>
-                <div className="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center hover:bg-gray-700 transition-colors cursor-pointer">
-                  <span className="text-sm font-semibold">t</span>
-                </div>
-                <div className="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center hover:bg-gray-700 transition-colors cursor-pointer">
-                  <span className="text-sm font-semibold">in</span>
-                </div>
-              </div>
-            </div>
-            
-            <div>
-              <h4 className="font-bold text-lg mb-4">Product</h4>
-              <ul className="space-y-3 text-gray-400">
-                <li className="hover:text-white transition-colors cursor-pointer">Features</li>
-                <li className="hover:text-white transition-colors cursor-pointer">Pricing</li>
-                <li className="hover:text-white transition-colors cursor-pointer">How It Works</li>
-                <li className="hover:text-white transition-colors cursor-pointer">API</li>
-                <li className="hover:text-white transition-colors cursor-pointer">Integrations</li>
-              </ul>
-            </div>
-            
-            <div>
-              <h4 className="font-bold text-lg mb-4">Company</h4>
-              <ul className="space-y-3 text-gray-400">
-                <li className="hover:text-white transition-colors cursor-pointer">About Us</li>
-                <li className="hover:text-white transition-colors cursor-pointer">Careers</li>
-                <li className="hover:text-white transition-colors cursor-pointer">Press</li>
-                <li className="hover:text-white transition-colors cursor-pointer">Blog</li>
-                <li className="hover:text-white transition-colors cursor-pointer">Contact</li>
-              </ul>
-            </div>
-          </div>
-          
-          <div className="border-t border-gray-800 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center">
-            <p className="text-gray-400 text-sm">
-              &copy; 2024 CareBow. All rights reserved.
-            </p>
-            <div className="flex space-x-6 mt-4 md:mt-0">
-              <span className="text-gray-400 text-sm hover:text-white transition-colors cursor-pointer">Privacy Policy</span>
-              <span className="text-gray-400 text-sm hover:text-white transition-colors cursor-pointer">Terms of Service</span>
-              <span className="text-gray-400 text-sm hover:text-white transition-colors cursor-pointer">HIPAA Compliance</span>
-            </div>
-          </div>
-        </div>
-      </footer>
+      <Footer />
 
       {/* Scroll to Top Button */}
       {showScrollTop && (

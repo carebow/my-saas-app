@@ -1,123 +1,362 @@
+import React from 'react';
+import { motion } from 'framer-motion';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import { 
+  FileText, 
+  AlertTriangle, 
+  Shield, 
+  Users, 
+  Phone,
+  Mail,
+  CheckCircle,
+  XCircle,
+  Globe
+} from 'lucide-react';
 
-import Navbar from "../components/UnifiedNavigation";
-import Footer from "../components/UnifiedFooter";
-
-const TermsOfService = () => {
+export const TermsOfService: React.FC = () => {
   return (
-    <div className="min-h-screen bg-white">
-      <Navbar />
-      <main className="pt-20">
-        <div className="max-w-4xl mx-auto px-6 lg:px-8 py-16">
-          <div className="text-center mb-12">
-            <h1 className="text-4xl lg:text-5xl font-bold text-slate-900 mb-4">
-              Terms of Service
-            </h1>
-            <p className="text-xl text-slate-600">
-              Please read these terms carefully before using our services.
-            </p>
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-white">
+      <div className="max-w-4xl mx-auto p-6 space-y-8">
+        {/* Header */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="text-center space-y-4"
+        >
+          <div className="flex items-center justify-center space-x-2">
+            <FileText className="h-8 w-8 text-blue-600" />
+            <h1 className="text-4xl font-bold text-gray-900">Terms of Service</h1>
           </div>
-
-          <div className="prose prose-lg max-w-none">
-            <div className="bg-white rounded-xl border border-slate-200 p-8 shadow-sm">
-              <h2 className="text-2xl font-bold text-slate-900 mb-6">Acceptance of Terms</h2>
-              <p className="text-slate-600 mb-6">
-                By accessing and using CareBow's services, you accept and agree to be bound by 
-                these Terms of Service. If you do not agree to these terms, please do not use our services.
-              </p>
-
-              <h2 className="text-2xl font-bold text-slate-900 mb-6 mt-8">Description of Service</h2>
-              <p className="text-slate-600 mb-6">
-                CareBow is a technology-enabled healthcare platform that connects users with 
-                healthcare providers for in-home care services across the United States. Our services include:
-              </p>
-              <ul className="list-disc pl-6 text-slate-600 mb-6">
-                <li>Healthcare provider matching and scheduling</li>
-                <li>Telemedicine and virtual consultations</li>
-                <li>In-home healthcare services</li>
-                <li>Health monitoring and care coordination</li>
-                <li>AI-powered health insights and recommendations</li>
-              </ul>
-
-              <h2 className="text-2xl font-bold text-slate-900 mb-6 mt-8">User Responsibilities</h2>
-              <p className="text-slate-600 mb-4">As a user of our services, you agree to:</p>
-              <ul className="list-disc pl-6 text-slate-600 mb-6">
-                <li>Provide accurate and complete information</li>
-                <li>Keep your account information secure</li>
-                <li>Use our services only for lawful purposes</li>
-                <li>Respect the privacy and rights of others</li>
-                <li>Follow healthcare provider instructions and recommendations</li>
-                <li>Pay for services as agreed</li>
-              </ul>
-
-              <h2 className="text-2xl font-bold text-slate-900 mb-6 mt-8">Healthcare Services Disclaimer</h2>
-              <p className="text-slate-600 mb-6">
-                CareBow is a platform that facilitates connections between users and healthcare providers. 
-                We do not provide medical advice, diagnosis, or treatment. All healthcare services are 
-                provided by licensed healthcare professionals who are independent contractors.
-              </p>
-
-              <h2 className="text-2xl font-bold text-slate-900 mb-6 mt-8">Emergency Situations</h2>
-              <div className="bg-red-50 border border-red-200 rounded-lg p-4 mb-6">
-                <p className="text-red-800 font-semibold">
-                  IMPORTANT: Our services are not intended for emergency situations. 
-                  In case of a medical emergency, call 911 immediately.
-                </p>
-              </div>
-
-              <h2 className="text-2xl font-bold text-slate-900 mb-6 mt-8">Payment and Billing</h2>
-              <p className="text-slate-600 mb-6">
-                Payment terms for services will be clearly communicated before any services are rendered. 
-                You agree to pay all charges incurred for services used through our platform.
-              </p>
-
-              <h2 className="text-2xl font-bold text-slate-900 mb-6 mt-8">Privacy and Data Protection</h2>
-              <p className="text-slate-600 mb-6">
-                Your privacy is important to us. Please review our Privacy Policy to understand 
-                how we collect, use, and protect your information, including protected health information (PHI).
-              </p>
-
-              <h2 className="text-2xl font-bold text-slate-900 mb-6 mt-8">Limitation of Liability</h2>
-              <p className="text-slate-600 mb-6">
-                CareBow's liability is limited to the maximum extent permitted by law. 
-                We are not liable for any indirect, incidental, or consequential damages 
-                arising from your use of our services.
-              </p>
-
-              <h2 className="text-2xl font-bold text-slate-900 mb-6 mt-8">Termination</h2>
-              <p className="text-slate-600 mb-6">
-                Either party may terminate these terms at any time. Upon termination, 
-                your right to use our services will cease immediately.
-              </p>
-
-              <h2 className="text-2xl font-bold text-slate-900 mb-6 mt-8">Changes to Terms</h2>
-              <p className="text-slate-600 mb-6">
-                We may update these terms from time to time. We will notify you of any 
-                significant changes by email or through our platform.
-              </p>
-
-              <h2 className="text-2xl font-bold text-slate-900 mb-6 mt-8">Contact Information</h2>
-              <p className="text-slate-600 mb-4">
-                For questions about these Terms of Service, contact us at:
-              </p>
-              <div className="bg-slate-50 p-4 rounded-lg">
-                <p className="text-slate-700">
-                  <strong>Email:</strong> info@carebow.com<br/>
-                  <strong>Address:</strong> CareBow Legal Team<br/>
-                  Pittsburgh, PA, USA<br/>
-                  <strong>Phone:</strong> (412) 735-1957
-                </p>
-              </div>
-
-              <p className="text-sm text-slate-500 mt-8">
-                Last updated: {new Date().toLocaleDateString()}
-              </p>
-            </div>
+          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+            Please read these terms carefully before using CareBow. By using our platform, you agree to be bound by these terms.
+          </p>
+          <div className="flex items-center justify-center space-x-4">
+            <Badge className="bg-blue-100 text-blue-800">
+              <CheckCircle className="h-4 w-4 mr-1" />
+              Legally Binding
+            </Badge>
+            <Badge className="bg-green-100 text-green-800">
+              <Shield className="h-4 w-4 mr-1" />
+              User Protection
+            </Badge>
           </div>
-        </div>
-      </main>
-      <Footer />
+        </motion.div>
+
+        {/* Last Updated */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.1 }}
+          className="text-center"
+        >
+          <p className="text-sm text-gray-500">
+            Last updated: {new Date().toLocaleDateString('en-US', { 
+              year: 'numeric', 
+              month: 'long', 
+              day: 'numeric' 
+            })}
+          </p>
+        </motion.div>
+
+        {/* Content */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.2 }}
+          className="space-y-8"
+        >
+          {/* Introduction */}
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center space-x-2">
+                <FileText className="h-5 w-5 text-blue-600" />
+                <span>1. Agreement to Terms</span>
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <p className="text-gray-700">
+                These Terms of Service ("Terms") govern your use of CareBow's AI-powered healthcare platform 
+                ("Service") operated by CareBow Inc. ("Company," "we," "our," or "us").
+              </p>
+              <p className="text-gray-700">
+                By accessing or using our Service, you agree to be bound by these Terms. If you disagree with 
+                any part of these terms, you may not access the Service.
+              </p>
+            </CardContent>
+          </Card>
+
+          {/* Service Description */}
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center space-x-2">
+                <Globe className="h-5 w-5 text-green-600" />
+                <span>2. Service Description</span>
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <p className="text-gray-700">
+                CareBow provides an AI-powered healthcare platform that offers:
+              </p>
+              <ul className="space-y-2 text-gray-700">
+                <li className="flex items-start space-x-2">
+                  <CheckCircle className="h-4 w-4 text-green-500 mt-1 flex-shrink-0" />
+                  <span>AI-powered symptom analysis and health insights</span>
+                </li>
+                <li className="flex items-start space-x-2">
+                  <CheckCircle className="h-4 w-4 text-green-500 mt-1 flex-shrink-0" />
+                  <span>Telehealth consultation services</span>
+                </li>
+                <li className="flex items-start space-x-2">
+                  <CheckCircle className="h-4 w-4 text-green-500 mt-1 flex-shrink-0" />
+                  <span>Caregiver matching and coordination</span>
+                </li>
+                <li className="flex items-start space-x-2">
+                  <CheckCircle className="h-4 w-4 text-green-500 mt-1 flex-shrink-0" />
+                  <span>Health tracking and analytics</span>
+                </li>
+                <li className="flex items-start space-x-2">
+                  <CheckCircle className="h-4 w-4 text-green-500 mt-1 flex-shrink-0" />
+                  <span>Educational content and resources</span>
+                </li>
+              </ul>
+            </CardContent>
+          </Card>
+
+          {/* Medical Disclaimer */}
+          <Card className="border-red-200 bg-red-50">
+            <CardHeader>
+              <CardTitle className="flex items-center space-x-2 text-red-800">
+                <AlertTriangle className="h-5 w-5 text-red-600" />
+                <span>3. Medical Disclaimer</span>
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="bg-white p-4 rounded-lg border border-red-200">
+                <h3 className="text-lg font-semibold text-red-800 mb-3">Important Medical Notice</h3>
+                <ul className="space-y-2 text-red-700">
+                  <li className="flex items-start space-x-2">
+                    <XCircle className="h-4 w-4 text-red-500 mt-1 flex-shrink-0" />
+                    <span><strong>CareBow is NOT a substitute for professional medical advice, diagnosis, or treatment.</strong></span>
+                  </li>
+                  <li className="flex items-start space-x-2">
+                    <XCircle className="h-4 w-4 text-red-500 mt-1 flex-shrink-0" />
+                    <span>Always seek the advice of your physician or other qualified health provider with any questions you may have regarding a medical condition.</span>
+                  </li>
+                  <li className="flex items-start space-x-2">
+                    <XCircle className="h-4 w-4 text-red-500 mt-1 flex-shrink-0" />
+                    <span>Never disregard professional medical advice or delay in seeking it because of something you have read on our platform.</span>
+                  </li>
+                  <li className="flex items-start space-x-2">
+                    <XCircle className="h-4 w-4 text-red-500 mt-1 flex-shrink-0" />
+                    <span>If you think you may have a medical emergency, call 911 or go to the nearest emergency room immediately.</span>
+                  </li>
+                </ul>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* User Responsibilities */}
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center space-x-2">
+                <Users className="h-5 w-5 text-purple-600" />
+                <span>4. User Responsibilities</span>
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="grid md:grid-cols-2 gap-6">
+                <div>
+                  <h3 className="text-lg font-semibold text-gray-900 mb-3">Account Security</h3>
+                  <ul className="space-y-2 text-gray-700">
+                    <li>• Maintain the confidentiality of your account credentials</li>
+                    <li>• Notify us immediately of any unauthorized use</li>
+                    <li>• Provide accurate and complete information</li>
+                    <li>• Update your information when it changes</li>
+                  </ul>
+                </div>
+                <div>
+                  <h3 className="text-lg font-semibold text-gray-900 mb-3">Appropriate Use</h3>
+                  <ul className="space-y-2 text-gray-700">
+                    <li>• Use the Service only for lawful purposes</li>
+                    <li>• Provide truthful and accurate health information</li>
+                    <li>• Respect other users and our staff</li>
+                    <li>• Follow all applicable laws and regulations</li>
+                  </ul>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Prohibited Uses */}
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center space-x-2">
+                <XCircle className="h-5 w-5 text-red-600" />
+                <span>5. Prohibited Uses</span>
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <p className="text-gray-700">You may not use our Service:</p>
+              <ul className="space-y-2 text-gray-700">
+                <li className="flex items-start space-x-2">
+                  <XCircle className="h-4 w-4 text-red-500 mt-1 flex-shrink-0" />
+                  <span>For any unlawful purpose or to solicit others to perform unlawful acts</span>
+                </li>
+                <li className="flex items-start space-x-2">
+                  <XCircle className="h-4 w-4 text-red-500 mt-1 flex-shrink-0" />
+                  <span>To violate any international, federal, provincial, or state rules, laws, or local ordinances</span>
+                </li>
+                <li className="flex items-start space-x-2">
+                  <XCircle className="h-4 w-4 text-red-500 mt-1 flex-shrink-0" />
+                  <span>To infringe upon or violate our intellectual property rights or the intellectual property rights of others</span>
+                </li>
+                <li className="flex items-start space-x-2">
+                  <XCircle className="h-4 w-4 text-red-500 mt-1 flex-shrink-0" />
+                  <span>To harass, abuse, insult, harm, defame, slander, disparage, intimidate, or discriminate</span>
+                </li>
+                <li className="flex items-start space-x-2">
+                  <XCircle className="h-4 w-4 text-red-500 mt-1 flex-shrink-0" />
+                  <span>To submit false or misleading information</span>
+                </li>
+                <li className="flex items-start space-x-2">
+                  <XCircle className="h-4 w-4 text-red-500 mt-1 flex-shrink-0" />
+                  <span>To upload or transmit viruses or any other type of malicious code</span>
+                </li>
+              </ul>
+            </CardContent>
+          </Card>
+
+          {/* Limitation of Liability */}
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center space-x-2">
+                <Shield className="h-5 w-5 text-orange-600" />
+                <span>6. Limitation of Liability</span>
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <p className="text-gray-700">
+                In no event shall CareBow, nor its directors, employees, partners, agents, suppliers, or affiliates, 
+                be liable for any indirect, incidental, special, consequential, or punitive damages, including without 
+                limitation, loss of profits, data, use, goodwill, or other intangible losses, resulting from your use 
+                of the Service.
+              </p>
+              <p className="text-gray-700">
+                Our total liability to you for all damages shall not exceed the amount you paid us for the Service 
+                in the 12 months preceding the claim.
+              </p>
+            </CardContent>
+          </Card>
+
+          {/* Privacy Policy */}
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center space-x-2">
+                <Shield className="h-5 w-5 text-blue-600" />
+                <span>7. Privacy Policy</span>
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <p className="text-gray-700">
+                Your privacy is important to us. Please review our Privacy Policy, which also governs your use 
+                of the Service, to understand our practices.
+              </p>
+              <p className="text-gray-700">
+                We are committed to protecting your health information in accordance with HIPAA and other applicable 
+                privacy laws and regulations.
+              </p>
+            </CardContent>
+          </Card>
+
+          {/* Termination */}
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center space-x-2">
+                <XCircle className="h-5 w-5 text-gray-600" />
+                <span>8. Termination</span>
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <p className="text-gray-700">
+                We may terminate or suspend your account and bar access to the Service immediately, without prior 
+                notice or liability, under our sole discretion, for any reason whatsoever and without limitation, 
+                including but not limited to a breach of the Terms.
+              </p>
+              <p className="text-gray-700">
+                If you wish to terminate your account, you may simply discontinue using the Service or contact us 
+                to request account deletion.
+              </p>
+            </CardContent>
+          </Card>
+
+          {/* Changes to Terms */}
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center space-x-2">
+                <FileText className="h-5 w-5 text-indigo-600" />
+                <span>9. Changes to Terms</span>
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <p className="text-gray-700">
+                We reserve the right, at our sole discretion, to modify or replace these Terms at any time. 
+                If a revision is material, we will provide at least 30 days notice prior to any new terms taking effect.
+              </p>
+              <p className="text-gray-700">
+                By continuing to access or use our Service after those revisions become effective, you agree to 
+                be bound by the revised terms.
+              </p>
+            </CardContent>
+          </Card>
+
+          {/* Contact Information */}
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center space-x-2">
+                <Mail className="h-5 w-5 text-blue-600" />
+                <span>10. Contact Information</span>
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-4">
+                <p className="text-gray-700">
+                  If you have any questions about these Terms of Service, please contact us:
+                </p>
+                <div className="grid md:grid-cols-2 gap-6">
+                  <div>
+                    <h3 className="font-semibold text-gray-900 mb-2">Legal Department</h3>
+                    <p className="text-gray-700">legal@carebow.com</p>
+                    <p className="text-gray-700">+1 (555) 123-4567</p>
+                  </div>
+                  <div>
+                    <h3 className="font-semibold text-gray-900 mb-2">General Support</h3>
+                    <p className="text-gray-700">support@carebow.com</p>
+                    <p className="text-gray-700">help@carebow.com</p>
+                  </div>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Emergency Notice */}
+          <Card className="border-red-200 bg-red-50">
+            <CardContent className="p-6">
+              <div className="flex items-start space-x-3">
+                <AlertTriangle className="h-6 w-6 text-red-600 flex-shrink-0 mt-1" />
+                <div>
+                  <h3 className="text-lg font-semibold text-red-800 mb-2">Medical Emergency</h3>
+                  <p className="text-red-700">
+                    <strong>Call 911 immediately</strong> if you are experiencing a medical emergency. 
+                    CareBow is not designed for emergency situations and should not be used as a substitute 
+                    for emergency medical care.
+                  </p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </motion.div>
+      </div>
     </div>
   );
 };
-
-export default TermsOfService;

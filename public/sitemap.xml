@@ -1,170 +1,138 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" 
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
         xmlns:image="http://www.google.com/schemas/sitemap-image/1.1"
         xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
+  
+  <!-- Main Pages -->
   <url>
-    <loc>https://www.carebow.com/</loc>
-    <lastmod>2025-09-07</lastmod>
+    <loc>https://carebow.com/</loc>
+    <lastmod>2024-09-17</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
-    <image:image>
-      <image:loc>https://www.carebow.com/images/carebow-logo.png</image:loc>
-      <image:title>CareBow - AI-Powered In-Home Healthcare Network</image:title>
-      <image:caption>CareBow logo representing AI-powered in-home healthcare services</image:caption>
-    </image:image>
   </url>
+  
   <url>
-    <loc>https://www.carebow.com/services</loc>
-    <lastmod>2025-09-07</lastmod>
+    <loc>https://carebow.com/about</loc>
+    <lastmod>2024-09-17</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>https://carebow.com/faq</loc>
+    <lastmod>2024-09-17</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <!-- Core Features -->
+  <url>
+    <loc>https://carebow.com/enhanced-symptom-checker</loc>
+    <lastmod>2024-09-17</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
-    <image:image>
-      <image:loc>https://www.carebow.com/images/carebow-logo.png</image:loc>
-      <image:title>CareBow - AI-Powered In-Home Healthcare Network</image:title>
-      <image:caption>CareBow logo representing AI-powered in-home healthcare services</image:caption>
-    </image:image>
   </url>
+  
   <url>
-    <loc>https://www.carebow.com/technology</loc>
-    <lastmod>2025-09-07</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-    <image:image>
-      <image:loc>https://www.carebow.com/images/carebow-logo.png</image:loc>
-      <image:title>CareBow - AI-Powered In-Home Healthcare Network</image:title>
-      <image:caption>CareBow logo representing AI-powered in-home healthcare services</image:caption>
-    </image:image>
-  </url>
-  <url>
-    <loc>https://www.carebow.com/about</loc>
-    <lastmod>2025-09-07</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-    <image:image>
-      <image:loc>https://www.carebow.com/images/carebow-logo.png</image:loc>
-      <image:title>CareBow - AI-Powered In-Home Healthcare Network</image:title>
-      <image:caption>CareBow logo representing AI-powered in-home healthcare services</image:caption>
-    </image:image>
-  </url>
-  <url>
-    <loc>https://www.carebow.com/contact</loc>
-    <lastmod>2025-09-07</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-    <image:image>
-      <image:loc>https://www.carebow.com/images/carebow-logo.png</image:loc>
-      <image:title>CareBow - AI-Powered In-Home Healthcare Network</image:title>
-      <image:caption>CareBow logo representing AI-powered in-home healthcare services</image:caption>
-    </image:image>
-  </url>
-  <url>
-    <loc>https://www.carebow.com/careers</loc>
-    <lastmod>2025-09-07</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
-    <image:image>
-      <image:loc>https://www.carebow.com/images/carebow-logo.png</image:loc>
-      <image:title>CareBow - AI-Powered In-Home Healthcare Network</image:title>
-      <image:caption>CareBow logo representing AI-powered in-home healthcare services</image:caption>
-    </image:image>
-  </url>
-  <url>
-    <loc>https://www.carebow.com/blog</loc>
-    <lastmod>2025-09-07</lastmod>
+    <loc>https://carebow.com/health-dashboard</loc>
+    <lastmod>2024-09-17</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
-    <image:image>
-      <image:loc>https://www.carebow.com/images/carebow-logo.png</image:loc>
-      <image:title>CareBow - AI-Powered In-Home Healthcare Network</image:title>
-      <image:caption>CareBow logo representing AI-powered in-home healthcare services</image:caption>
-    </image:image>
   </url>
+  
   <url>
-    <loc>https://www.carebow.com/diabetes-home-care</loc>
-    <lastmod>2025-09-07</lastmod>
-    <changefreq>monthly</changefreq>
+    <loc>https://carebow.com/writer-dashboard</loc>
+    <lastmod>2024-09-17</lastmod>
+    <changefreq>weekly</changefreq>
     <priority>0.7</priority>
-    <image:image>
-      <image:loc>https://www.carebow.com/images/carebow-logo.png</image:loc>
-      <image:title>CareBow - AI-Powered In-Home Healthcare Network</image:title>
-      <image:caption>CareBow logo representing AI-powered in-home healthcare services</image:caption>
-    </image:image>
   </url>
+  
+  <!-- Legal Pages -->
   <url>
-    <loc>https://www.carebow.com/post-stroke-recovery</loc>
-    <lastmod>2025-09-07</lastmod>
+    <loc>https://carebow.com/privacy-policy</loc>
+    <lastmod>2024-09-17</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-    <image:image>
-      <image:loc>https://www.carebow.com/images/carebow-logo.png</image:loc>
-      <image:title>CareBow - AI-Powered In-Home Healthcare Network</image:title>
-      <image:caption>CareBow logo representing AI-powered in-home healthcare services</image:caption>
-    </image:image>
+    <priority>0.5</priority>
   </url>
+  
   <url>
-    <loc>https://www.carebow.com/alzheimers-care</loc>
-    <lastmod>2025-09-07</lastmod>
+    <loc>https://carebow.com/terms-of-service</loc>
+    <lastmod>2024-09-17</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-    <image:image>
-      <image:loc>https://www.carebow.com/images/carebow-logo.png</image:loc>
-      <image:title>CareBow - AI-Powered In-Home Healthcare Network</image:title>
-      <image:caption>CareBow logo representing AI-powered in-home healthcare services</image:caption>
-    </image:image>
+    <priority>0.5</priority>
   </url>
+  
   <url>
-    <loc>https://www.carebow.com/ask-carebow</loc>
-    <lastmod>2025-09-07</lastmod>
+    <loc>https://carebow.com/disclaimer</loc>
+    <lastmod>2024-09-17</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <!-- Symptom-Specific Landing Pages -->
+  <url>
+    <loc>https://carebow.com/symptoms/headache</loc>
+    <lastmod>2024-09-17</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
-    <image:image>
-      <image:loc>https://www.carebow.com/images/carebow-logo.png</image:loc>
-      <image:title>CareBow - AI-Powered In-Home Healthcare Network</image:title>
-      <image:caption>CareBow logo representing AI-powered in-home healthcare services</image:caption>
-    </image:image>
   </url>
+  
   <url>
-    <loc>https://www.carebow.com/ask-carebow/app</loc>
-    <lastmod>2025-09-07</lastmod>
+    <loc>https://carebow.com/symptoms/cough</loc>
+    <lastmod>2024-09-17</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>https://carebow.com/symptoms/fever</loc>
+    <lastmod>2024-09-17</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>https://carebow.com/symptoms/chest-pain</loc>
+    <lastmod>2024-09-17</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>https://carebow.com/symptoms/dizziness</loc>
+    <lastmod>2024-09-17</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <!-- Blog Posts (will be dynamically generated) -->
+  <url>
+    <loc>https://carebow.com/blog</loc>
+    <lastmod>2024-09-17</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.7</priority>
+  </url>
+  
+  <!-- Health Conditions -->
+  <url>
+    <loc>https://carebow.com/conditions/diabetes</loc>
+    <lastmod>2024-09-17</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
-    <image:image>
-      <image:loc>https://www.carebow.com/images/carebow-logo.png</image:loc>
-      <image:title>CareBow - AI-Powered In-Home Healthcare Network</image:title>
-      <image:caption>CareBow logo representing AI-powered in-home healthcare services</image:caption>
-    </image:image>
   </url>
+  
   <url>
-    <loc>https://www.carebow.com/privacy-policy</loc>
-    <lastmod>2025-09-07</lastmod>
-    <changefreq>yearly</changefreq>
-    <priority>0.3</priority>
-    <image:image>
-      <image:loc>https://www.carebow.com/images/carebow-logo.png</image:loc>
-      <image:title>CareBow - AI-Powered In-Home Healthcare Network</image:title>
-      <image:caption>CareBow logo representing AI-powered in-home healthcare services</image:caption>
-    </image:image>
+    <loc>https://carebow.com/conditions/hypertension</loc>
+    <lastmod>2024-09-17</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
   </url>
+  
   <url>
-    <loc>https://www.carebow.com/terms-of-service</loc>
-    <lastmod>2025-09-07</lastmod>
-    <changefreq>yearly</changefreq>
-    <priority>0.3</priority>
-    <image:image>
-      <image:loc>https://www.carebow.com/images/carebow-logo.png</image:loc>
-      <image:title>CareBow - AI-Powered In-Home Healthcare Network</image:title>
-      <image:caption>CareBow logo representing AI-powered in-home healthcare services</image:caption>
-    </image:image>
+    <loc>https://carebow.com/conditions/mental-health</loc>
+    <lastmod>2024-09-17</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
   </url>
-  <url>
-    <loc>https://www.carebow.com/hipaa-compliance</loc>
-    <lastmod>2025-09-07</lastmod>
-    <changefreq>yearly</changefreq>
-    <priority>0.4</priority>
-    <image:image>
-      <image:loc>https://www.carebow.com/images/carebow-logo.png</image:loc>
-      <image:title>CareBow - AI-Powered In-Home Healthcare Network</image:title>
-      <image:caption>CareBow logo representing AI-powered in-home healthcare services</image:caption>
-    </image:image>
-  </url>
+  
 </urlset>
