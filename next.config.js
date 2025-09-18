@@ -14,6 +14,10 @@ const nextConfig = {
   env: {
     CUSTOM_KEY: process.env.CUSTOM_KEY,
   },
+  output: 'standalone',
+  experimental: {
+    esmExternals: false,
+  },
   webpack: (config, { isServer }) => {
     config.module.rules.push({
       test: /\.svg$/,
