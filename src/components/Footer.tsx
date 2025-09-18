@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
 import { 
   Heart, 
   Mail, 
@@ -53,32 +53,32 @@ export const Footer: React.FC = () => {
             <h3 className="text-lg font-semibold">Quick Links</h3>
             <ul className="space-y-2">
               <li>
-                <Link to="/" className="text-gray-300 hover:text-white transition-colors text-sm">
+                <Link href="/" className="text-gray-300 hover:text-white transition-colors text-sm">
                   Home
                 </Link>
               </li>
               <li>
-                <Link to="/about" className="text-gray-300 hover:text-white transition-colors text-sm">
+                <Link href="/about" className="text-gray-300 hover:text-white transition-colors text-sm">
                   About Us
                 </Link>
               </li>
               <li>
-                <Link to="/enhanced-symptom-checker" className="text-gray-300 hover:text-white transition-colors text-sm">
+                <Link href="/ask-carebow" className="text-gray-300 hover:text-white transition-colors text-sm">
                   Ask CareBow
                 </Link>
               </li>
               <li>
-                <Link to="/health-dashboard" className="text-gray-300 hover:text-white transition-colors text-sm">
+                <Link href="/health-dashboard" className="text-gray-300 hover:text-white transition-colors text-sm">
                   Health Dashboard
                 </Link>
               </li>
               <li>
-                <Link to="/writer-dashboard" className="text-gray-300 hover:text-white transition-colors text-sm">
+                <Link href="/writer-dashboard" className="text-gray-300 hover:text-white transition-colors text-sm">
                   Writer Dashboard
                 </Link>
               </li>
               <li>
-                <Link to="/faq" className="text-gray-300 hover:text-white transition-colors text-sm">
+                <Link href="/faq" className="text-gray-300 hover:text-white transition-colors text-sm">
                   FAQ
                 </Link>
               </li>
@@ -160,27 +160,27 @@ export const Footer: React.FC = () => {
             <div className="space-y-4">
               <h3 className="text-lg font-semibold">Legal & Privacy</h3>
               <div className="grid grid-cols-2 gap-2">
-                <Link to="/privacy-policy" className="text-gray-300 hover:text-white transition-colors text-sm flex items-center space-x-2">
+                <Link href="/privacy-policy" className="text-gray-300 hover:text-white transition-colors text-sm flex items-center space-x-2">
                   <FileText className="h-3 w-3" />
                   <span>Privacy Policy</span>
                 </Link>
-                <Link to="/terms-of-service" className="text-gray-300 hover:text-white transition-colors text-sm flex items-center space-x-2">
+                <Link href="/terms-of-service" className="text-gray-300 hover:text-white transition-colors text-sm flex items-center space-x-2">
                   <FileText className="h-3 w-3" />
                   <span>Terms of Service</span>
                 </Link>
-                <Link to="/disclaimer" className="text-gray-300 hover:text-white transition-colors text-sm flex items-center space-x-2">
+                <Link href="/disclaimer" className="text-gray-300 hover:text-white transition-colors text-sm flex items-center space-x-2">
                   <AlertTriangle className="h-3 w-3" />
                   <span>Medical Disclaimer</span>
                 </Link>
-                <Link to="/hipaa-compliance" className="text-gray-300 hover:text-white transition-colors text-sm flex items-center space-x-2">
+                <Link href="/hipaa-compliance" className="text-gray-300 hover:text-white transition-colors text-sm flex items-center space-x-2">
                   <Shield className="h-3 w-3" />
                   <span>HIPAA Compliance</span>
                 </Link>
-                <Link to="/accessibility" className="text-gray-300 hover:text-white transition-colors text-sm flex items-center space-x-2">
+                <Link href="/accessibility" className="text-gray-300 hover:text-white transition-colors text-sm flex items-center space-x-2">
                   <Users className="h-3 w-3" />
                   <span>Accessibility</span>
                 </Link>
-                <Link to="/cookie-policy" className="text-gray-300 hover:text-white transition-colors text-sm flex items-center space-x-2">
+                <Link href="/cookie-policy" className="text-gray-300 hover:text-white transition-colors text-sm flex items-center space-x-2">
                   <FileText className="h-3 w-3" />
                   <span>Cookie Policy</span>
                 </Link>

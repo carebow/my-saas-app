@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { useAuth } from '@/hooks/useAuth';
+import { useAuth } from '../hooks/useAuth';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Brain, MessageCircle, Shield, Clock, Users, Stethoscope } from 'lucide-react';
-import { Card, CardContent } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
+import { Card, CardContent } from './ui/card';
+import { Button } from './ui/button';
 import ConversationalChat from './ConversationalChat';
 import HealthProfileSetup from './HealthProfileSetup';
-import VoiceChatButton from '@/components/VoiceChatButton';
-import { supabase } from '@/integrations/supabase/client';
-import { useToast } from '@/hooks/use-toast';
+import VoiceChatButton from './VoiceChatButton';
+import { supabase } from '../../integrations/supabase/client';
+import { useToast } from '../hooks/use-toast';
 
 const SymptomChecker = () => {
   const { user } = useAuth();

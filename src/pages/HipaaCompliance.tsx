@@ -1,5 +1,9 @@
 
+'use client'
+
 import Navbar from "../components/UnifiedNavigation";
+
+export const dynamic = 'force-dynamic';
 import Footer from "../components/UnifiedFooter";
 import { Shield, Lock, Eye, FileText } from "lucide-react";
 

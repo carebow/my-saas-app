@@ -1,12 +1,13 @@
-const API_BASE_URL = import.meta.env.VITE_API_BASE || 'http://localhost:8000';
+import { env } from '../lib/env';
+import { safeLocalStorage } from '../lib/safeStorage';
 
 class ApiService {
   private baseURL: string;
   private token: string | null = null;
 
   constructor() {
-    this.baseURL = API_BASE_URL;
-    this.token = localStorage.getItem('access_token');
+    this.baseURL = env.NEXT_PUBLIC_API_BASE_URL;
+    this.token = safeLocalStorage.get('access_token');
   }
 
   private async request<T>(
@@ -62,7 +63,12 @@ class ApiService {
     const response = await this.request<{
       access_token: string;
       token_type: string;
-      user: any;
+      user: {
+        id: number;
+        email: string;
+        full_name?: string;
+        is_active: boolean;
+      };
     }>('/auth/login', {
       method: 'POST',
       headers: {},
@@ -70,7 +76,7 @@ class ApiService {
     });
 
     this.token = response.access_token;
-    localStorage.setItem('access_token', response.access_token);
+    safeLocalStorage.set('access_token', response.access_token);
     
     return response;
   }
@@ -79,7 +85,7 @@ class ApiService {
     return this.request('/users/me');
   }
 
-  async updateProfile(userData: any) {
+  async updateProfile(userData: Record<string, unknown>) {
     return this.request('/users/me', {
       method: 'PUT',
       body: JSON.stringify(userData),
@@ -87,7 +93,7 @@ class ApiService {
   }
 
   // AI methods
-  async chatWithAI(message: string, context?: any) {
+  async chatWithAI(message: string, context?: Record<string, unknown>) {
     return this.request('/ai/chat', {
       method: 'POST',
       body: JSON.stringify({ message, context }),
@@ -109,7 +115,7 @@ class ApiService {
   }
 
   // Health methods
-  async createHealthProfile(profileData: any) {
+  async createHealthProfile(profileData: Record<string, unknown>) {
     return this.request('/health/profile', {
       method: 'POST',
       body: JSON.stringify(profileData),
@@ -157,12 +163,12 @@ class ApiService {
   // Utility methods
   logout() {
     this.token = null;
-    localStorage.removeItem('access_token');
+    safeLocalStorage.remove('access_token');
   }
 
   setToken(token: string) {
     this.token = token;
-    localStorage.setItem('access_token', token);
+    safeLocalStorage.set('access_token', token);
   }
 
   isAuthenticated(): boolean {

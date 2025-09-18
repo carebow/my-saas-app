@@ -1,7 +1,7 @@
 
 import React, { Suspense, lazy, useMemo, useCallback } from "react";
-import { Toaster } from "@/components/ui/sonner";
-import { CustomTooltipProvider } from "@/components/ui/custom-tooltip-provider";
+import { Toaster } from "../components/ui/sonner";
+import { CustomTooltipProvider } from "../components/ui/custom-tooltip-provider";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { HelmetProvider } from "react-helmet-async";
@@ -30,7 +30,7 @@ const PostStrokeRecovery = lazy(() => import("./pages/PostStrokeRecovery"));
 const AlzheimersCare = lazy(() => import("./pages/AlzheimersCare"));
 const AskCareBow = lazy(() => import("./pages/AskCareBow"));
 const AskCareBowApp = lazy(() => import("./pages/AskCareBowApp"));
-const AdminDashboard = lazy(() => import("./pages/AdminDashboard"));
+// const AdminDashboard = lazy(() => import("./pages/AdminDashboard")); // Moved to Next.js routing
 const Dashboard = lazy(() => import("./pages/Dashboard"));
 const EnhancedSymptomChecker = lazy(() => import("./components/enhanced/EnhancedSymptomChecker"));
 const HealthDashboard = lazy(() => import("./components/enhanced/HealthDashboard"));
@@ -159,11 +159,7 @@ function App() {
                           <AskCareBowApp />
                         </Suspense>
                       } />
-                      <Route path="/admin" element={
-                        <Suspense fallback={<RouteLoader />}>
-                          <AdminDashboard />
-                        </Suspense>
-                      } />
+                      {/* Admin route moved to Next.js routing */}
                       <Route path="/dashboard" element={
                         <Suspense fallback={<RouteLoader />}>
                           <Dashboard />

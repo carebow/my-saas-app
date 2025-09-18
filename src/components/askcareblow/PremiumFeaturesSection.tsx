@@ -1,8 +1,8 @@
 import React from 'react';
-import { motion } from 'framer-motion';
-import { Card, CardContent } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
+// import { motion } from 'framer-motion';
+import { Card, CardContent } from '../ui/card';
+import { Button } from '../ui/button';
+import { Badge } from '../ui/badge';
 import { Check, Crown, Mic, Stethoscope, BarChart3, UserCheck } from 'lucide-react';
 import { Link } from 'react-router-dom';
 

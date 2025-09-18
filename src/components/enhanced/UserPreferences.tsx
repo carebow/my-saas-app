@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
+import { safeLocalStorage } from '../../lib/safeStorage';
 import { 
   Settings, 
   Heart, 
@@ -10,14 +11,14 @@ import {
   Save,
   RotateCcw
 } from 'lucide-react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Label } from '@/components/ui/label';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Switch } from '@/components/ui/switch';
-import { Slider } from '@/components/ui/slider';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { useToast } from '@/components/ui/use-toast';
+import { Card, CardContent, CardHeader, CardTitle } from '../ui/card';
+import { Button } from '../ui/button';
+import { Label } from '../ui/label';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select';
+import { Switch } from '../ui/switch';
+import { Slider } from '../ui/slider';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '../ui/tabs';
+import { useToast } from '../ui/use-toast';
 
 interface UserPreferences {
   communication_style: string;
@@ -55,7 +56,7 @@ const UserPreferences: React.FC<UserPreferencesProps> = ({ preferences, onUpdate
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${localStorage.getItem('access_token')}`
+          'Authorization': `Bearer ${safeLocalStorage.get('access_token')}`
         },
         body: JSON.stringify(localPreferences)
       });
@@ -86,7 +87,7 @@ const UserPreferences: React.FC<UserPreferencesProps> = ({ preferences, onUpdate
     }
   };
 
-  const updatePreference = (key: keyof UserPreferences, value: any) => {
+  const updatePreference = (key: keyof UserPreferences, value: string | boolean | number) => {
     if (localPreferences) {
       setLocalPreferences({
         ...localPreferences,
@@ -95,7 +96,7 @@ const UserPreferences: React.FC<UserPreferencesProps> = ({ preferences, onUpdate
     }
   };
 
-  const updateNestedPreference = (parentKey: keyof UserPreferences, childKey: string, value: any) => {
+  const updateNestedPreference = (parentKey: keyof UserPreferences, childKey: string, value: string | boolean | number) => {
     if (localPreferences) {
       setLocalPreferences({
         ...localPreferences,

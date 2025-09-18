@@ -3,11 +3,12 @@
  */
 import * as Sentry from '@sentry/react';
 import { BrowserTracing } from '@sentry/tracing';
+import { env } from './env';
 
 // Environment configuration
-const SENTRY_DSN = import.meta.env.VITE_SENTRY_DSN;
-const ENVIRONMENT = import.meta.env.VITE_ENVIRONMENT || 'development';
-const VERSION = import.meta.env.VITE_APP_VERSION || '1.0.0';
+const SENTRY_DSN = env.NEXT_PUBLIC_SENTRY_DSN;
+const ENVIRONMENT = env.NEXT_PUBLIC_ENVIRONMENT || 'development';
+const VERSION = env.NEXT_PUBLIC_APP_VERSION || '1.0.0';
 
 /**
  * Initialize Sentry for error monitoring and performance tracking

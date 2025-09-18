@@ -1,12 +1,12 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { useToast } from '@/components/ui/use-toast';
-import { useHealthProfile } from '@/hooks/useHealthProfile';
-import { supabase } from '@/integrations/supabase/client';
+import { Card, CardContent, CardHeader, CardTitle } from '../ui/card';
+import { Button } from '../ui/button';
+import { Badge } from '../ui/badge';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '../ui/tabs';
+import { useToast } from '../ui/use-toast';
+import { useHealthProfile } from '../../hooks/useHealthProfile';
+import { supabase } from '../../integrations/supabase/client';
 import { 
   Mic, 
   MicOff, 
@@ -26,8 +26,8 @@ import {
   Type,
   Send
 } from 'lucide-react';
-import { Alert, AlertDescription } from '@/components/ui/alert';
-import { Textarea } from '@/components/ui/textarea';
+import { Alert, AlertDescription } from '../ui/alert';
+import { Textarea } from '../ui/textarea';
 
 interface VoiceMessage {
   id: string;

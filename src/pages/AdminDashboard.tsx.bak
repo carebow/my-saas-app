@@ -1,8 +1,9 @@
+'use client'
 import React, { useState, useEffect } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
+import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card';
+import { Badge } from '../components/ui/badge';
 import { Users, Activity, MessageSquare, TrendingUp, Calendar, DollarSign } from 'lucide-react';
-import { apiService as api } from '@/services/api';
+import { apiService as api } from '../services/api';
 
 interface DashboardStats {
   totalUsers: number;

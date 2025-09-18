@@ -1,8 +1,15 @@
 
+'use client'
+
 import React from "react";
 import SEO from "../components/SEO";
 import Navbar from "../components/UnifiedNavigation";
 import Footer from "../components/UnifiedFooter";
+import TechnologyHero from "../components/technology/TechnologyHero";
+import TechnologyStack from "../components/technology/TechnologyStack";
+import TechnologyStats from "../components/technology/TechnologyStats";
+import AISection from "../components/technology/AISection";
+import TechnologyCTA from "../components/technology/TechnologyCTA";
 
 const Technology = () => {
   const structuredData = {

@@ -3,8 +3,8 @@
  * Add this to any page to test Sentry functionality.
  */
 import React from 'react';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from './ui/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './ui/card';
 import { captureException, captureMessage, setUserContext } from '@/lib/sentry';
 
 const SentryTest: React.FC = () => {

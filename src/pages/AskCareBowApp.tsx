@@ -1,6 +1,10 @@
+'use client'
+
 import React from 'react';
-import { HealthDashboard } from '@/components/health/HealthDashboard';
-import SEO from '@/components/SEO';
+import { HealthDashboard } from '../components/health/HealthDashboard';
+import SEO from '../components/SEO';
+
+export const dynamic = 'force-dynamic';
 
 const AskCareBowApp = () => {
 

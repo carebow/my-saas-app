@@ -1,6 +1,10 @@
+'use client'
+
 import React from 'react';
-import SEO from '@/components/SEO';
-import { BetaCareBow } from '@/components/enhanced/BetaCareBow';
+import SEO from '../components/SEO';
+import { BetaCareBow } from '../components/enhanced/BetaCareBow';
+
+export const dynamic = 'force-dynamic';
 
 const AskCareBow = () => {
   return (

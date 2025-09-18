@@ -2,9 +2,9 @@ import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
+import { Button } from '../ui/button';
+import { Input } from '../ui/input';
+import { Label } from '../ui/label';
 import { AlertCircle, Eye, EyeOff, Shield, CheckCircle, Loader2 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -33,7 +33,7 @@ type SignUpFormData = z.infer<typeof signUpSchema>;
 
 interface ImprovedAuthFormProps {
   type: 'signin' | 'signup';
-  onSubmit: (data: any) => Promise<{ error: string | null }>;
+  onSubmit: (data: Record<string, string>) => Promise<{ error: string | null }>;
   isLoading: boolean;
 }
 

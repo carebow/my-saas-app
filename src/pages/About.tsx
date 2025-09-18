@@ -1,5 +1,13 @@
 
+'use client'
+
 import React from "react";
+
+export const dynamic = 'force-dynamic';
+import { Heart, Target, Users, Award, Linkedin, Twitter, Mail, MapPin, Phone, Clock, Globe, Shield, Zap, CheckCircle, ArrowRight, Star, Brain, Stethoscope, Leaf, Award as AwardIcon } from "lucide-react";
+import { motion } from "framer-motion";
+import { Card, CardContent, CardHeader, CardTitle } from "../components/ui/card";
+import { Button } from "../components/ui/button";
 import SEO from "../components/SEO";
 import Navbar from "../components/UnifiedNavigation";
 import Footer from "../components/UnifiedFooter";

@@ -1,6 +1,6 @@
 import React from 'react';
-import { motion } from 'framer-motion';
-import { Button } from '@/components/ui/button';
+// import { motion } from 'framer-motion';
+import { Button } from '../ui/button';
 import { Stethoscope, Play, Shield, Globe, Heart } from 'lucide-react';
 import { Link } from 'react-router-dom';
 

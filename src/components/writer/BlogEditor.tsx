@@ -1,9 +1,10 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { safeLocalStorage } from '../../lib/safeStorage';
+import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
+import { Button } from './ui/button';
+import { Badge } from './ui/badge';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from './ui/tabs';
 import { 
   Save, 
   Eye, 
@@ -34,8 +35,8 @@ import {
   BookOpen,
   PenTool
 } from 'lucide-react';
-import { useAuth } from '@/hooks/useAuth';
-import { useToast } from '@/hooks/use-toast';
+import { useAuth } from '../hooks/useAuth';
+import { useToast } from '../hooks/use-toast';
 
 interface BlogPost {
   id?: number;
@@ -108,21 +109,21 @@ export const BlogEditor: React.FC = () => {
         .trim();
       setPost(prev => ({ ...prev, slug }));
     }
-  }, [post.title]);
+  }, [post.title, post.slug]);
 
   // Auto-generate meta title from title
   useEffect(() => {
     if (post.title && !post.meta_title) {
       setPost(prev => ({ ...prev, meta_title: post.title }));
     }
-  }, [post.title]);
+  }, [post.title, post.meta_title]);
 
   // Auto-generate social title from title
   useEffect(() => {
     if (post.title && !post.social_title) {
       setPost(prev => ({ ...prev, social_title: post.title }));
     }
-  }, [post.title]);
+  }, [post.title, post.social_title]);
 
   const handleSave = async () => {
     setSaving(true);
@@ -131,7 +132,7 @@ export const BlogEditor: React.FC = () => {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${localStorage.getItem('token')}`
+          'Authorization': `Bearer ${safeLocalStorage.get('token')}`
         },
         body: JSON.stringify(post)
       });
@@ -164,7 +165,7 @@ export const BlogEditor: React.FC = () => {
       const response = await fetch(`/api/v1/content/posts/${post.id}/publish`, {
         method: 'POST',
         headers: {
-          'Authorization': `Bearer ${localStorage.getItem('token')}`
+          'Authorization': `Bearer ${safeLocalStorage.get('token')}`
         }
       });
       
@@ -202,7 +203,7 @@ export const BlogEditor: React.FC = () => {
     try {
       const response = await fetch(`/api/v1/content/posts/${post.id}/seo`, {
         headers: {
-          'Authorization': `Bearer ${localStorage.getItem('token')}`
+          'Authorization': `Bearer ${safeLocalStorage.get('token')}`
         }
       });
       

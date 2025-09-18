@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { safeLocalStorage } from '../../lib/safeStorage';
 import { 
   Brain, 
   Search, 
@@ -13,12 +14,12 @@ import {
   ChevronDown,
   ChevronUp
 } from 'lucide-react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Badge } from '@/components/ui/badge';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { useToast } from '@/components/ui/use-toast';
+import { Card, CardContent, CardHeader, CardTitle } from '../ui/card';
+import { Button } from '../ui/button';
+import { Input } from '../ui/input';
+import { Badge } from '../ui/badge';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '../ui/tabs';
+import { useToast } from '../ui/use-toast';
 
 interface Memory {
   id: string;
@@ -53,18 +54,18 @@ const ChatGPTMemory: React.FC<ChatGPTMemoryProps> = ({
   const [isLoading, setIsLoading] = useState(false);
 
   // Memory types
-  const memoryTypes = [
+  const memoryTypes = useMemo(() => [
     { value: 'all', label: 'All Memories', icon: '🧠', count: 0 },
     { value: 'health_concern', label: 'Health Concerns', icon: '🏥', count: 0 },
     { value: 'remedy_preference', label: 'Remedy Preferences', icon: '💊', count: 0 },
     { value: 'emotional_pattern', label: 'Emotional Patterns', icon: '💝', count: 0 },
     { value: 'user_profile', label: 'Profile Info', icon: '👤', count: 0 }
-  ];
+  ], []);
 
   // Load memories
   useEffect(() => {
     loadMemories();
-  }, [userId]);
+  }, [userId, loadMemories]);
 
   // Filter memories
   useEffect(() => {
@@ -97,14 +98,14 @@ const ChatGPTMemory: React.FC<ChatGPTMemoryProps> = ({
         : memories.filter(m => m.type === type.value).length
     }));
     // Update the state or pass to parent component
-  }, [memories]);
+  }, [memories, memoryTypes]);
 
-  const loadMemories = async () => {
+  const loadMemories = useCallback(async () => {
     setIsLoading(true);
     try {
       const response = await fetch('/api/v1/enhanced-chat/memories', {
         headers: {
-          'Authorization': `Bearer ${localStorage.getItem('access_token')}`
+          'Authorization': `Bearer ${safeLocalStorage.get('access_token')}`
         }
       });
       const data = await response.json();
@@ -118,7 +119,7 @@ const ChatGPTMemory: React.FC<ChatGPTMemoryProps> = ({
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [toast]);
 
   const handleSearch = async (query: string) => {
     if (!query.trim()) {
@@ -132,7 +133,7 @@ const ChatGPTMemory: React.FC<ChatGPTMemoryProps> = ({
     try {
       const response = await fetch(`/api/v1/enhanced-chat/memories/search?query=${encodeURIComponent(query)}&limit=20`, {
         headers: {
-          'Authorization': `Bearer ${localStorage.getItem('access_token')}`
+          'Authorization': `Bearer ${safeLocalStorage.get('access_token')}`
         }
       });
       const data = await response.json();

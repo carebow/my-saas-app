@@ -1,11 +1,12 @@
+'use client'
 import React, { useState, useCallback, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Badge } from '@/components/ui/badge';
-import { ScrollArea } from '@/components/ui/scroll-area';
-import { Alert, AlertDescription } from '@/components/ui/alert';
+import { Card, CardContent, CardHeader, CardTitle } from '../ui/card';
+import { Button } from '../ui/button';
+import { Input } from '../ui/input';
+import { Badge } from '../ui/badge';
+import { ScrollArea } from '../ui/scroll-area';
+import { Alert, AlertDescription } from '../ui/alert';
 import { 
   Mic, 
   MicOff, 
@@ -23,9 +24,9 @@ import {
   Calendar,
   Leaf
 } from 'lucide-react';
-import { FeedbackWidget } from '@/components/ui/feedback-widget';
-import { supabase } from '@/integrations/supabase/client';
-import { useToast } from '@/hooks/use-toast';
+import { FeedbackWidget } from '../ui/feedback-widget';
+import { supabase } from '../../integrations/supabase/client';
+import { useToast } from '../../hooks/use-toast';
 
 // Message types for the conversation
 interface ConversationMessage {
@@ -108,7 +109,7 @@ export const ConversationalInterface: React.FC<ConversationalInterfaceProps> = (
       };
       setMessages([welcomeMessage]);
     }
-  }, [initialSymptom]);
+  }, [initialSymptom, messages.length]);
 
   // Send message to AI
   const sendMessage = useCallback(async (content: string) => {
@@ -271,7 +272,7 @@ Respond in JSON format:
     } finally {
       setIsProcessing(false);
     }
-  }, [messages, aiPersonality, conversationStage, userProfile, onUrgentCare, onTriageComplete, toast]);
+  }, [messages, aiPersonality, conversationStage, userProfile, onUrgentCare, onTriageComplete, playAudioResponse, toast]);
 
   // Voice input handling
   const startVoiceInput = useCallback(() => {

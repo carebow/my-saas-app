@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
-import { useAuth } from '@/hooks/useAuth';
+import { useAuth } from '../hooks/useAuth';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   Send, 
@@ -23,15 +23,15 @@ import {
   MoreVertical,
   Brain
 } from 'lucide-react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Textarea } from '@/components/ui/textarea';
-import { Badge } from '@/components/ui/badge';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
-import { Slider } from '@/components/ui/slider';
-import { Switch } from '@/components/ui/switch';
-import { useToast } from '@/components/ui/use-toast';
+import { Card, CardContent, CardHeader, CardTitle } from '../ui/card';
+import { Button } from '../ui/button';
+import { Textarea } from '../ui/textarea';
+import { Badge } from '../ui/badge';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '../ui/tabs';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '../ui/dialog';
+import { Slider } from '../ui/slider';
+import { Switch } from '../ui/switch';
+import { useToast } from '../ui/use-toast';
 import { PersonalizedRemedyCard } from './PersonalizedRemedyCard';
 import { VoiceRecorder } from './VoiceRecorder';
 import { ChatHistory } from './ChatHistory';
@@ -112,7 +112,7 @@ const EnhancedAskCareBow: React.FC = () => {
       loadUserPreferences();
       loadChatSessions();
     }
-  }, [user]);
+  }, [user, loadUserPreferences, loadChatSessions]);
   
   // Auto-scroll to bottom
   useEffect(() => {
@@ -131,7 +131,7 @@ const EnhancedAskCareBow: React.FC = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
   
-  const loadUserPreferences = async () => {
+  const loadUserPreferences = useCallback(async () => {
     try {
       const response = await fetch('/api/v1/enhanced-chat/preferences', {
         headers: {
@@ -143,9 +143,9 @@ const EnhancedAskCareBow: React.FC = () => {
     } catch (error) {
       console.error('Failed to load preferences:', error);
     }
-  };
+  }, [session?.access_token]);
   
-  const loadChatSessions = async () => {
+  const loadChatSessions = useCallback(async () => {
     try {
       const response = await fetch('/api/v1/enhanced-chat/sessions', {
         headers: {
@@ -157,7 +157,7 @@ const EnhancedAskCareBow: React.FC = () => {
     } catch (error) {
       console.error('Failed to load sessions:', error);
     }
-  };
+  }, [session?.access_token]);
   
   const createNewSession = async () => {
     try {

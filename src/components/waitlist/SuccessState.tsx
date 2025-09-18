@@ -1,7 +1,7 @@
 
 import { motion } from "framer-motion";
 import { CheckCircle, Users, Mail, Heart, Sparkles } from "lucide-react";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "./ui/card";
 
 interface SuccessStateProps {
   queuePosition: number;

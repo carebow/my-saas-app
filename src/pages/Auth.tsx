@@ -1,15 +1,19 @@
+'use client'
 
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { motion } from 'framer-motion';
+
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { Heart } from 'lucide-react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Separator } from '@/components/ui/separator';
-import { useAuth } from '@/hooks/useAuth';
-import { useToast } from '@/hooks/use-toast';
-import EnhancedAuthForm from '@/components/auth/EnhancedAuthForm';
-import GoogleSignInButton from '@/components/GoogleSignInButton';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../components/ui/card';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '../components/ui/tabs';
+import { Separator } from '../components/ui/separator';
+import { useAuth } from '../hooks/useAuth';
+import { useToast } from '../hooks/use-toast';
+import EnhancedAuthForm from '../components/auth/EnhancedAuthForm';
+import GoogleSignInButton from '../components/GoogleSignInButton';
 
 interface AuthFormData {
   email: string;

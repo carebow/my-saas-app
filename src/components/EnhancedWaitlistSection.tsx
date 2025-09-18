@@ -1,7 +1,7 @@
 import WaitlistForm from "./WaitlistForm";
 import { motion } from "framer-motion";
-import { supabase } from "@/integrations/supabase/client";
-import { useToast } from "@/hooks/use-toast";
+import { supabase } from "../../integrations/supabase/client";
+import { useToast } from "../hooks/use-toast";
 import { Gift, Clock, Users, Star, ArrowRight } from "lucide-react";
 
 const EnhancedWaitlistSection = () => {

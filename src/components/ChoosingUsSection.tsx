@@ -1,6 +1,6 @@
 
 import { Check, Shield, MessageCircle, Clock, Heart, Zap, Stethoscope, Activity, UserCheck, Pill } from 'lucide-react';
-import { motion } from 'framer-motion';
+// import { motion } from 'framer-motion';
 
 const ChoosingUsSection = () => {
   const reasons = [

@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { Alert, AlertDescription } from '@/components/ui/alert';
-import { Progress } from '@/components/ui/progress';
+import { safeLocalStorage } from '../../lib/safeStorage';
+import { Card, CardContent, CardHeader, CardTitle } from '../ui/card';
+import { Button } from '../ui/button';
+import { Badge } from '../ui/badge';
+import { Alert, AlertDescription } from '../ui/alert';
+import { Progress } from '../ui/progress';
 import { 
   Heart, 
   MessageCircle, 
@@ -15,8 +16,8 @@ import {
   Brain,
   Shield
 } from 'lucide-react';
-import { useAuth } from '@/hooks/useAuth';
-import { useToast } from '@/hooks/use-toast';
+import { useAuth } from '../hooks/useAuth';
+import { useToast } from '../hooks/use-toast';
 
 interface SymptomAnalysis {
   possible_causes: string[];
@@ -83,7 +84,7 @@ export const EnhancedSymptomChecker: React.FC = () => {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${localStorage.getItem('token')}`
+          'Authorization': `Bearer ${safeLocalStorage.get('token')}`
         },
         body: JSON.stringify({
           symptom: symptomInput,
@@ -141,7 +142,7 @@ export const EnhancedSymptomChecker: React.FC = () => {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${localStorage.getItem('token')}`
+          'Authorization': `Bearer ${safeLocalStorage.get('token')}`
         },
         body: JSON.stringify(symptomContext)
       });

@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent } from '@/components/ui/card';
+import { Button } from '../ui/button';
+import { Card, CardContent } from '../ui/card';
 import { Mic, MicOff, Volume2, VolumeX, RotateCcw } from 'lucide-react';
-import { useToast } from '@/hooks/use-toast';
+import { useToast } from '../hooks/use-toast';
 
 interface VoiceInputProps {
   onTranscript: (transcript: string) => void;
@@ -48,9 +48,9 @@ export const VoiceInput: React.FC<VoiceInputProps> = ({
         audioContextRef.current.close();
       }
     };
-  }, []);
+  }, [initializeSpeechRecognition, onError]);
 
-  const initializeSpeechRecognition = () => {
+  const initializeSpeechRecognition = useCallback(() => {
     const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
     recognitionRef.current = new SpeechRecognition();
     
@@ -125,9 +125,9 @@ export const VoiceInput: React.FC<VoiceInputProps> = ({
         variant: "destructive"
       });
     };
-  };
+  }, [onError, onTranscript, startAudioVisualization, toast, transcript]);
 
-  const startAudioVisualization = async () => {
+  const startAudioVisualization = useCallback(async () => {
     try {
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
       audioContextRef.current = new AudioContext();
@@ -152,7 +152,7 @@ export const VoiceInput: React.FC<VoiceInputProps> = ({
     } catch (error) {
       console.error('Error accessing microphone:', error);
     }
-  };
+  }, [isListening]);
 
   const stopAudioVisualization = () => {
     if (animationFrameRef.current) {
@@ -164,7 +164,7 @@ export const VoiceInput: React.FC<VoiceInputProps> = ({
     setAudioLevel(0);
   };
 
-  const startListening = () => {
+  const startListening = useCallback(() => {
     if (recognitionRef.current && !isListening) {
       try {
         recognitionRef.current.start();
@@ -172,7 +172,7 @@ export const VoiceInput: React.FC<VoiceInputProps> = ({
         onError?.('Failed to start speech recognition');
       }
     }
-  };
+  }, [isListening, onError]);
 
   const stopListening = () => {
     if (recognitionRef.current && isListening) {

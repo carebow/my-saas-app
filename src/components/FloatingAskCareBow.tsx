@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Stethoscope, X, Heart } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import { Button } from './ui/button';
 import { useAuth } from '../hooks/useAuth';
 
 const FloatingAskCareBow: React.FC = () => {

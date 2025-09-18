@@ -1,8 +1,12 @@
+'use client'
+
 import React from 'react';
+
+export const dynamic = 'force-dynamic';
 import { motion } from 'framer-motion';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
+import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card';
+import { Button } from '../components/ui/button';
+import { Badge } from '../components/ui/badge';
 import { 
   Brain, 
   ArrowRight, 
@@ -307,3 +311,5 @@ export const PillarArticle1: React.FC = () => {
     </div>
   );
 };
+
+export default PillarArticle1;

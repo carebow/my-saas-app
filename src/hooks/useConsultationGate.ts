@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from './useAuth';
-import { useSubscription } from '@/hooks/useSubscription';
+import { useSubscription } from '../hooks/useSubscription';
+import { safeLocalStorage } from '../lib/safeStorage';
 
 const FREE_CONSULTATION_LIMIT = 3;
 
@@ -18,7 +19,7 @@ export const useConsultationGate = () => {
   useEffect(() => {
     if (user) {
       const storageKey = getStorageKey();
-      const savedCount = localStorage.getItem(storageKey);
+      const savedCount = safeLocalStorage.get(storageKey);
       setConsultationCount(savedCount ? parseInt(savedCount, 10) : 0);
     }
   }, [user, getStorageKey]);
@@ -27,7 +28,7 @@ export const useConsultationGate = () => {
   const saveConsultationCount = (count: number) => {
     if (user) {
       const storageKey = getStorageKey();
-      localStorage.setItem(storageKey, count.toString());
+      safeLocalStorage.set(storageKey, count.toString());
     }
   };
 

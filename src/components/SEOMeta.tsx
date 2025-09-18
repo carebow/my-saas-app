@@ -1,3 +1,5 @@
+'use client'
+
 import React from 'react';
 import { Helmet } from 'react-helmet-async';
 
@@ -10,7 +12,7 @@ interface SEOMetaProps {
   ogType?: string;
   twitterCard?: string;
   noIndex?: boolean;
-  structuredData?: any;
+  structuredData?: Record<string, unknown>;
 }
 
 export const SEOMeta: React.FC<SEOMetaProps> = ({
@@ -42,7 +44,10 @@ export const SEOMeta: React.FC<SEOMetaProps> = ({
     'medical consultation'
   ];
 
-  const allKeywords = [...new Set([...keywords, ...defaultKeywords])];
+  // Avoid Set operation during SSR to prevent "Cannot read properties of undefined (reading 'add')" error
+  const allKeywords = [...keywords, ...defaultKeywords].filter((keyword, index, arr) => 
+    arr.indexOf(keyword) === index
+  );
 
   return (
     <Helmet>
@@ -59,7 +64,7 @@ export const SEOMeta: React.FC<SEOMetaProps> = ({
       <meta property="og:title" content={fullTitle} />
       <meta property="og:description" content={fullDescription} />
       <meta property="og:type" content={ogType} />
-      <meta property="og:url" content={canonicalUrl || window.location.href} />
+      <meta property="og:url" content={canonicalUrl || (typeof window !== 'undefined' ? window.location.href : '')} />
       <meta property="og:image" content={ogImage} />
       <meta property="og:site_name" content="CareBow" />
       

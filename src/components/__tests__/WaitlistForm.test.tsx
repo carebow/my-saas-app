@@ -64,7 +64,8 @@ describe('WaitlistForm', () => {
 
   it('submits form with valid data', async () => {
     const mockSubmit = vi.fn().mockResolvedValue({ success: true });
-    vi.mocked(require('../../lib/api').submitToWaitlist).mockImplementation(mockSubmit);
+    const { submitToWaitlist } = await import('../../lib/api');
+    vi.mocked(submitToWaitlist).mockImplementation(mockSubmit);
     
     render(<WaitlistForm />, { wrapper: createWrapper() });
     
@@ -86,7 +87,8 @@ describe('WaitlistForm', () => {
 
   it('shows success message after submission', async () => {
     const mockSubmit = vi.fn().mockResolvedValue({ success: true });
-    vi.mocked(require('../../lib/api').submitToWaitlist).mockImplementation(mockSubmit);
+    const { submitToWaitlist } = await import('../../lib/api');
+    vi.mocked(submitToWaitlist).mockImplementation(mockSubmit);
     
     render(<WaitlistForm />, { wrapper: createWrapper() });
     

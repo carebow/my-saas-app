@@ -1,8 +1,8 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Mic, MicOff, Square, Play, Pause } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { useToast } from '@/components/ui/use-toast';
+import { Button } from '../ui/button';
+import { useToast } from '../ui/use-toast';
 
 interface VoiceRecorderProps {
   onResult: (transcript: string, audioUri?: string) => void;

@@ -1,6 +1,6 @@
 import React from 'react';
-import { motion } from 'framer-motion';
-import { Card, CardContent } from '@/components/ui/card';
+// import { motion } from 'framer-motion';
+import { Card, CardContent } from '../ui/card';
 import { Brain, Leaf, Activity, Heart, Stethoscope, Shield } from 'lucide-react';
 
 const AIFeaturesSection = () => {

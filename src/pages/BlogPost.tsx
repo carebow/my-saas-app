@@ -1,12 +1,16 @@
 
+'use client'
+
 import React from "react";
+
+export const dynamic = 'force-dynamic';
 import SEO from "../components/SEO";
 import Navbar from "../components/UnifiedNavigation";
 import Footer from "../components/UnifiedFooter";
 import { useParams } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Calendar, Clock, User, ArrowLeft, Share2, BookmarkPlus } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Button } from "../components/ui/button";
 import { Link } from "react-router-dom";
 import { blogPosts } from "../data/blogPosts";
 

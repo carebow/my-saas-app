@@ -1,5 +1,10 @@
 
+'use client'
+
 import React from "react";
+
+export const dynamic = 'force-dynamic';
+import { Heart, TrendingUp, Users, Briefcase, MapPin, Clock, DollarSign, Shield, Zap, CheckCircle, ArrowRight, Star, Award, Globe, Code, Stethoscope, Brain, Phone, Mail, Calendar } from "lucide-react";
 import SEO from "../components/SEO";
 import Navbar from "../components/UnifiedNavigation";
 import Footer from "../components/UnifiedFooter";

@@ -1,11 +1,11 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { motion } from 'framer-motion';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { useToast } from '@/components/ui/use-toast';
-import { useHealthProfile } from '@/hooks/useHealthProfile';
-import { supabase } from '@/integrations/supabase/client';
+// import { motion } from 'framer-motion';
+import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
+import { Button } from './ui/button';
+import { Badge } from './ui/badge';
+import { useToast } from './ui/use-toast';
+import { useHealthProfile } from '../hooks/useHealthProfile';
+import { supabase } from '../../integrations/supabase/client';
 import { 
   Mic, 
   MicOff, 

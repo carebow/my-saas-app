@@ -1,9 +1,10 @@
+'use client'
 
 import React, { useState, useCallback, useRef, useEffect } from 'react';
-import { Input } from '@/components/ui/input';
+import { Input } from './ui/input';
 import { MapPin } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { supabase } from '@/integrations/supabase/client';
+import { supabase } from '../../integrations/supabase/client';
 
 interface LocationSuggestion {
   description: string;

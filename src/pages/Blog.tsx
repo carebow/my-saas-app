@@ -1,8 +1,10 @@
+'use client'
+
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
+import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card';
+import { Button } from '../components/ui/button';
+import { Badge } from '../components/ui/badge';
 import { 
   Search, 
   Filter, 
@@ -400,3 +402,5 @@ export const Blog: React.FC = () => {
     </div>
   );
 };
+
+export default Blog;

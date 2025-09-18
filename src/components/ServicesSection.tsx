@@ -1,6 +1,6 @@
 
 import { Heart, Hospital, Baby, Phone, Brain, Clock, Stethoscope, UserCheck, Shield, Activity, Pill, Thermometer } from 'lucide-react';
-import { motion } from 'framer-motion';
+// import { motion } from 'framer-motion';
 
 const ServicesSection = () => {
   const services = [

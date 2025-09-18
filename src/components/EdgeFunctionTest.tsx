@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { supabase } from '@/integrations/supabase/client';
-import { useToast } from '@/hooks/use-toast';
+import { Button } from './ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
+import { supabase } from '../../integrations/supabase/client';
+import { useToast } from '../hooks/use-toast';
 import { Loader2, CheckCircle, XCircle } from 'lucide-react';
 
 const EdgeFunctionTest: React.FC = () => {

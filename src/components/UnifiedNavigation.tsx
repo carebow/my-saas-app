@@ -1,8 +1,11 @@
+'use client'
+
 import React, { useState, useMemo, useCallback } from 'react';
-import { motion } from 'framer-motion';
+// import { motion } from 'framer-motion';
 import { Menu, X, Stethoscope, UserCircle, LogOut, Heart, BookOpen, Phone, Users, Shield, User } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Link, useLocation } from 'react-router-dom';
+import { Button } from './ui/button';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { useAuth } from '../hooks/useAuth';
 import { AuthModal } from './auth/AuthModal';
 import {
@@ -11,23 +14,23 @@ import {
   DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
+} from './ui/dropdown-menu';
 
 const UnifiedNavigation = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [authModalOpen, setAuthModalOpen] = useState(false);
   const [authMode, setAuthMode] = useState<'login' | 'register'>('login');
-  const location = useLocation();
+  const pathname = usePathname();
   const { user, logout } = useAuth();
 
   // Determine current page context
   const pageContext = useMemo(() => {
-    const path = location.pathname;
+    const path = pathname;
     if (path === '/ask-carebow' || path.startsWith('/ask-carebow/')) {
       return 'askcarebow';
     }
     return 'main';
-  }, [location.pathname]);
+  }, [pathname]);
 
   // Memoize navigation items based on context
   const navItems = useMemo(() => {
@@ -102,7 +105,7 @@ const UnifiedNavigation = () => {
         return (
           <Link
             key={item.name}
-            to={item.href}
+            href={item.href}
             className={`text-foreground hover:text-primary font-medium transition-colors relative group text-sm lg:text-base flex items-center gap-1 ${
               item.highlight ? 'text-primary font-semibold' : ''
             }`}
@@ -270,7 +273,7 @@ const UnifiedNavigation = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16 md:h-20">
           {/* Logo */}
-          <Link to="/" className="flex items-center space-x-2 md:space-x-3">
+          <Link href="/" className="flex items-center space-x-2 md:space-x-3">
             <img 
               src="/images/carebow-logo.png" 
               alt="CareBow Logo" 
@@ -334,7 +337,7 @@ const UnifiedNavigation = () => {
                 ) : (
                   <Link
                     key={item.name}
-                    to={item.href}
+                    href={item.href}
                     className={`text-foreground hover:text-primary hover:bg-muted font-medium py-3 px-4 rounded-lg transition-colors text-base ${
                       item.highlight ? 'text-primary font-semibold' : ''
                     }`}

@@ -1,7 +1,7 @@
 
 import { motion } from "framer-motion";
 import { ArrowRight, Shield, Users, Clock } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Button } from '../ui/button';
 import { scrollToElement } from "@/utils/scrollUtils";
 import heroFamilyImage from "@/assets/hero-family-care.jpg";
 

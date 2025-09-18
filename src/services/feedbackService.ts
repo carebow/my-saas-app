@@ -1,4 +1,4 @@
-import { supabase } from '@/integrations/supabase/client';
+import { supabase } from '../integrations/supabase/client';
 
 export interface FeedbackData {
   conversation_id: string;
@@ -15,9 +15,11 @@ export interface FeedbackResponse {
   created_at: string;
 }
 
+import { safeLocalStorage } from '../lib/safeStorage';
+
 class FeedbackService {
   private getAuthHeaders() {
-    const token = localStorage.getItem('access_token');
+    const token = safeLocalStorage.get('access_token');
     return {
       'Content-Type': 'application/json',
       ...(token && { 'Authorization': `Bearer ${token}` })

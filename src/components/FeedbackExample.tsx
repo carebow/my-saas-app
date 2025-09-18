@@ -1,6 +1,6 @@
 import React from 'react';
-import { FeedbackWidget } from '@/components/ui/feedback-widget';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { FeedbackWidget } from './ui/feedback-widget';
+import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
 
 export const FeedbackExample: React.FC = () => {
   return (

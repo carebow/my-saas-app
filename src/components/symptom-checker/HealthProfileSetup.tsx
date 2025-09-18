@@ -1,16 +1,16 @@
 import React, { useState } from 'react';
-import { useAuth } from '@/hooks/useAuth';
-import { motion } from 'framer-motion';
+import { useAuth } from '../hooks/useAuth';
+// import { motion } from 'framer-motion';
 import { User, Calendar, Heart, Pill, Phone, Globe, ArrowRight } from 'lucide-react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Textarea } from '@/components/ui/textarea';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Checkbox } from '@/components/ui/checkbox';
-import { supabase } from '@/integrations/supabase/client';
-import { useToast } from '@/components/ui/use-toast';
+import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
+import { Button } from './ui/button';
+import { Input } from './ui/input';
+import { Label } from './ui/label';
+import { Textarea } from './ui/textarea';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select';
+import { Checkbox } from './ui/checkbox';
+import { supabase } from '../../integrations/supabase/client';
+import { useToast } from './ui/use-toast';
 
 interface HealthProfileSetupProps {
   onComplete: (profile: { id: string; [key: string]: unknown }) => void;

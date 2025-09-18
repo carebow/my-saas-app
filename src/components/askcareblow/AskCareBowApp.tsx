@@ -1,10 +1,11 @@
+'use client'
 import React, { useState, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { Alert, AlertDescription } from '@/components/ui/alert';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Card, CardContent, CardHeader, CardTitle } from '../ui/card';
+import { Button } from '../ui/button';
+import { Badge } from '../ui/badge';
+import { Alert, AlertDescription } from '../ui/alert';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '../ui/tabs';
 import { 
   Heart, 
   Stethoscope, 
@@ -26,8 +27,8 @@ import {
 import { ConversationalInterface } from './ConversationalInterface';
 import { SymptomTriage } from './SymptomTriage';
 import { DiagnosticEngine } from './DiagnosticEngine';
-import { useAuth } from '@/hooks/useAuth';
-import { useToast } from '@/hooks/use-toast';
+import { useAuth } from '../../hooks/useAuth';
+import { useToast } from '../../hooks/use-toast';
 
 // Application states
 type AppState = 'welcome' | 'symptom_input' | 'conversation' | 'triage' | 'diagnosis' | 'recommendations' | 'care_connection';

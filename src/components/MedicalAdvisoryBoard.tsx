@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { Users, CheckCircle } from "lucide-react";
-import medicalBoardImage from "@/assets/medical-advisory-board.jpg";
+import medicalBoardImage from "../assets/medical-advisory-board.jpg";
 
 const MedicalAdvisoryBoard = () => {
   const teamMembers = [

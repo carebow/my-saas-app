@@ -1,14 +1,14 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { useAuth } from '@/hooks/useAuth';
+import { useAuth } from '../hooks/useAuth';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Send, Bot, User, AlertTriangle, Clock, Stethoscope, MessageCircle } from 'lucide-react';
-import { FeedbackWidget } from '@/components/ui/feedback-widget';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Textarea } from '@/components/ui/textarea';
-import { Badge } from '@/components/ui/badge';
-import { supabase } from '@/integrations/supabase/client';
-import { useToast } from '@/components/ui/use-toast';
+import { FeedbackWidget } from './ui/feedback-widget';
+import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
+import { Button } from './ui/button';
+import { Textarea } from './ui/textarea';
+import { Badge } from './ui/badge';
+import { supabase } from '../../integrations/supabase/client';
+import { useToast } from './ui/use-toast';
 import AssessmentResults from './AssessmentResults';
 
 interface Message {

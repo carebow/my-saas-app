@@ -1,6 +1,7 @@
+'use client'
 import { useLocation, Link } from "react-router-dom";
 import { useEffect } from "react";
-import { Button } from "@/components/ui/button";
+import { Button } from "../components/ui/button";
 import { Home, ArrowLeft, Search } from "lucide-react";
 
 const NotFound = () => {

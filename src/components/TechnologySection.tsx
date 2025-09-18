@@ -1,6 +1,6 @@
 
 import { Shield, Smartphone, MapPin, Bell, Stethoscope, Check } from 'lucide-react';
-import { motion } from 'framer-motion';
+// import { motion } from 'framer-motion';
 
 const TechnologySection = () => {
   const technologies = [

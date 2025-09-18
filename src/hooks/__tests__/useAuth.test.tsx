@@ -63,7 +63,8 @@ describe('useAuth Hook', () => {
       user: { id: 1, email: 'test@example.com' }
     };
     
-    vi.mocked(require('../../lib/api').loginUser).mockResolvedValue(mockLoginResponse);
+    const { loginUser } = await import('../../lib/api');
+    vi.mocked(loginUser).mockResolvedValue(mockLoginResponse);
     
     const { result } = renderHook(() => useAuth(), { wrapper: createWrapper() });
     
@@ -93,7 +94,8 @@ describe('useAuth Hook', () => {
 
   it('handles login errors', async () => {
     const mockError = new Error('Invalid credentials');
-    vi.mocked(require('../../lib/api').loginUser).mockRejectedValue(mockError);
+    const { loginUser } = await import('../../lib/api');
+    vi.mocked(loginUser).mockRejectedValue(mockError);
     
     const { result } = renderHook(() => useAuth(), { wrapper: createWrapper() });
     
@@ -115,7 +117,8 @@ describe('useAuth Hook', () => {
     };
     
     mockLocalStorage.getItem.mockReturnValue('valid-token');
-    vi.mocked(require('../../lib/api').getUserProfile).mockResolvedValue(mockProfile);
+    const { getUserProfile } = await import('../../lib/api');
+    vi.mocked(getUserProfile).mockResolvedValue(mockProfile);
     
     const { result } = renderHook(() => useAuth(), { wrapper: createWrapper() });
     

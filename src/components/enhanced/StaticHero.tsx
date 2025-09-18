@@ -1,9 +1,9 @@
 
 import React from "react";
 import { ArrowRight, Heart } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { smoothScrollTo } from "@/utils/smoothScroll";
-import heroFamilyImage from "@/assets/hero-family-care.jpg";
+import { Button } from '../ui/button';
+import { smoothScrollTo } from "../../utils/smoothScroll";
+import heroFamilyImage from "../../assets/hero-family-care.jpg";
 
 const StaticHero = () => {
   const scrollToWaitlist = React.useCallback(() => {

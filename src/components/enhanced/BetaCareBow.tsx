@@ -1,9 +1,11 @@
+'use client'
+
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Card, CardContent, CardHeader, CardTitle } from '../ui/card';
+import { Button } from '../ui/button';
+import { Badge } from '../ui/badge';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '../ui/tabs';
 
 import { 
   Sparkles, 
@@ -25,7 +27,7 @@ import {
   Brain,
   Pill
 } from 'lucide-react';
-import { Alert, AlertDescription } from '@/components/ui/alert';
+import { Alert, AlertDescription } from '../ui/alert';
 import { EnhancedVoiceInterface } from './EnhancedVoiceInterface';
 import { AyurvedicDashboard } from './AyurvedicDashboard';
 import { HealthEducationHub } from './HealthEducationHub';

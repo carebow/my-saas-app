@@ -1,11 +1,11 @@
 import React, { useState, useCallback, useEffect } from 'react';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
+import { Button } from './ui/button';
+import { Card, CardContent } from './ui/card';
+import { Badge } from './ui/badge';
 import { Mic, MicOff, Volume2, MessageSquare, Heart, Stethoscope, Leaf } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useToast } from '@/hooks/use-toast';
-import { supabase } from '@/integrations/supabase/client';
+import { useToast } from '../hooks/use-toast';
+import { supabase } from '../../integrations/supabase/client';
 
 // Health profile interface
 interface HealthProfile {
@@ -258,7 +258,7 @@ Respond in JSON format:
         variant: "destructive",
       });
     }
-  }, [conversation, healthProfile, personality, tone, interviewMode, currentAudio, stopCurrentAudio, toast]);
+  }, [conversation, healthProfile, personality, tone, interviewMode, stopCurrentAudio, toast]);
 
   // Quick reply function for follow-up questions
   const handleQuickReply = useCallback((question: string) => {

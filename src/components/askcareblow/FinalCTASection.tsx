@@ -1,6 +1,6 @@
 import React from 'react';
-import { motion } from 'framer-motion';
-import { Button } from '@/components/ui/button';
+// import { motion } from 'framer-motion';
+import { Button } from '../ui/button';
 import { Heart, ArrowRight, Sparkles } from 'lucide-react';
 import { Link } from 'react-router-dom';
 

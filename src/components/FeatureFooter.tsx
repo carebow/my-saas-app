@@ -1,5 +1,5 @@
 
-import { Button } from "@/components/ui/button";
+import { Button } from "./ui/button";
 import { HeartPulse, UsersRound, Bot, Clock, ArrowRight, Stethoscope, UserCheck, Activity } from "lucide-react";
 import { motion } from "framer-motion";
 

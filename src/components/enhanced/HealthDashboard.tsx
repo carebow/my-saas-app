@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { Progress } from '@/components/ui/progress';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { safeLocalStorage } from '../../lib/safeStorage';
+import { Card, CardContent, CardHeader, CardTitle } from '../ui/card';
+import { Button } from '../ui/button';
+import { Badge } from '../ui/badge';
+import { Progress } from '../ui/progress';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '../ui/tabs';
 import { 
   Heart, 
   Activity, 
@@ -19,8 +20,8 @@ import {
   Target,
   Zap
 } from 'lucide-react';
-import { useAuth } from '@/hooks/useAuth';
-import { useToast } from '@/hooks/use-toast';
+import { useAuth } from '../hooks/useAuth';
+import { useToast } from '../hooks/use-toast';
 
 interface HealthMetric {
   id: string;
@@ -58,15 +59,15 @@ export const HealthDashboard: React.FC = () => {
 
   useEffect(() => {
     loadDashboardData();
-  }, [selectedPeriod]);
+  }, [selectedPeriod, loadDashboardData]);
 
-  const loadDashboardData = async () => {
+  const loadDashboardData = useCallback(async () => {
     setLoading(true);
     try {
       // Load health metrics
       const metricsResponse = await fetch(`/api/v1/health/metrics?period=${selectedPeriod}`, {
         headers: {
-          'Authorization': `Bearer ${localStorage.getItem('token')}`
+          'Authorization': `Bearer ${safeLocalStorage.get('token')}`
         }
       });
       const metricsData = await metricsResponse.json();
@@ -75,7 +76,7 @@ export const HealthDashboard: React.FC = () => {
       // Load consultations
       const consultationsResponse = await fetch(`/api/v1/health/consultations?period=${selectedPeriod}`, {
         headers: {
-          'Authorization': `Bearer ${localStorage.getItem('token')}`
+          'Authorization': `Bearer ${safeLocalStorage.get('token')}`
         }
       });
       const consultationsData = await consultationsResponse.json();
@@ -93,7 +94,7 @@ export const HealthDashboard: React.FC = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [selectedPeriod, toast]);
 
   const generateInsights = (metrics: HealthMetric[], consultations: Consultation[]) => {
     const newInsights: HealthInsight[] = [];

@@ -1,8 +1,12 @@
 
+'use client'
+
 import Navbar from "../components/UnifiedNavigation";
 import HeroSection from "../components/HeroSection";
 import Footer from "../components/UnifiedFooter";
 import SEO from "../components/SEO";
+
+export const dynamic = 'force-dynamic';
 import LazyVisible from "../components/LazyVisible";
 import { lazy } from "react";
 

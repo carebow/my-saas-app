@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { safeLocalStorage } from '../../lib/safeStorage';
+import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
+import { Button } from './ui/button';
+import { Badge } from './ui/badge';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from './ui/tabs';
 import { 
   Plus, 
   Edit, 
@@ -25,8 +26,8 @@ import {
   PenTool,
   Settings
 } from 'lucide-react';
-import { useAuth } from '@/hooks/useAuth';
-import { useToast } from '@/hooks/use-toast';
+import { useAuth } from '../hooks/useAuth';
+import { useToast } from '../hooks/use-toast';
 
 interface BlogPost {
   id: number;
@@ -77,15 +78,15 @@ export const WriterDashboard: React.FC = () => {
 
   useEffect(() => {
     loadDashboardData();
-  }, []);
+  }, [loadDashboardData]);
 
-  const loadDashboardData = async () => {
+  const loadDashboardData = useCallback(async () => {
     setLoading(true);
     try {
       // Load dashboard stats
       const statsResponse = await fetch('/api/v1/content/dashboard/stats', {
         headers: {
-          'Authorization': `Bearer ${localStorage.getItem('token')}`
+          'Authorization': `Bearer ${safeLocalStorage.get('token')}`
         }
       });
       const statsData = await statsResponse.json();
@@ -94,7 +95,7 @@ export const WriterDashboard: React.FC = () => {
       // Load recent posts
       const postsResponse = await fetch('/api/v1/content/posts?page=1&per_page=10', {
         headers: {
-          'Authorization': `Bearer ${localStorage.getItem('token')}`
+          'Authorization': `Bearer ${safeLocalStorage.get('token')}`
         }
       });
       const postsData = await postsResponse.json();
@@ -110,7 +111,7 @@ export const WriterDashboard: React.FC = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [toast]);
 
   const getStatusColor = (status: string) => {
     switch (status) {

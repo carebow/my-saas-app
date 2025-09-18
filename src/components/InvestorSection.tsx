@@ -1,6 +1,6 @@
 
 import { motion } from "framer-motion";
-import { Button } from "@/components/ui/button";
+import { Button } from "./ui/button";
 import { Calendar, Users, TrendingUp, ArrowRight } from "lucide-react";
 
 const InvestorSection = () => {

@@ -1,7 +1,8 @@
+'use client'
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
+import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card';
+import { Badge } from '../components/ui/badge';
 import { 
   HelpCircle, 
   ChevronDown, 
@@ -268,3 +269,5 @@ export const FAQ: React.FC = () => {
     </div>
   );
 };
+
+export default FAQ;

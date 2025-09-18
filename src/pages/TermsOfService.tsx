@@ -1,7 +1,11 @@
+'use client'
+
 import React from 'react';
+
+export const dynamic = 'force-dynamic';
 import { motion } from 'framer-motion';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
+import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card';
+import { Badge } from '../components/ui/badge';
 import { 
   FileText, 
   AlertTriangle, 
@@ -360,3 +364,5 @@ export const TermsOfService: React.FC = () => {
     </div>
   );
 };
+
+export default TermsOfService;

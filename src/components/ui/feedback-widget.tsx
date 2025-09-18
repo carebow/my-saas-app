@@ -1,11 +1,12 @@
+'use client'
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ThumbsUp, ThumbsDown, MessageSquare, X, Check } from 'lucide-react';
-import { Card, CardContent } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Textarea } from '@/components/ui/textarea';
-import { useToast } from '@/hooks/use-toast';
-import { feedbackService } from '@/services/feedbackService';
+import { Card, CardContent } from './card';
+import { Button } from './button';
+import { Textarea } from './textarea';
+import { useToast } from '../../hooks/use-toast';
+import { feedbackService } from '../../services/feedbackService';
 
 interface FeedbackWidgetProps {
   conversationId: string;

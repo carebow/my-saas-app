@@ -1,9 +1,10 @@
+'use client'
 import React, { useState } from 'react';
-import { motion } from 'framer-motion';
-import HealthProfileForm from '@/components/forms/HealthProfileForm';
-import Navbar from '@/components/UnifiedNavigation';
-import Footer from '@/components/UnifiedFooter';
-import SEO from '@/components/SEO';
+// import { motion } from 'framer-motion';
+import HealthProfileForm from '../components/forms/HealthProfileForm';
+import Navbar from '../components/UnifiedNavigation';
+import Footer from '../components/UnifiedFooter';
+import SEO from '../components/SEO';
 
 const HealthProfileDemo = () => {
   const [isLoading, setIsLoading] = useState(false);

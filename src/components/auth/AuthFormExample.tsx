@@ -1,17 +1,17 @@
 import React, { useState } from 'react';
-import { motion } from 'framer-motion';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Separator } from '@/components/ui/separator';
+// import { motion } from 'framer-motion';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../ui/card';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '../ui/tabs';
+import { Separator } from '../ui/separator';
 import ImprovedAuthForm from './ImprovedAuthForm';
-import GoogleSignInButton from '@/components/GoogleSignInButton';
+import GoogleSignInButton from './GoogleSignInButton';
 import { Heart } from 'lucide-react';
 
 const AuthFormExample = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [activeTab, setActiveTab] = useState<'signin' | 'signup'>('signin');
 
-  const handleSignIn = async (data: any) => {
+  const handleSignIn = async (data: { email: string; password: string }) => {
     setIsLoading(true);
     
     // Simulate API call
@@ -26,7 +26,7 @@ const AuthFormExample = () => {
     return { error: null }; // or return { error: 'Some error message' }
   };
 
-  const handleSignUp = async (data: any) => {
+  const handleSignUp = async (data: { email: string; password: string; name?: string }) => {
     setIsLoading(true);
     
     // Simulate API call

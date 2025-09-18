@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { safeLocalStorage } from '../../lib/safeStorage';
 import { 
   Download, 
   Trash2, 
@@ -15,13 +16,13 @@ import {
   Lock,
   Unlock
 } from 'lucide-react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { Progress } from '@/components/ui/progress';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
-import { useToast } from '@/components/ui/use-toast';
+import { Card, CardContent, CardHeader, CardTitle } from '../ui/card';
+import { Button } from '../ui/button';
+import { Badge } from '../ui/badge';
+import { Progress } from '../ui/progress';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '../ui/tabs';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '../ui/dialog';
+import { useToast } from '../ui/use-toast';
 
 interface ExportRequest {
   export_id: string;
@@ -91,7 +92,7 @@ const PrivacyControls: React.FC<PrivacyControlsProps> = ({ userId }) => {
       const response = await fetch('/api/v1/enhanced-chat/export-data', {
         method: 'POST',
         headers: {
-          'Authorization': `Bearer ${localStorage.getItem('access_token')}`,
+          'Authorization': `Bearer ${safeLocalStorage.get('access_token')}`,
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({ export_type: exportType })
@@ -132,7 +133,7 @@ const PrivacyControls: React.FC<PrivacyControlsProps> = ({ userId }) => {
       const response = await fetch('/api/v1/enhanced-chat/delete-account', {
         method: 'POST',
         headers: {
-          'Authorization': `Bearer ${localStorage.getItem('access_token')}`,
+          'Authorization': `Bearer ${safeLocalStorage.get('access_token')}`,
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({ 
@@ -180,7 +181,7 @@ const PrivacyControls: React.FC<PrivacyControlsProps> = ({ userId }) => {
       const response = await fetch(`/api/v1/enhanced-chat/delete-account/${deletionId}/cancel`, {
         method: 'POST',
         headers: {
-          'Authorization': `Bearer ${localStorage.getItem('access_token')}`
+          'Authorization': `Bearer ${safeLocalStorage.get('access_token')}`
         }
       });
 

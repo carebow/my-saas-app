@@ -1,9 +1,13 @@
 
+'use client'
+
 import React from "react";
 import { Heart, Hospital, Baby, Shield, Clock, Phone, MapPin, Star, CheckCircle, ArrowRight, Stethoscope, Activity, UserCheck, Pill, Thermometer, Brain } from "lucide-react";
+
+export const dynamic = 'force-dynamic';
 import { motion } from "framer-motion";
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader } from "../components/ui/card";
+import { Button } from "../components/ui/button";
 import SEO from "../components/SEO";
 import Navbar from "../components/UnifiedNavigation";
 import Footer from "../components/UnifiedFooter";

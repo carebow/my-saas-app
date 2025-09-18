@@ -1,9 +1,13 @@
+'use client'
+
 import Navbar from "../components/UnifiedNavigation";
+
+export const dynamic = 'force-dynamic';
 import Footer from "../components/UnifiedFooter";
 import SEO from "../components/SEO";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
+import { Button } from "../components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "../components/ui/card";
+import { Badge } from "../components/ui/badge";
 import { motion } from "framer-motion";
 import { Brain, Shield, Heart, Users, ArrowRight, CheckCircle, Clock, Home } from "lucide-react";
 
