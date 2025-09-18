@@ -111,7 +111,7 @@ function App() {
                       } />
                       <Route path="/about" element={
                         <Suspense fallback={<RouteLoader />}>
-                          <About />
+                          <AboutUs />
                         </Suspense>
                       } />
                       <Route path="/contact" element={
@@ -189,11 +189,6 @@ function App() {
                           <BlogEditor />
                         </Suspense>
                       } />
-                      <Route path="/about" element={
-                        <Suspense fallback={<RouteLoader />}>
-                          <AboutUs />
-                        </Suspense>
-                      } />
                       <Route path="/faq" element={
                         <Suspense fallback={<RouteLoader />}>
                           <FAQ />
@@ -202,11 +197,6 @@ function App() {
                       <Route path="/disclaimer" element={
                         <Suspense fallback={<RouteLoader />}>
                           <Disclaimer />
-                        </Suspense>
-                      } />
-                      <Route path="/blog" element={
-                        <Suspense fallback={<RouteLoader />}>
-                          <Blog />
                         </Suspense>
                       } />
                       <Route path="/symptoms/:symptom" element={
