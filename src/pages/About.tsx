@@ -4,8 +4,9 @@
 import React from "react";
 
 export const dynamic = 'force-dynamic';
+export const revalidate = 0;
 import { Heart, Target, Users, Award, Linkedin, Twitter, Mail, MapPin, Phone, Clock, Globe, Shield, Zap, CheckCircle, ArrowRight, Star, Brain, Stethoscope, Leaf, Award as AwardIcon } from "lucide-react";
-import { motion } from "framer-motion";
+// import { motion } from "framer-motion";
 import { Card, CardContent, CardHeader, CardTitle } from "../components/ui/card";
 import { Button } from "../components/ui/button";
 import SEO from "../components/SEO";
@@ -65,12 +66,7 @@ const About = () => {
         {/* Hero Section */}
         <section className="py-20 bg-gradient-to-br from-purple-50 to-blue-50">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8 }}
-              className="text-center space-y-8"
-            >
+            <div className="text-center space-y-8">
               <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900">
                 About 
                 <span className="block bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent">
@@ -81,7 +77,7 @@ const About = () => {
                 We're on a mission to make quality healthcare accessible to every family in India. 
                 Through technology and compassion, we're building the future of home healthcare.
               </p>
-            </motion.div>
+            </div>
           </div>
         </section>
 
@@ -89,11 +85,11 @@ const About = () => {
         <section className="py-20">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid lg:grid-cols-2 gap-16 items-center">
-              <motion.div
-                initial={{ opacity: 0, x: -30 }}
+              <div
+                
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.8 }}
+                
               >
                 <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-6">
                   Our Mission
@@ -108,13 +104,13 @@ const About = () => {
                   of verified healthcare professionals, we're making healthcare more accessible, 
                   affordable, and human-centered.
                 </p>
-              </motion.div>
+              </div>
               
-              <motion.div
-                initial={{ opacity: 0, x: 30 }}
+              <div
+                
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.8 }}
+                
                 className="relative"
               >
                 <img 
@@ -123,7 +119,7 @@ const About = () => {
                   className="rounded-2xl shadow-2xl"
                 />
                 <div className="absolute inset-0 rounded-2xl bg-gradient-to-t from-purple-900/20 via-transparent to-transparent"></div>
-              </motion.div>
+              </div>
             </div>
           </div>
         </section>
@@ -131,11 +127,11 @@ const About = () => {
         {/* Values Section */}
         <section className="py-20 bg-gray-50">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
+            <div
+              
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.8 }}
+              
               className="text-center mb-16"
             >
               <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-6">
@@ -144,16 +140,16 @@ const About = () => {
               <p className="text-lg md:text-xl text-gray-600 max-w-3xl mx-auto">
                 These core values guide everything we do at CareBow.
               </p>
-            </motion.div>
+            </div>
 
             <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
               {values.map((value, index) => (
-                <motion.div
+                <div
                   key={value.title}
-                  initial={{ opacity: 0, y: 30 }}
+                  
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
-                  transition={{ duration: 0.6, delay: index * 0.1 }}
+                  
                 >
                   <Card className="h-full text-center hover:shadow-lg transition-shadow duration-300">
                     <CardContent className="p-8">
@@ -168,7 +164,7 @@ const About = () => {
                       </p>
                     </CardContent>
                   </Card>
-                </motion.div>
+                </div>
               ))}
             </div>
           </div>
@@ -177,11 +173,11 @@ const About = () => {
         {/* Team Section */}
         <section className="py-20">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
+            <div
+              
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.8 }}
+              
               className="text-center mb-16"
             >
               <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-6">
@@ -190,16 +186,16 @@ const About = () => {
               <p className="text-lg md:text-xl text-gray-600 max-w-3xl mx-auto">
                 Passionate healthcare and technology experts working to transform home healthcare.
               </p>
-            </motion.div>
+            </div>
 
             <div className="grid md:grid-cols-2 gap-12 max-w-4xl mx-auto">
               {teamMembers.map((member, index) => (
-                <motion.div
+                <div
                   key={member.name}
-                  initial={{ opacity: 0, y: 30 }}
+                  
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
-                  transition={{ duration: 0.6, delay: index * 0.1 }}
+                  
                 >
                   <Card className="overflow-hidden hover:shadow-xl transition-all duration-300">
                     <div className="relative h-80">
@@ -239,7 +235,7 @@ const About = () => {
                       </div>
                     </CardContent>
                   </Card>
-                </motion.div>
+                </div>
               ))}
             </div>
           </div>
@@ -248,11 +244,11 @@ const About = () => {
         {/* CTA Section */}
         <section className="py-20 bg-gradient-to-r from-purple-600 to-blue-600">
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
+            <div
+              
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.8 }}
+              
               className="space-y-8"
             >
               <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white">
@@ -279,7 +275,7 @@ const About = () => {
                   <a href="#waitlist">Join Waitlist</a>
                 </Button>
               </div>
-            </motion.div>
+            </div>
           </div>
         </section>
       </main>
