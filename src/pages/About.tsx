@@ -9,7 +9,7 @@ import { motion } from "framer-motion";
 import { Card, CardContent, CardHeader, CardTitle } from "../components/ui/card";
 import { Button } from "../components/ui/button";
 import SEO from "../components/SEO";
-import Navbar from "../components/UnifiedNavigation";
+// import Navbar from "../components/UnifiedNavigation";
 import Footer from "../components/UnifiedFooter";
 
 const About = () => {
@@ -59,7 +59,7 @@ const About = () => {
 
   return (
     <div className="min-h-screen bg-white">
-      <Navbar />
+      {/* <Navbar /> */}
       
       <main className="pt-20">
         {/* Hero Section */}
